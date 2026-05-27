@@ -286,7 +286,7 @@ if es_admin:
     cambios_detectados = {}
 else:
     # ============================================================================
-    # 9. ENTORNO CLIENTE - PANTALLA 1: BIENVENIDA MULTIMEDIA PREMIUM
+    # 15. ENTORNO CLIENTE - PANTALLA 1: BIENVENIDA MULTIMEDIA PREMIUM
     # ============================================================================
     if st.session_state.pantalla_actual == "bienvenida":
         if os.path.exists(URL_BANNER_LOCAL):
@@ -305,15 +305,15 @@ else:
             """, unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES Y SU PRECIO</h2>", unsafe_allow_html=True)
-        st.markdown("<br><p style='text-align: center; font-size: 24px; font-weight: bold; color: #f39c12;'>Bienvenidos al stock de productos disponibles y sus precios 🔥</p>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>¿Desea registrar un nuevo pedido?</p>", unsafe_allow_html=True)
+        st.markdown("<br><p style='text-align: center; font-size: 24px; font-weight: bold; color: #f39c12;'>Biendenidos al stock de productos disponibles y sus precios 🔥</p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>¿Desea registrar un nuevo pedido ?</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
         if st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master"):
             st.session_state.pantalla_actual = "catalogo"
             st.rerun()
             
-        # Bloque de Redes Sociales Corporativas
+        # Bloque de Redes Sociales Corporativas de El Gran Búfalo
         st.markdown("<br><br><br>", unsafe_allow_html=True)
         st.markdown("""
             <div class='social-footer'>
@@ -323,6 +323,7 @@ else:
                 <a href='https://wa.me' target='_blank' class='social-icon'>🟢 WhatsApp</a>
             </div>
         """, unsafe_allow_html=True)
+
     # ============================================================================
     # 10. ENTORNO CLIENTE - PANTALLA 2: CATÁLOGO DINÁMICO DE PRODUCTOS
     # ============================================================================

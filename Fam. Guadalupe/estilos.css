@@ -562,3 +562,14 @@ div[data-testid="stMetricValue"] {
     display: inline-block !important;
     box-shadow: 0px 4px 15px rgba(46, 204, 113, 0.15) !important;
 }
+/* ============================================================================
+    8. REFINAMIENTO DE CONTACTO Y CONTRASTE EN PANTALLA DE BIENVENIDA
+   ============================================================================ */
+
+/* Blindaje visual para que los desplegables mantengan contraste sólido en la bienvenida */
+.stApp div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] p,
+.stApp div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] span,
+.stApp div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] b {
+    color: #ffffff !important;
+    text-shadow: none !important;
+}
