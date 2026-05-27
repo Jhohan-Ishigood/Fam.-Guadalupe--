@@ -589,9 +589,11 @@ div[data-testid="stMetricValue"] {
     object-fit: cover !important;
     border-radius: 50% !important; 
     border: 3px solid #d4af37 !important; 
+    background-color: #111424 !important; /* Mantiene la sintonía azul noche de tu marca */
     box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important; 
     transition: transform 0.4s ease-in-out !important;
 }
+
 
 .logo-portada-circular:hover {
     transform: scale(1.05) rotate(2deg) !important;
