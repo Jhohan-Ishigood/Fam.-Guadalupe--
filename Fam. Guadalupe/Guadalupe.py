@@ -104,7 +104,7 @@ if os.path.exists(RUTA_CSS):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Inyección limpia del sello de creador adaptado al flujo estructural
-st.markdown("<div class='sello-creador'>Pagina desarrollada por: Jhohan Guadalupe 😎</div>", unsafe_allow_html=True)
+st.markdown("<div class='sello-creador'>Pagina desarrollada por:Jhohan Guadalupe😎</div>", unsafe_allow_html=True)
 
 # ============================================================================
 # 5. BARRA LATERAL (SIDEBAR POS): GESTIÓN INTERNA Y AUTENTICACIÓN
@@ -331,7 +331,7 @@ else:
 
             
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES Y SU PRECIO</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES</h2>", unsafe_allow_html=True)
         st.markdown("<br><p style='text-align: center; font-size: 24px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios 🔥</p>", unsafe_allow_html=True)
         st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>¿Desea registrar un nuevo pedido ?</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
