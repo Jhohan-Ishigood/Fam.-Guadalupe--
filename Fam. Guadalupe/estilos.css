@@ -1,13 +1,13 @@
 /* ============================================================================
-    1. BLINDAJE ANTI-MODO CLARO Y ARQUITECTURA VISUAL GLOBAL
+    1. BLINDAJE ANTI-MODO CLARO Y ARQUITECTURA VISUAL GLOBAL (EDICIÓN ORO FAM. GUADALUPE)
    ============================================================================ */
 
-/* Forzado absoluto de fondo oscuro en todo el lienzo para anular el Modo Claro */
+/* Forzado absoluto de fondo oscuro azul noche profundo para anular el Modo Claro */
 html, body, .stApp, 
 [data-testid="stAppViewContainer"], 
 [data-testid="stMainBlockContainer"], 
 [data-testid="stVerticalBlock"] {
-    background-color: #0e0e10 !important;
+    background-color: #0a0a0f !important;
     color: #ffffff !important;
 }
 
@@ -23,13 +23,13 @@ html, body, .stApp,
     padding-top: 25px !important; 
 }
 
-/* Titulado Principal con Degradado - Espaciado y Altura Balanceada */
+/* Titulado Principal Adaptado al Oro Metálico de tu Logotipo */
 .titulo-principal {
     text-align: center;
-    color: #f39c12;
+    color: #d4af37 !important;
     font-family: 'Arial Black', Gadget, sans-serif;
     font-size: 38px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    text-shadow: 0px 0px 12px rgba(212, 175, 55, 0.5);
     margin-top: 15px !important;            
     margin-bottom: 10px !important;           
     transform: translateY(0px) !important;    
@@ -52,10 +52,10 @@ div[data-testid="stHeader"] > div:first-child {
     2. REDISEÑO TOTAL DEL BOTÓN DE CABECERA (MENÚ DE OPCIONES)
    ============================================================================ */
 
-/* Transformación del botón hamburguesa nativo en un botón POS estilizado */
+/* Transformación del botón hamburguesa nativo en un botón POS estilizado en Oro */
 button[kind="headerNoPadding"] {
-    background-color: #1e1e1e !important;
-    border: 1px solid #f39c12 !important;
+    background-color: #111424 !important;
+    border: 1px solid #d4af37 !important;
     border-radius: 6px !important;
     padding: 6px 14px !important;
     height: auto !important;
@@ -68,7 +68,7 @@ button[kind="headerNoPadding"] svg {
 }
 button[kind="headerNoPadding"]::after {
     content: " Menú de Opciones" !important;
-    color: #f39c12 !important;
+    color: #d4af37 !important;
     font-weight: bold !important;
     font-size: 14px !important;
     font-family: 'Segoe UI', sans-serif !important;
@@ -86,7 +86,7 @@ section[data-testid="stSidebar"] button[kind="headerNoPadding"]::after,
 
 /* Configuración del fondo oscuro profundo de la barra lateral */
 section[data-testid="stSidebar"] {
-    background-color: #111113 !important;
+    background-color: #0b0c12 !important;
 }
 
 /* Botón personalizado carmesí para cerrar la barra de opciones */
@@ -111,15 +111,15 @@ section[data-testid="stSidebar"] .element-container {
     margin-bottom: 6px !important; 
 }
 
-/* Tarjetas unificadas de información con hilo de acento Oro Búfalo */
+/* Tarjetas unificadas de información en Azul Noche con acento Oro Metálico de tu Escudo */
 section[data-testid="stSidebar"] .element-container:has(p), 
 section[data-testid="stSidebar"] .element-container:has(h4) {
-    background-color: #1e1e24 !important; 
+    background-color: #111424 !important; 
     padding: 10px 14px !important; 
     border-radius: 12px !important; 
-    border-left: 4px solid #f39c12 !important; 
+    border-left: 4px solid #d4af37 !important; 
     margin-bottom: 6px !important;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.15) !important;
 }
 
 /* Títulos internos de la barra lateral en blanco puro destacado */
@@ -160,33 +160,34 @@ section[data-testid="stSidebar"] button:has(span:contains("Chatear")) {
     border: none !important;
 }
 
-/* Líneas divisorias refinadas con desvanecimiento lateral en Oro Búfalo */
+/* Líneas divisorias refinadas con desvanecimiento lateral en Oro Guadalupe */
 section[data-testid="stSidebar"] hr {
     margin-top: 12px !important;
     margin-bottom: 12px !important;
     border: 0 !important;
     height: 1px !important;
-    background: linear-gradient(to right, transparent, rgba(243, 156, 18, 0.3), transparent) !important;
+    background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.4), transparent) !important;
 }
 
 /* ============================================================================
-    4. CATÁLOGO DE PRODUCTOS (FOOD CARDS PREMIUM)
+    4. CATÁLOGO DE PRODUCTOS (CARDS PREMIUM)
    ============================================================================ */
 
-/* Bloque inferior de información para las tarjetas de los platos */
+/* Bloque inferior de información para las tarjetas de productos en azul noche sutil */
 .product-card-bottom {
-    background-color: #1e1e1e !important;
+    background-color: #111424 !important;
     padding: 15px;
     border-radius: 0px 0px 12px 12px;
-    border-left: 1px solid #333;
-    border-right: 1px solid #333;
+    border-left: 1px solid #222538;
+    border-right: 1px solid #222538;
+    border-bottom: 1px solid #222538;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.6);
 }
 
-/* Reducimos el título para que queba todo el texto del stock sin desbordar */
+/* Control del título para evitar desbordes */
 .product-title {
     font-size: 15px !important;               
     font-weight: bold !important;
@@ -194,22 +195,22 @@ section[data-testid="stSidebar"] hr {
     line-height: 1.3 !important;
     padding-right: 10px !important;           
 }
-/* Reducimos el precio para que no pise las letras de los productos */
+/* Precios destacados en Oro Guadalupe Sólido Impact */
 .product-price {
     font-size: 18px !important;               
     font-weight: 900 !important;
-    color: #f39c12 !important;
+    color: #d4af37 !important;
     font-family: 'Impact', Charcoal, sans-serif;
     white-space: nowrap !important;           
 }
 
 /* Ajustamos el contenedor para darle una distribución perfecta de lado a lado */
 .product-card-bottom {
-    background-color: #1e1e1e !important;
+    background-color: #111424 !important;
     padding: 12px 15px !important;            
     border-radius: 0px 0px 12px 12px;
-    border-left: 1px solid #333;
-    border-right: 1px solid #333;
+    border-left: 1px solid #222538;
+    border-right: 1px solid #222538;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -233,7 +234,7 @@ section[data-testid="stSidebar"] hr {
     width: 100% !important;
 }
 
-/* Alineación horizontal rígida para evitar desbordes en micro-columnas */
+/* Alineación horizontal rígida para evitar desbordes */
 .netflix-navbar-master div[data-testid="stHorizontalBlock"] {
     display: flex !important;
     flex-direction: row !important;
@@ -258,27 +259,27 @@ div[data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) {
     gap: 8px !important;
 }
 
-/* Rediseño de las cajas de búsqueda compactadas y ensanchadas a la derecha */
+/* Rediseño de las cajas de búsqueda compactadas y enfocadas a Oro Guadalupe */
 div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input {
-    background-color: rgba(30, 30, 35, 0.75) !important;
-    border: 1px solid #333333 !important;
+    background-color: rgba(17, 20, 36, 0.75) !important;
+    border: 1px solid #222538 !important;
     border-radius: 4px !important;
     color: #ffffff !important;
     font-size: 14px !important;
 }
 div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input:focus {
-    border-color: #f39c12 !important;
-    box-shadow: 0px 0px 8px rgba(243, 156, 18, 0.4) !important;
+    border-color: #d4af37 !important;
+    box-shadow: 0px 0px 8px rgba(212, 175, 55, 0.5) !important;
 }
 
 /* ============================================================================
      NUEVOS ESTILOS PARA LOS CONTENEDORES DESPLEGABLES (ST.EXPANDER)
    ============================================================================ */
 
-/* Rediseño exterior del componente expandible oficial */
+/* Rediseño exterior del componente expandible en Azul Noche */
 div[data-testid="stExpander"] {
-    background-color: #16161a !important;
-    border: 1px solid #333333 !important;
+    background-color: #111424 !important;
+    border: 1px solid #222538 !important;
     border-radius: 8px !important;
     margin-bottom: 12px !important;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4) !important;
@@ -287,7 +288,7 @@ div[data-testid="stExpander"] {
 
 /* Encabezado o pestaña interactiva del desplegable */
 div[data-testid="stExpander"] summary {
-    background-color: #1e1e24 !important;
+    background-color: #161a30 !important;
     padding: 12px 16px !important;
     color: #ffffff !important;
     font-weight: bold !important;
@@ -296,28 +297,28 @@ div[data-testid="stExpander"] summary {
     transition: all 0.3s ease !important;
 }
 
-/* Efecto visual al pasar el mouse por encima de la pestaña */
+/* Efecto visual al pasar el mouse por encima de la pestaña (Foco Dorado) */
 div[data-testid="stExpander"] summary:hover {
-    background-color: #25252d !important;
-    color: #f39c12 !important;
+    background-color: #1e233d !important;
+    color: #d4af37 !important;
     cursor: pointer !important;
 }
 
 /* Contenedor interno de datos cuando el menú se encuentra desplegado */
 div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] {
-    background-color: #111114 !important;
+    background-color: #0a0c16 !important;
     padding: 15px !important;
-    border-top: 1px solid #f39c12 !important; /* Hilo de acento Oro Búfalo */
+    border-top: 1px solid #d4af37 !important; /* Hilo de acento Oro Guadalupe */
 }
 /* ============================================================================
     6. ALERTAS, TOTALIZADOR NEÓN Y MEDIA QUERIES RESPONSIVAS
    ============================================================================ */
 
-/* Cuadros informativos de estados de procesamiento o avisos */
+/* Cuadros informativos de estados de procesamiento con línea en Oro Guadalupe */
 div.stAlert {
-    background-color: #111a24 !important; 
-    border: 1px solid #1f3347 !important;
-    border-left: 5px solid #f39c12 !important; 
+    background-color: #0b111e !important; 
+    border: 1px solid #1a2436 !important;
+    border-left: 5px solid #d4af37 !important; 
     border-radius: 10px !important;
     box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.6) !important;
 }
@@ -365,27 +366,23 @@ div.stAlert:has(svg[data-testid="stNotificationIconError"]) {
     }
 }
 
-/* Pie de página de redes sociales */
+/* Pie de página corporativo de redes sociales */
 .social-footer {
     text-align: center !important;
-    background-color: rgba(15, 15, 15, 0.85) !important;
+    background-color: rgba(11, 12, 18, 0.9) !important;
     padding: 20px !important;
     border-radius: 10px !important;
-    border: 1px solid #222222 !important;
+    border: 1px solid #222538 !important;
     margin-top: 40px !important;
     max-width: 600px !important;
     margin: 40px auto 0 auto !important;
 }
 .social-icon, .social-footer a {
-    color: #f39c12 !important;
+    color: #d4af37 !important;
     font-weight: 800 !important;
     text-decoration: none !important;
 }
-/* ============================================================================
-    7. BLOQUE MAESTRO DE PARCHES UNIFICADOS (BOTONES, ETIQUETAS Y NEÓN)
-   ============================================================================ */
-
-/* SELLO DEL AUTOR CORREGIDO EN POSICIÓN */
+/* SELLO DEL AUTOR CORREGIDO EN POSICIÓN Y RESPLANDOR */
 .sello-creador {
     position: relative !important;
     display: block !important;
@@ -402,27 +399,27 @@ div.stAlert:has(svg[data-testid="stNotificationIconError"]) {
     z-index: 99999 !important;
 }
 
-/* BOTÓN CENTRAL DE BIENVENIDA (FUEGO ESTÁTICO PERMANENTE) */
+/* BOTÓN CENTRAL DE BIENVENIDA Y ACCIONES EN DEGRADADO DORADO METÁLICO PREMIUM */
 div[data-testid="stMainBlockContainer"] div.stButton > button {
     background-image: none !important;     
-    background: linear-gradient(135deg, #f39c12 0%, #d35400 100%) !important; 
-    color: #ffffff !important;             
+    background: linear-gradient(135deg, #d4af37 0%, #aa8416 100%) !important; 
+    color: #0a0a0f !important;             
     font-size: 22px !important;
     font-weight: 900 !important;
     font-family: 'Arial Black', Gadget, sans-serif !important;
-    border: 2px solid #e67e22 !important;
-    box-shadow: 0px 6px 20px rgba(211, 84, 0, 0.5) !important;
+    border: 2px solid #f1c40f !important;
+    box-shadow: 0px 6px 20px rgba(212, 175, 55, 0.4) !important;
 }
 
-/* BOTÓN ADMINISTRADOR EN LA BARRA LATERAL (BLINDADO CONTRA FONDO BLANCO) */
+/* BOTÓN ADMINISTRADOR EN LA BARRA LATERAL EN TONO DORADO */
 section[data-testid="stSidebar"] div.stButton > button {
     background-image: none !important;                 
-    background: linear-gradient(135deg, #f39c12 0%, #d35400 100%) !important; 
-    color: #ffffff !important;                         
+    background: linear-gradient(135deg, #d4af37 0%, #aa8416 100%) !important; 
+    color: #0a0a0f !important;                         
     font-weight: 900 !important;
     font-size: 13px !important;
-    border: 1px solid #ff9f43 !important;
-    box-shadow: 0px 4px 10px rgba(211, 84, 0, 0.4) !important;
+    border: 1px solid #f1c40f !important;
+    box-shadow: 0px 4px 10px rgba(212, 175, 55, 0.3) !important;
     text-transform: uppercase !important;
 }
 
@@ -430,25 +427,25 @@ section[data-testid="stSidebar"] div.stButton > button {
 div[data-testid="stMainBlockContainer"] div.stButton > button:hover,
 section[data-testid="stSidebar"] div.stButton > button:hover {
     filter: brightness(1.2) !important;
-    color: #ffffff !important;
+    color: #0a0a0f !important;
 }
 
 /* INPUTS NUMÉRICOS DEL CATÁLOGO (NÚMERO VERDE BRILLANTE CON EFECTO NEÓN) */
 div[data-testid="stColumn"] div[data-testid="stNumberInput"] input {
     color: #2ecc71 !important;               
-    background-color: #1a1a1e !important;     
+    background-color: #111424 !important;     
     font-size: 20px !important;               
     font-weight: 900 !important;              
     text-shadow: 0px 0px 8px rgba(46, 204, 113, 0.5) !important; 
-    border: 2px solid #333333 !important;
+    border: 2px solid #222538 !important;
 }
 
 /* ENTRADAS DE TEXTO GENERALES Y CAJAS ADMINISTRATIVAS */
 div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input, 
 div[data-testid="stNumberInput"]:not(:has(div[data-testid="stColumn"] *)) input {
-    background-color: #1a1a1e !important;     
+    background-color: #111424 !important;     
     color: #ffffff !important;                
-    border: 2px solid #333333 !important;     
+    border: 2px solid #222538 !important;     
     border-radius: 8px !important;
     padding: 10px 14px !important;
     font-size: 16px !important;               
@@ -522,7 +519,7 @@ div[data-testid="stMetricValue"] span,
 .product-price {
     font-size: 22px !important;               
     font-weight: 900 !important;
-    color: #f39c12 !important;
+    color: #d4af37 !important; /* Dorado oficial Fam. Guadalupe */
     font-family: 'Impact', Charcoal, sans-serif;
     white-space: nowrap !important;           
 }
@@ -543,7 +540,7 @@ h3, [data-testid="stMarkdownContainer"] h3 {
     PARCHE DE REFINAMIENTO: FIJAR UN SOLO CUADRO PARA EL TOTALIZADOR NEÓN
    ============================================================================ */
 
-/* 1. Removemos el borde repetido del sub-elemento interno */
+/* 1. Removemos el borde repetido del sub-element interno */
 div[data-testid="stMetricValue"] > div,
 div[data-testid="stMetricValue"] span,
 div[data-testid="stMetricValue"] div {
@@ -555,13 +552,14 @@ div[data-testid="stMetricValue"] div {
 
 /* 2. Aseguramos que solo la caja principal tenga el borde verde y el fondo oscuro */
 div[data-testid="stMetricValue"] {
-    border: 2px solid #2ecc71 !important;     /* El único borde verde oficial */
-    background-color: #0f0f0f !important;     /* Fondo negro profundo */
-    padding: 12px 25px !important;            /* Margen interno limpio */
-    border-radius: 8px !important;            /* Esquinas redondeadas */
+    border: 2px solid #2ecc71 !important;     
+    background-color: #0f0f0f !important;     
+    padding: 12px 25px !important;            
+    border-radius: 8px !important;            
     display: inline-block !important;
     box-shadow: 0px 4px 15px rgba(46, 204, 113, 0.15) !important;
 }
+
 /* ============================================================================
     8. REFINAMIENTO DE CONTACTO Y CONTRASTE EN PANTALLA DE BIENVENIDA
    ============================================================================ */
@@ -572,4 +570,34 @@ div[data-testid="stMetricValue"] {
 .stApp div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] b {
     color: #ffffff !important;
     text-shadow: none !important;
+}
+/* ============================================================================
+    9. DISEÑO DE LOGOTIPO DE PORTADA PREMIUM - FAM. GUADALUPE
+   ============================================================================ */
+
+/* Contenedor maestro para centrar la imagen en el techo de la web */
+.contenedor-logo-portada {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: -10px !important;
+    margin-bottom: 15px !important;
+}
+
+/* Estilizado circular premium con borde de oro y resplandor neón */
+.logo-portada-circular {
+    width: 180px !important;
+    height: 180px !important;
+    object-fit: cover !important;
+    border-radius: 50% !important; /* Lo transforma en un círculo perfecto */
+    border: 3px solid #d4af37 !important; /* El anillo dorado de tu escudo */
+    box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important; /* Aura dorada neón */
+    transition: transform 0.4s ease-in-out !important;
+}
+
+/* Efecto interactivo al pasar el mouse por encima del escudo */
+.logo-portada-circular:hover {
+    transform: scale(1.05) rotate(2deg) !important;
+    box-shadow: 0px 0px 35px rgba(212, 175, 55, 0.65) !important;
 }

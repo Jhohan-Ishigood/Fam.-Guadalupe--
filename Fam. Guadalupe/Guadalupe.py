@@ -306,15 +306,29 @@ else:
                 }}
                 </style>
             """, unsafe_allow_html=True)
+        
+        # ============================================================================
+        # NUEVA ADICIÓN: INYECCIÓN MAESTRA DEL LOGOTIPO EN LA PARTE SUPERIOR
+        # ============================================================================
+        RUTA_LOGO_PORTADA = os.path.join(BASE_DIR, "Logotipo.jpeg")
+        if os.path.exists(RUTA_LOGO_PORTADA):
+            with open(RUTA_LOGO_PORTADA, "rb") as logo_file:
+                logo_encoded = base64.b64encode(logo_file.read()).decode()
+            st.markdown(f"""
+                <div class="contenedor-logo-portada">
+                    <img src="data:image/jpeg;base64,{logo_encoded}" class="logo-portada-circular">
+                </div>
+            """, unsafe_allow_html=True)
+            
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES Y SU PRECIO</h2>", unsafe_allow_html=True)
-        st.markdown("<br><p style='text-align: center; font-size: 24px; font-weight: bold; color: #f39c12;'>Bienvenidos al stock de productos disponibles y sus precios 🔥</p>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>Acceda al catálogo dando clic a lo siguiente:</p>", unsafe_allow_html=True)
+        st.markdown("<br><p style='text-align: center; font-size: 24px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios 🔥</p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>¿Desea registrar un nuevo pedido ?</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # 1. BOTÓN PRINCIPAL: Se ejecuta arriba de forma prioritaria
+        # 1. BOTÓN PRINCIPAL: Se mantiene arriba de forma prioritaria
         cambiar_a_catalogo = st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master")
-        
+
         st.markdown("<br><br><hr><br>", unsafe_allow_html=True)
 
         # 2. DESPLEGABLES INFRAESTRUCTURALES: Se dibujan debajo del botón naranja
