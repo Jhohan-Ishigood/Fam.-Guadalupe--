@@ -594,21 +594,3 @@ div[data-testid="stMetricValue"] {
     box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important; 
     transition: transform 0.4s ease-in-out !important;
 }
-
-
-.logo-portada-circular:hover {
-    transform: scale(1.05) rotate(2deg) !important;
-    box-shadow: 0px 0px 35px rgba(212, 175, 55, 0.65) !important;
-}
-# Inyectar CSS para modificar específicamente el botón de arriba
-st.markdown(
-    """
-    <style>
-    div[data-testid="stButton"] button[key="btn_empezar_pedido_master"] {
-        margin-top: 14px !important;
-        font-size: 14px !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
