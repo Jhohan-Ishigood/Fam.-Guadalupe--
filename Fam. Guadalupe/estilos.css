@@ -584,8 +584,8 @@ div[data-testid="stMetricValue"] {
 }
 
 .logo-portada-circular {
-    width: 210px !important;
-    height: 210px !important;
+    width: 206px !important;
+    height: 206px !important;
     object-fit: cover !important;
     border-radius: 50% !important; 
     border: 3px solid #d4af37 !important; 
