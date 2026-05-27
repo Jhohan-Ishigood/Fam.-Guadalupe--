@@ -308,7 +308,7 @@ else:
             """, unsafe_allow_html=True)
         
         # ============================================================================
-        # NUEVA ADICIÓN: INYECCIÓN MAESTRA DEL LOGOTIPO EN LA PARTE SUPERIOR
+        # INYECCIÓN MAESTRA DEL LOGOTIPO EN LA PARTE SUPERIOR (CORREGIDO CON RESPALDO)
         # ============================================================================
         RUTA_LOGO_PORTADA = os.path.join(BASE_DIR, "Logotipo.jpeg")
         if os.path.exists(RUTA_LOGO_PORTADA):
@@ -319,6 +319,16 @@ else:
                     <img src="data:image/jpeg;base64,{logo_encoded}" class="logo-portada-circular">
                 </div>
             """, unsafe_allow_html=True)
+        else:
+            # Bloque de respaldo: Si el archivo no subió a GitHub, dibuja el espacio circular para que no quede vacío
+            st.markdown(f"""
+                <div class="contenedor-logo-portada">
+                    <div class="logo-portada-circular" style="display:flex; align-items:center; justify-content:center; background-color:#111424;">
+                        <span style="color:#d4af37; font-size:12px; font-weight:bold; text-align:center;">CARGANDO LOGO...</span>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+
             
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES Y SU PRECIO</h2>", unsafe_allow_html=True)
