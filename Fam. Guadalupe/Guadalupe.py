@@ -275,15 +275,18 @@ if es_admin:
     productos_lista = list(st.session_state.menu_dinamico.keys())
     productos_filtrados_admin = []
     
+    # CORRECCIÓN: Volvemos a activar el escaneo sin depender de la variable global de búsqueda del cliente
     for prod in productos_lista:
         info_prod = st.session_state.menu_dinamico[prod]
         cat_prod = info_prod.get("categoria", "Ferreteria")
         
+        # Filtra correctamente para que el administrador vea lo correspondiente a la pestaña activa
         if st.session_state.categoria_activa == "Todos" or st.session_state.categoria_activa == cat_prod:
             productos_filtrados_admin.append(prod)
 
-    # Inicializamos un diccionario temporal para capturar cambios en caliente
+    # Inicializamos el diccionario temporal para capturar cambios en caliente
     cambios_detectados = {}
+
 else:
     # ============================================================================
     # 9. ENTORNO CLIENTE - PANTALLA 1: BIENVENIDA MULTIMEDIA PREMIUM
@@ -306,7 +309,7 @@ else:
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES Y SU PRECIO</h2>", unsafe_allow_html=True)
         st.markdown("<br><p style='text-align: center; font-size: 24px; font-weight: bold; color: #f39c12;'>Bienvenidos al stock de productos disponibles y sus precios 🔥</p>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>¿Desea registrar un nuevo pedido ?</p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>¿Desea realizar una nueva simulación de pedido?</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
         # 1. BOTÓN PRINCIPAL: Se ejecuta arriba de forma prioritaria
@@ -381,8 +384,8 @@ else:
     # ============================================================================
     elif st.session_state.pantalla_actual == "catalogo" and not st.session_state.pedido_guardado:
         # MEJORA: El título principal y los metadatos se renderizan arriba de todo de manera fija
-        st.markdown("\n<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES Y SU PRECIO</h2>", unsafe_allow_html=True)
-        st.text(f"Fecha y hora oficial de Perú (GMT-5): {fecha_actual}\n")
+        st.markdown("\n<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES</h2>", unsafe_allow_html=True)
+        st.markdown(f"<h3>Fecha y hora oficial de Perú (GMT-5): {fecha_actual}</h3>\n", unsafe_allow_html=True)
         
         # MEJORA: Barra de exploración Premium integrada debajo del título y ensanchada de forma simétrica
         st.markdown("<div class='netflix-navbar-master'>", unsafe_allow_html=True)
@@ -465,7 +468,7 @@ else:
                     st.markdown(f"<div style='background-color:#1c1c1c; padding:20px; border-radius:0px 0px 12px 12px; border:2px solid #ff4b4b; text-align:center; margin-bottom:25px;'><p style='color: #ff4b4b; font-size:18px; font-weight: bold; margin:0;'>❌ {prod}<br>(AGOTADO)</p></div>", unsafe_allow_html=True)
                     
         st.markdown("---")
-        if st.button("🛒 ENVIAR PEDIDO Y CONFIGURAR PAGO", use_container_width=True):
+        if st.button("🛒 SIMULAR MONTO FINAL", use_container_width=True):
             st.session_state.carrito = []
             st.session_state.total_acumulado = 0.0
             for prod, cant in cantidades_ingresadas.items():
