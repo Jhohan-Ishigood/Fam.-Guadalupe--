@@ -286,7 +286,7 @@ if es_admin:
     cambios_detectados = {}
 else:
     # ============================================================================
-    # 15. ENTORNO CLIENTE - PANTALLA 1: BIENVENIDA MULTIMEDIA PREMIUM
+    # 9. ENTORNO CLIENTE - PANTALLA 1: BIENVENIDA MULTIMEDIA PREMIUM
     # ============================================================================
     if st.session_state.pantalla_actual == "bienvenida":
         if os.path.exists(URL_BANNER_LOCAL):
@@ -305,16 +305,67 @@ else:
             """, unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES Y SU PRECIO</h2>", unsafe_allow_html=True)
-        st.markdown("<br><p style='text-align: center; font-size: 24px; font-weight: bold; color: #f39c12;'>Biendenidos al stock de productos disponibles y sus precios 🔥</p>", unsafe_allow_html=True)
+        st.markdown("<br><p style='text-align: center; font-size: 24px; font-weight: bold; color: #f39c12;'>Bienvenidos al stock de productos disponibles y sus precios 🔥</p>", unsafe_allow_html=True)
         st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>¿Desea registrar un nuevo pedido ?</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
+        # ============================================================================
+        # LOS DESPLEGABLES AHORA VAN AQUÍ (Antes del botón y del rerun)
+        # ============================================================================
+        st.markdown("### 💳 INFORMACIÓN OFICIAL DE PAGO Y CONTACTO")
+        st.caption("Selecciona el método de tu preferencia haciendo clic para desplegar los datos correspondientes:")
+
+        # --- PORTADA DESPLEGABLE 1: DATOS DE CUENTA BANCARIA ---
+        with st.expander("📐 VER CUENTAS BANCARIAS OFICIALES", expanded=False):
+            st.markdown("""
+                <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; border-left: 4px solid #2980b9; margin-bottom: 10px;">
+                    <p style="color: #2980b9; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🏦 BANCO DE CÉDULA / BCP</p>
+                    <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número de Cuenta:</b> 570-98421345-0-88</p>
+                    <p style="color: #aaaaaa; margin: 0; font-size: 14px;"><b>Código Interbancario (CCI):</b> 00257019842134508891</p>
+                    <hr style="border-color: #333; margin: 10px 0;">
+                    <p style="color: #e67e22; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🏦 INTERBANK</p>
+                    <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número de Cuenta:</b> 200-3001245789</p>
+                    <p style="color: #aaaaaa; margin: 0; font-size: 14px;"><b>Titular del Negocio:</b> Jhohan Guadalupe</p>
+                </div>
+            """, unsafe_allow_html=True)
+
+        # --- PORTADA DESPLEGABLE 2: PROCESAMIENTO ELECTRÓNICO CON YAPE Y QR ---
+        with st.expander("📱 PAGAR CON YAPE O PLIN (CÓDIGO QR)", expanded=False):
+            ruta_qr_local = os.path.join(BASE_DIR, "mi_qr_yape de Jhohan.png")
+            if os.path.exists(ruta_qr_local):
+                with open(ruta_qr_local, "rb") as qr_file:
+                    encoded_qr = base64.b64encode(qr_file.read()).decode()
+                src_imagen_qr = f"data:image/png;base64,{encoded_qr}"
+            else:
+                src_imagen_qr = "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><circle cx='8.5' cy='8.5' r='1.5'/><polyline points='21 15 16 10 5 21'/></svg>"
+            
+            st.markdown(f"""
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 15px auto; max-width: 450px; background-color: #1e1e24; padding: 20px; border-radius: 16px; border: 2px solid #8e44ad; text-align: center;">
+                    <p style="color: #aaaaaa; font-size: 13px; margin-bottom: 12px; font-weight: bold;">[!] Escanee con la cámara de su celular para pagar:</p>
+                    <img src="{src_imagen_qr}" style="width: 240px; height: 240px; object-fit: contain; border-radius: 12px; box-shadow: 0px 4px 15px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px;" />
+                    <span style="color: #8e44ad; font-size: 14px; font-weight: bold; letter-spacing: 1px;">🟣 NÚMERO ASOCIADO: 950 239 350</span>
+                </div>
+            """, unsafe_allow_html=True)
+
+        # --- PORTADA DESPLEGABLE 3: TELEFONO DE CONTACTO ---
+        with st.expander("📞 VER TELÉFONO DE CONTACTO DIRECTO", expanded=False):
+            st.markdown("""
+                <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; border-left: 4px solid #27ae60;">
+                    <p style="color: #27ae60; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🟢 WHATSAPP CORPORATIVO</p>
+                    <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número Celular:</b> +51 950 239 350</p>
+                    <p style="color: #aaaaaa; margin: 0; font-size: 13px;">Use este número para consultas rápidas o coordinar transacciones directamente.</p>
+                </div>
+            """, unsafe_allow_html=True)
+            
+        st.markdown("<br><hr><br>", unsafe_allow_html=True)
+
+        # El botón de cambiar de pantalla ahora va al final de la lógica visible
         if st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master"):
             st.session_state.pantalla_actual = "catalogo"
             st.rerun()
             
-        # Bloque de Redes Sociales Corporativas de El Gran Búfalo
-        st.markdown("<br><br><br>", unsafe_allow_html=True)
+        # Bloque de Redes Sociales Corporativas
+        st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("""
             <div class='social-footer'>
                 <p style='margin-bottom: 10px; font-size: 14px; letter-spacing: 2px; color: #888; font-weight: bold;'>SÍGUENOS EN REDES SOCIALES</p>
