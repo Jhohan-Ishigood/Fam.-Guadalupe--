@@ -338,7 +338,6 @@ else:
         # 1. BOTÓN PRINCIPAL: Se mantiene arriba de forma prioritaria
         cambiar_a_catalogo = st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master")
 
-        st.markdown("<br><br><hr><br>", unsafe_allow_html=True)
 
         # 2. DESPLEGABLES INFRAESTRUCTURALES: Se dibujan debajo del botón naranja
         st.markdown("### 💳 INFORMACIÓN OFICIAL DE PAGO Y CONTACTO")
