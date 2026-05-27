@@ -332,7 +332,7 @@ else:
             
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("<h3 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES</h3>", unsafe_allow_html=True)
-        st.markdown("<br><p style='text-align: left; font-size: 20px;margin-top: -54px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
+        st.markdown("<br><p style='text-align: left; font-size: 20px;margin-top: -48px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
         # 1. BOTÓN PRINCIPAL: Se mantiene arriba de forma prioritaria
@@ -340,7 +340,7 @@ else:
 
 
         # 2. DESPLEGABLES INFRAESTRUCTURALES: Se dibujan debajo del botón naranja
-        st.markdown("<p style='font-size: 23px; margin-bottom:4px;margin-top: 13px;'> INFORMACIÓN OFICIAL DE PAGO Y CONTACTO</p>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size: 23px; margin-bottom:30px;margin-top: 13px;'> INFORMACIÓN OFICIAL DE PAGO Y CONTACTO</p>", unsafe_allow_html=True)
         st.markdown("<p style='font-size: 15px; margin-bottom:29px;'>selecciona el método de tu preferencia haciendo clic para desplegar los datos correspondientes:</p>", unsafe_allow_html=True)
 
         # --- PORTADA DESPLEGABLE 1: DATOS DE CUENTA BANCARIA ---
