@@ -340,8 +340,8 @@ else:
 
 
         # 2. DESPLEGABLES INFRAESTRUCTURALES: Se dibujan debajo del botón naranja
-        st.markdown("<p style='font-size: 23px; margin-bottom:4px;margin-top: 13px;'> INFORMACIÓN OFICIAL DE PAGO Y CONTACTO</p>", unsafe_allow_html=True)
-        st.caption("<p style='font-size: 14px; margin-bottom:4px;;'>selecciona el método de tu preferencia haciendo clic para desplegar los datos correspondientes:</p>")
+        st.markdown("### 💳 INFORMACIÓN OFICIAL DE PAGO Y CONTACTO")
+        st.caption("Selecciona el método de tu preferencia haciendo clic para desplegar los datos correspondientes:")
 
         # --- PORTADA DESPLEGABLE 1: DATOS DE CUENTA BANCARIA ---
         with st.expander("📐 VER CUENTAS BANCARIAS OFICIALES", expanded=False):
