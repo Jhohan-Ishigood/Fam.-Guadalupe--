@@ -80,7 +80,6 @@ section[data-testid="stSidebar"] button[kind="headerNoPadding"]::after,
     content: "" !important;
     display: none !important;
 }
-
 /* ============================================================================
     3. REDISEÑO PREMIUM DE LA BARRA LATERAL (SIDEBAR POS)
    ============================================================================ */
@@ -169,6 +168,7 @@ section[data-testid="stSidebar"] hr {
     height: 1px !important;
     background: linear-gradient(to right, transparent, rgba(243, 156, 18, 0.3), transparent) !important;
 }
+
 /* ============================================================================
     4. CATÁLOGO DE PRODUCTOS (FOOD CARDS PREMIUM)
    ============================================================================ */
@@ -186,11 +186,7 @@ section[data-testid="stSidebar"] hr {
     box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
 }
 
-/* ============================================================================
-    MEDIDAS CALIBRADAS PARA EL PANEL DE TARJETAS DE COMIDA
-   ============================================================================ */
-
-/* Reducimos el título para que quepa todo el texto del stock sin desbordar */
+/* Reducimos el título para que queba todo el texto del stock sin desbordar */
 .product-title {
     font-size: 15px !important;               
     font-weight: bold !important;
@@ -198,8 +194,7 @@ section[data-testid="stSidebar"] hr {
     line-height: 1.3 !important;
     padding-right: 10px !important;           
 }
-
-/* Reducimos el precio para que no pise las letras de la comida */
+/* Reducimos el precio para que no pise las letras de los productos */
 .product-price {
     font-size: 18px !important;               
     font-weight: 900 !important;
@@ -221,7 +216,6 @@ section[data-testid="stSidebar"] hr {
     box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
 }
 
-
 /* ============================================================================
     5. BARRA DE NAVEGACIÓN HORIZONTAL MAESTRA (ESTILO NETFLIX OPTIMIZADO)
    ============================================================================ */
@@ -233,8 +227,8 @@ section[data-testid="stSidebar"] hr {
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
-    margin-top: 5px !important;    /* Bajó de 85px a 5px para pegarse arriba */
-    margin-bottom: 5px !important;  /* Bajó de 15px a 5px para acercar el título */
+    margin-top: 5px !important;    
+    margin-bottom: 5px !important;  
     display: block !important;
     width: 100% !important;
 }
@@ -248,6 +242,7 @@ section[data-testid="stSidebar"] hr {
     flex-wrap: nowrap !important;
     margin-top: 0 !important; 
 }
+
 /* Forzado de flujo en línea recta para pestañas de navegación activas */
 div[data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) {
     display: flex !important;
@@ -263,7 +258,7 @@ div[data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) {
     gap: 8px !important;
 }
 
-/* Rediseño de las cajas de búsqueda compactadas a la derecha */
+/* Rediseño de las cajas de búsqueda compactadas y ensanchadas a la derecha */
 div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input {
     background-color: rgba(30, 30, 35, 0.75) !important;
     border: 1px solid #333333 !important;
@@ -276,20 +271,44 @@ div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input:focus {
     box-shadow: 0px 0px 8px rgba(243, 156, 18, 0.4) !important;
 }
 
-/* Rediseño del combobox selector de formas de pago y cajas de selección */
-div[data-testid="stSelectbox"] div[data-baseweb="select"] {
-    background-color: #1e1e24 !important; 
+/* ============================================================================
+     NUEVOS ESTILOS PARA LOS CONTENEDORES DESPLEGABLES (ST.EXPANDER)
+   ============================================================================ */
+
+/* Rediseño exterior del componente expandible oficial */
+div[data-testid="stExpander"] {
+    background-color: #16161a !important;
     border: 1px solid #333333 !important;
     border-radius: 8px !important;
-    padding: 6px 12px !important;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4) !important;
-}
-div[data-baseweb="select"] div {
-    font-size: 16px !important;
-    font-weight: 700 !important;
-    color: #ffffff !important;
+    margin-bottom: 12px !important;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4) !important;
+    overflow: hidden !important;
 }
 
+/* Encabezado o pestaña interactiva del desplegable */
+div[data-testid="stExpander"] summary {
+    background-color: #1e1e24 !important;
+    padding: 12px 16px !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    font-size: 15px !important;
+    border-bottom: 1px solid transparent !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Efecto visual al pasar el mouse por encima de la pestaña */
+div[data-testid="stExpander"] summary:hover {
+    background-color: #25252d !important;
+    color: #f39c12 !important;
+    cursor: pointer !important;
+}
+
+/* Contenedor interno de datos cuando el menú se encuentra desplegado */
+div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] {
+    background-color: #111114 !important;
+    padding: 15px !important;
+    border-top: 1px solid #f39c12 !important; /* Hilo de acento Oro Búfalo */
+}
 /* ============================================================================
     6. ALERTAS, TOTALIZADOR NEÓN Y MEDIA QUERIES RESPONSIVAS
    ============================================================================ */
@@ -302,6 +321,7 @@ div.stAlert {
     border-radius: 10px !important;
     box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.6) !important;
 }
+
 div.stAlert p, div.stAlert span {
     color: #ffffff !important;
     font-size: 15px !important;
@@ -344,6 +364,7 @@ div.stAlert:has(svg[data-testid="stNotificationIconError"]) {
         gap: 4px !important;
     }
 }
+
 /* Pie de página de redes sociales */
 .social-footer {
     text-align: center !important;
@@ -360,7 +381,6 @@ div.stAlert:has(svg[data-testid="stNotificationIconError"]) {
     font-weight: 800 !important;
     text-decoration: none !important;
 }
-
 /* ============================================================================
     7. BLOQUE MAESTRO DE PARCHES UNIFICADOS (BOTONES, ETIQUETAS Y NEÓN)
    ============================================================================ */
@@ -434,7 +454,6 @@ div[data-testid="stNumberInput"]:not(:has(div[data-testid="stColumn"] *)) input 
     font-size: 16px !important;               
     font-weight: 700 !important;              
 }
-
 /* BLINDAJE DE ETIQUETAS Y TEXTOS DE PREGUNTAS EN FORMULARIOS */
 div[data-testid="stRadio"] label,
 div[data-testid="stSelectbox"] label,
@@ -479,6 +498,7 @@ div[data-testid="stMetricValue"] span,
     border: 2px solid #2ecc71 !important;
     opacity: 1 !important;
 }
+
 /* DISEÑO CALIBRADO PARA LOS INVENTARIOS DEBAJO DE LAS TARJETAS */
 .mini-stock-alerta {
     color: #e74c3c !important;
@@ -512,11 +532,13 @@ div[data-testid="stMetricValue"] span,
     font-weight: bold !important;
     color: #ffffff !important;
 }
+
 /* Quita el espacio excesivo superior en los títulos de los formularios */
 h3, [data-testid="stMarkdownContainer"] h3 {
     margin-top: -10px !important;
     padding-top: 0 !important;
 }
+
 /* ============================================================================
     PARCHE DE REFINAMIENTO: FIJAR UN SOLO CUADRO PARA EL TOTALIZADOR NEÓN
    ============================================================================ */
