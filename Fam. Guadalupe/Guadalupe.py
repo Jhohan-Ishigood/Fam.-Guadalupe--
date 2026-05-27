@@ -76,7 +76,7 @@ def cargar_historial_desde_archivo():
 
 def cargar_categorias_desde_archivo():
     """Carga las pestañas de navegación para evitar que las creadas por el admin se borren."""
-    categorias_defecto = ["Todos", "Parrillas", "Hamburguesas", "Bebidas", "Combos"]
+    categorias_defecto = ["Todos", "Ferretería & Electricidad", "Parlantes", "Celulares", "Utiles Escolares"]
     if os.path.exists(RUTA_JSON_CATEGORIAS):
         try:
             with open(RUTA_JSON_CATEGORIAS, "r", encoding="utf-8") as archivo:
@@ -371,7 +371,7 @@ if es_admin:
             continue
             
         info_prod = st.session_state.menu_dinamico[prod]
-        cat_prod = info_prod.get("categoria", "Parrillas")
+        cat_prod = info_prod.get("categoria", "Ferreteria")
         
         if st.session_state.categoria_activa == "Todos" or st.session_state.categoria_activa == cat_prod:
             productos_filtrados_admin.append(prod)
@@ -396,7 +396,7 @@ if es_admin:
                 
                 # Selector dinámico de secciones para reasignar categorías en caliente
                 cats_izq = [c for c in st.session_state.lista_categorias if c != "Todos"]
-                cat_act_izq = st.session_state.menu_dinamico[p_izq].get("categoria", "Parrillas")
+                cat_act_izq = st.session_state.menu_dinamico[p_izq].get("categoria", "Ferreteria")
                 if cat_act_izq not in cats_izq and cats_izq: 
                     cats_izq.append(cat_act_izq)
                 
@@ -430,7 +430,7 @@ if es_admin:
                     
                     # Selector dinámico de secciones para la columna derecha
                     cats_der = [c for c in st.session_state.lista_categorias if c != "Todos"]
-                    cat_act_der = st.session_state.menu_dinamico[p_der].get("categoria", "Parrillas")
+                    cat_act_der = st.session_state.menu_dinamico[p_der].get("categoria", "Ferreteria")
                     if cat_act_der not in cats_der and cats_der: 
                         cats_der.append(cat_act_der)
                     
@@ -555,9 +555,9 @@ else:
                 </style>
             """, unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("<h2 class='titulo-principal'>SISTEMA DE PEDIDOS GRAN BÚFALO</h2>", unsafe_allow_html=True)
-        st.markdown("<br><p style='text-align: center; font-size: 24px; font-weight: bold; color: #f39c12;'>🔥 Bienvenidos al templo de la buena carne 🔥</p>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>¿Desea registrar un nuevo pedido de nuestra deliciosa parrilla?</p>", unsafe_allow_html=True)
+        st.markdown("<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES Y SU PRECIO</h2>", unsafe_allow_html=True)
+        st.markdown("<br><p style='text-align: center; font-size: 24px; font-weight: bold; color: #f39c12;'>Biendenidos al stock de productos disponibles y sus precios 🔥</p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>¿Desea registrar un nuevo pedido ?</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
         if st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master"):
@@ -594,7 +594,7 @@ else:
                 continue
                 
             info_prod = st.session_state.menu_dinamico[prod]
-            cat_prod = info_prod.get("categoria", "Parrillas")
+            cat_prod = info_prod.get("categoria", "Ferreteria")
 
             if st.session_state.categoria_activa == "Todos" or st.session_state.categoria_activa == cat_prod:
                 productos_filtrados.append(prod)
