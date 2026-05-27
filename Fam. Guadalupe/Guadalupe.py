@@ -309,9 +309,12 @@ else:
         st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>¿Desea registrar un nuevo pedido ?</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # ============================================================================
-        # LOS DESPLEGABLES AHORA VAN AQUÍ (Antes del botón y del rerun)
-        # ============================================================================
+        # 1. BOTÓN PRINCIPAL: Se ejecuta arriba de forma prioritaria
+        cambiar_a_catalogo = st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master")
+        
+        st.markdown("<br><br><hr><br>", unsafe_allow_html=True)
+
+        # 2. DESPLEGABLES INFRAESTRUCTURALES: Se dibujan debajo del botón naranja
         st.markdown("### 💳 INFORMACIÓN OFICIAL DE PAGO Y CONTACTO")
         st.caption("Selecciona el método de tu preferencia haciendo clic para desplegar los datos correspondientes:")
 
@@ -357,14 +360,7 @@ else:
                 </div>
             """, unsafe_allow_html=True)
             
-        st.markdown("<br><hr><br>", unsafe_allow_html=True)
-
-        # El botón de cambiar de pantalla ahora va al final de la lógica visible
-        if st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master"):
-            st.session_state.pantalla_actual = "catalogo"
-            st.rerun()
-            
-        # Bloque de Redes Sociales Corporativas
+        # 3. REDES SOCIALES: Al fondo absoluto de la página
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("""
             <div class='social-footer'>
@@ -374,6 +370,11 @@ else:
                 <a href='https://wa.me' target='_blank' class='social-icon'>🟢 WhatsApp</a>
             </div>
         """, unsafe_allow_html=True)
+
+        # 4. PROCESAMIENTO REACTIVO: El cambio de pantalla se ejecuta al final de todo el dibujo
+        if cambiar_a_catalogo:
+            st.session_state.pantalla_actual = "catalogo"
+            st.rerun()
 
     # ============================================================================
     # 10. ENTORNO CLIENTE - PANTALLA 2: CATÁLOGO DINÁMICO DE PRODUCTOS
