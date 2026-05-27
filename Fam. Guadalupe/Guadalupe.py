@@ -310,7 +310,7 @@ else:
         # ============================================================================
         # INYECCIÓN MAESTRA DEL LOGOTIPO EN LA PARTE SUPERIOR (CORREGIDO CON RESPALDO)
         # ============================================================================
-        RUTA_LOGO_PORTADA = os.path.join(BASE_DIR, "Logotipo.jpeg")
+        RUTA_LOGO_PORTADA = os.path.join(BASE_DIR, "Logotipo.png")
         if os.path.exists(RUTA_LOGO_PORTADA):
             with open(RUTA_LOGO_PORTADA, "rb") as logo_file:
                 logo_encoded = base64.b64encode(logo_file.read()).decode()
