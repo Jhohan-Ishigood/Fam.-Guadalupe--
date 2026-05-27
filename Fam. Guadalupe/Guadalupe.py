@@ -572,8 +572,6 @@ else:
                 </div>
             """, unsafe_allow_html=True)
 
-        st.markdown("<br><br>", unsafe_allow_html=True)
-
         # ============================================================================
         # 12. CONFIRMACIÓN SIMULADA Y ACTUALIZACIÓN TEMPORAL DE STOCK
         # ============================================================================
