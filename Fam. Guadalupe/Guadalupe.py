@@ -309,7 +309,7 @@ else:
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES Y SU PRECIO</h2>", unsafe_allow_html=True)
         st.markdown("<br><p style='text-align: center; font-size: 24px; font-weight: bold; color: #f39c12;'>Bienvenidos al stock de productos disponibles y sus precios 🔥</p>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>¿Desea realizar una nueva simulación de pedido?</p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-size: 18px; color: #ffffff;'>Acceda al catálogo dando clic a lo siguiente:</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
         # 1. BOTÓN PRINCIPAL: Se ejecuta arriba de forma prioritaria
@@ -487,7 +487,7 @@ else:
     # ============================================================================
     else:
         st.html("<div style='height: 15px;'></div>")
-        st.subheader("📦 RESUMEN DEL PEDIDO ACTUAL")
+        st.subheader("📦 LISTA DE PRODUCTOS SELECCIONADOS")
         
         # Muestra la lista de productos elegidos manteniendo tu estilo visual original
         for item in st.session_state.carrito:
@@ -503,11 +503,11 @@ else:
         # Muestra el total acumulado en el cuadro verde brillante que ya tenías configurado
         st.metric(label="Monto Total a Procesar", value=f"S/{st.session_state.total_acumulado:.2f}")
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("### 💳 INFORMACIÓN OFICIAL PARA AGILIZAR TU PAGO")
+        st.markdown("### 💳 INFORMACIÓN OFICIAL PARA  PAGOS")
         st.caption("Selecciona el método de tu preferencia haciendo clic para desplegar los datos correspondientes:")
 
         # --- DESPLEGABLE 1: DATOS DE CUENTA BANCARIA ---
-        with st.expander("📐 VER CUENTAS BANCARIAS OFICIALES", expanded=False):
+        with st.expander("📐 VER N° DE CUENTA DEL BANCO DE LA NACION", expanded=False):
             st.markdown("""
                 <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; border-left: 4px solid #2980b9; margin-bottom: 10px;">
                     <p style="color: #2980b9; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🏦 BANCO DE CÉDULA / BCP</p>
@@ -520,11 +520,11 @@ else:
                 </div>
             """, unsafe_allow_html=True)
         # --- DESPLEGABLE 2: PROCESAMIENTO ELECTRÓNICO CON YAPE Y QR ---
-        with st.expander("📱 PAGAR CON YAPE O PLIN (CÓDIGO QR)", expanded=False):
+        with st.expander("📱 VER NUMERO Y QR DE YAPE", expanded=False):
             st.markdown(f"**Monto exacto a transferir:** S/{st.session_state.total_acumulado:.2f}")
             
             # Carga segura del código QR de Yape desde el almacenamiento local
-            ruta_qr_local = os.path.join(BASE_DIR, "mi_qr_yape de Jhohan.png")
+            ruta_qr_local = os.path.join(BASE_DIR, "mi_qr_yape de MELQUIADES.png")
             if os.path.exists(ruta_qr_local):
                 with open(ruta_qr_local, "rb") as qr_file:
                     encoded_qr = base64.b64encode(qr_file.read()).decode()
