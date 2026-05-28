@@ -16,14 +16,20 @@ html, body, .stApp,
     color: #ffffff !important;
 }
 
-/* 3. PARCHE MAESTRO: Restringimos la transparencia extrema ÚNICAMENTE a la bienvenida */
+/* 3. PARCHE MAESTRO: Transparencia Absoluta en Bloques de la Bienvenida */
 .stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"],
-.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"] div,
-.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stMarkdownContainer"],
-.stApp:has(button[key="btn_empezar_pedido_master"]) .element-container {
+.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"] > div,
+.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stMainBlockContainer"],
+.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stAppViewBlockContainer"] {
     background-color: transparent !important;
     background: transparent !important;
     box-shadow: none !important;
+}
+
+.stApp:has(button[key="btn_empezar_pedido_master"]) .element-container,
+.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="elementGrid"] {
+    background-color: transparent !important;
+    background: transparent !important;
 }
 
 /* Configuración unificada de fuentes nítidas para toda la aplicación */
