@@ -409,7 +409,7 @@ else:
 
 
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("<br><p style='text-align: left; font-size: 20px; margin-top: -54px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-size: 20px; margin-top: -10px; font-weight: bold; color: #d4af37;'>Explore el stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
         # 1. BOTÓN PRINCIPAL DE ACCIÓN
