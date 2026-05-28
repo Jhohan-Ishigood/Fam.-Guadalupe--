@@ -29,7 +29,7 @@ for carpeta in OPCIONES_CARPETA:
 RUTA_CSS = os.path.join(BASE_DIR, "estilos.css")
 RUTA_JSON_MENU = os.path.join(BASE_DIR, "menu_config.json")
 RUTA_JSON_CATEGORIAS = os.path.join(BASE_DIR, "categorias_config.json")
-URL_BANNER_LOCAL = os.path.join(BASE_DIR, "Captura de pantalla 2026-05-24 090610.png")
+URL_BANNER_LOCAL = os.path.join(BASE_DIR, "WhatsApp Image 2026-05-27 at 8.50.04 PM.jpeg")
 
 # Inicialización global y segura de la variable de búsqueda para evitar NameError
 busqueda = ""
@@ -104,7 +104,7 @@ if os.path.exists(RUTA_CSS):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Inyección limpia del sello de creador adaptado al flujo estructural
-st.markdown("<div class='sello-creador'>Pagina desarrollada por:Jhohan Guadalupe😎</div>", unsafe_allow_html=True)
+st.markdown("<div class='sello-creador'>Pagina desarrollada por:Jhohan Guadalupe</div>", unsafe_allow_html=True)
 
 # ============================================================================
 # 5. BARRA LATERAL (SIDEBAR POS): GESTIÓN INTERNA Y AUTENTICACIÓN
