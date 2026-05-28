@@ -531,7 +531,7 @@ else:
                 <p style='margin-bottom: 10px; font-size: 14px; letter-spacing: 2px; color: #888; font-weight: bold;'>SÍGUENOS EN REDES SOCIALES</p>
                 <a href='https://facebook.com' target='_blank' class='social-icon'>📘 Facebook</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href='https://instagram.com' target='_blank' class='social-icon'>📸 Instagram</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href='https://wa.me51950239350' target='_blank' class='social-icon'>🟢 WhatsApp</a>
+                url_whatsapp = f"https://api.whatsapp.com/send?phone=51950239350&text={mensaje_parseado_url}"
             </div>
         """, unsafe_allow_html=True)
 
