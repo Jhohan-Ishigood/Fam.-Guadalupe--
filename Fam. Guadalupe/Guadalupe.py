@@ -228,7 +228,7 @@ def renderizar_informacion_pago(total_contexto=None):
         st.markdown("""
             <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; border-left: 4px solid #2980b9; margin-bottom: 5px;">
                 <p style="color: #2980b9; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🏦 BANCO DE LA NACION / BNP</p>
-                <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número de Cuenta:</b> 570-98421345-0-88</p>
+                <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número de Cuenta:</b> 04-762-855629 </p>
                 <hr style="border-color: #333; margin: 10px 0;">
                 <p style="color: #aaaaaa; margin: 0; font-size: 14px;"><b>Titular:</b> Segundo Melquiades Guadalupe Sanchez</p>
             </div>
