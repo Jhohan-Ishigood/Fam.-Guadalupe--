@@ -29,7 +29,7 @@ for carpeta in OPCIONES_CARPETA:
 RUTA_CSS = os.path.join(BASE_DIR, "estilos.css")
 RUTA_JSON_MENU = os.path.join(BASE_DIR, "menu_config.json")
 RUTA_JSON_CATEGORIAS = os.path.join(BASE_DIR, "categorias_config.json")
-URL_BANNER_LOCAL = os.path.join(BASE_DIR, "foto del establecimiento.png")
+URL_BANNER_LOCAL = os.path.join(BASE_DIR, "Foto del establecimiento.png")
 
 # Inicialización global y segura de la variable de búsqueda para evitar NameError
 busqueda = ""
