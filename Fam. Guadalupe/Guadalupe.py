@@ -365,7 +365,7 @@ else:
             
             st.markdown(f"""
                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 15px auto; max-width: 450px; background-color: #1e1e24; padding: 20px; border-radius: 16px; border: 2px solid #8e44ad; text-align: center;">
-                    <p style="color: #aaaaaa; font-size: 13px; margin-bottom: 12px; font-weight: bold;">[!] Escanee con la cámara de su celular para pagar:</p>
+                    <p style="color: #aaaaaa; font-size: 13px; margin-bottom: 12px; font-weight: bold;">Escanee con la cámara del celular si desea pagar:</p>
                     <img src="{src_imagen_qr}" style="width: 240px; height: 240px; object-fit: contain; border-radius: 12px; box-shadow: 0px 4px 15px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px;" />
                     <span style="color: #8e44ad; font-size: 14px; font-weight: bold; letter-spacing: 1px;">🟣 NÚMERO ASOCIADO: 950 239 350</span>
                 </div>
