@@ -34,12 +34,22 @@ html, body, .stApp,
 .stApp {
     /* Mapeo del fondo Base64 dinámico que lee desde Python */
     background-size: cover !important;
-    background-position: 0% center !important;
+    background-position: center center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
     
     /* Activación del desplazamiento panorámico: ciclo infinito de vaivén de 24 segundos */
     animation: desplazamientoPanoramicoLocal 24s ease-in-out infinite alternate !important;
+}
+
+/* Optimización de fondo para móvil */
+@media (max-width: 480px) {
+    .stApp {
+        background-size: cover !important;
+        background-position: center center !important;
+        background-attachment: scroll !important;
+        background-size: 100% auto !important;
+    }
 }
 
 /* Definición matemática del bucle Ken Burns para deslizar la imagen suavemente */
@@ -747,6 +757,12 @@ div[data-testid="stMetricValue"] div {
         padding: 0 !important;
     }
     
+    /* Centrado de todos los textos y contenido */
+    [data-testid="stMarkdownContainer"],
+    p, span, h1, h2, h3, h4 {
+        text-align: center !important;
+    }
+    
     /* === MANTÉN COLUMNAS HORIZONTALES PARA PRODUCTOS === */
     [data-testid="stHorizontalBlock"],
     .row-widget {
@@ -788,11 +804,13 @@ div[data-testid="stMetricValue"] div {
     
     /* === TÍTULOS COMPACTOS === */
     .titulo-principal {
-        font-size: 24px !important;
-        margin-top: 5px !important;
-        margin-bottom: 5px !important;
-        line-height: 1.2 !important;
+        font-size: 28px !important;
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+        line-height: 1.3 !important;
         text-align: center !important;
+        width: 100% !important;
+        padding: 0 10px !important;
     }
     
     /* === PRODUCTOS COMPACTOS === */
@@ -898,10 +916,44 @@ div[data-testid="stMetricValue"] div {
     .sello-creador {
         font-size: 9px !important;
         margin: 6px 0 2px 5px !important;
+        text-align: center !important;
+    }
+    
+    /* === SECCIÓN DE BIENVENIDA CENTRADA === */
+    .bienvenida-transparente-master {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+    
+    .bienvenida-transparente-master [data-testid="stMarkdownContainer"] {
+        text-align: center !important;
+        width: 100% !important;
+    }
+    
+    .bienvenida-transparente-master p,
+    .bienvenida-transparente-master span,
+    .bienvenida-transparente-master h1,
+    .bienvenida-transparente-master h2,
+    .bienvenida-transparente-master h3 {
+        text-align: center !important;
+        width: 100% !important;
     }
     
     /* === ELEMENTOS FLOTANTES === */
     .mini-logo-flotante-master {
-        display: none !important;
+        display: block !important;
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 150px !important;
+        height: 150px !important;
+        z-index: 100 !important;
+        pointer-events: none !important;
+        margin: 0 !important;
     }
 }
