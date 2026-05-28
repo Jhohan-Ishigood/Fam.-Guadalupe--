@@ -324,7 +324,7 @@ elif usuario_input or clave_input:
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("#### 🕒 HORARIO DE ATENCIÓN")
-st.sidebar.caption("Lunes a Domingo: 8:00 AM - 11:00 PM")
+st.sidebar.caption("Lunes a Domingo: 2:00 AM - 11:00 PM")
 
 # --- INDICADOR VISUAL "EN LÍNEA" AUTOMÁTICO CON RADAR (SISTEMA INTELIGENTE) ---
 hora_actual_int = ahora_peru.hour
@@ -373,7 +373,7 @@ st.sidebar.markdown(f"""
 
 st.sidebar.markdown("<br>", unsafe_allow_html=True)
 st.sidebar.markdown("#### 📍 NUESTRA UBICACIÓN")
-st.sidebar.caption("Av. Principal El Gran Búfalo 742, Trujillo, Perú")
+st.sidebar.caption("Uchumarca Bellavista-Frente la plazuela")
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("#### 📞 ¿NECESITAS AYUDA?")
