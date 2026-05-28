@@ -44,29 +44,42 @@ html, body, .stApp,
     padding-top: 25px !important; 
 }
 
-/* Titulado Principal Adaptado al Oro Metálico de tu Logotipo */
+/* Titulado Principal con Resplandor de Oro Vivo Premium */
 .titulo-principal {
     text-align: center;
     color: #d4af37 !important;
     font-family: 'Arial Black', Gadget, sans-serif;
     font-size: 38px;
-    text-shadow: 0px 0px 12px rgba(212, 175, 55, 0.5);
-    margin-top: 15px !important;            
+    margin-top: 0px !important;            
     margin-bottom: 10px !important;           
-    transform: translateY(0px) !important;    
-}
-/* Ocultación absoluta del menú nativo de tres puntos de Streamlit */
-#MainMenu {
-    display: none !important;
+    transform: translateY(0px) !important;
+    padding-top: 0px !important;
+    
+    /* Capas de brillo neón en color Oro Guadalupe */
+    text-shadow: 0 0 4px rgba(212, 175, 55, 0.4),
+                0 0 10px rgba(212, 175, 55, 0.6),
+                0 0 20px rgba(212, 175, 55, 0.3) !important;
+                
+    /* Activación de la animación de brillo respirable */
+    animation: pulsoBrilloOro 3s ease-in-out infinite alternate !important;
 }
 
-/* Remoción estética de la barra superior estándar del servidor */
-div[data-testid="stHeader"] {
-    background-color: transparent !important;
+/* Efecto de pulsación suave para que el brillo se mueva elegantemente */
+@keyframes pulsoBrilloOro {
+    0% {
+        text-shadow: 0 0 4px rgba(212, 175, 55, 0.4),
+                    0 0 10px rgba(212, 175, 55, 0.5),
+                    0 0 15px rgba(212, 175, 55, 0.2) !important;
+        filter: brightness(1);
+    }
+    100% {
+        text-shadow: 0 0 6px rgba(212, 175, 55, 0.6),
+                    0 0 15px rgba(212, 175, 55, 0.8),
+                    0 0 25px rgba(212, 175, 55, 0.4) !important;
+        filter: brightness(1.15);
+    }
 }
-div[data-testid="stHeader"] > div:first-child {
-    display: none !important;
-}
+
 
 /* ============================================================================
     2. REDISEÑO TOTAL DEL BOTÓN DE CABECERA (MENÚ DE OPCIONES)
