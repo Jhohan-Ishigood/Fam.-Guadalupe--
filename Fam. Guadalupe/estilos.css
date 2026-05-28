@@ -720,7 +720,7 @@ div[data-testid="stMetricValue"] div {
    FORMATO PARA CELULAR OPTIMIZADO (≤ 480px)
    ══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
-    /* === CONTENEDORES PRINCIPALES === */
+    /* === FORCE SINGLE COLUMN - ELIMINA CUALQUIER LAYOUT DE MÚLTIPLES COLUMNAS === */
     html, body {
         padding: 0 !important;
         margin: 0 !important;
@@ -728,16 +728,49 @@ div[data-testid="stMetricValue"] div {
         overflow-x: hidden !important;
     }
     
+    * {
+        box-sizing: border-box !important;
+    }
+    
     .stApp {
         padding: 0 !important;
         margin: 0 !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
     }
     
     .block-container {
         max-width: 100% !important;
+        width: 100% !important;
         margin: 0 !important;
         padding: 0 8px !important;
-        width: 100vw !important;
+    }
+    
+    [data-testid="stAppViewContainer"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+    
+    [data-testid="stMainBlockContainer"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* Force single column - elimina columnas horizontales */
+    [data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+    
+    [data-testid="stColumn"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        flex: 0 0 100% !important;
     }
     
     .catalogo-transparente-master,
@@ -746,6 +779,7 @@ div[data-testid="stMetricValue"] div {
         width: 100% !important;
         padding: 0 !important;
         margin: 0 !important;
+        display: block !important;
     }
     
     /* === TÍTULOS === */
@@ -757,14 +791,14 @@ div[data-testid="stMetricValue"] div {
     }
     
     /* === CATÁLOGO DE PRODUCTOS === */
-    .catalogo-transparente-master div[data-testid="stColumn"] {
+    .catalogo-transparente-master [data-testid="stColumn"] {
         min-width: 100% !important;
         width: 100% !important;
         margin: 0 auto 12px auto !important;
         padding: 0 !important;
     }
     
-    .catalogo-transparente-master div[data-testid="stColumn"] img {
+    .catalogo-transparente-master [data-testid="stColumn"] img {
         max-width: 100% !important;
         height: auto !important;
         border-radius: 10px 10px 0 0 !important;
@@ -791,7 +825,7 @@ div[data-testid="stMetricValue"] div {
         font-size: 13px !important;
         padding: 12px 10px !important;
         width: 100% !important;
-        min-height: 44px !important; /* Tamaño ideal para dedos */
+        min-height: 44px !important;
         font-weight: 900 !important;
         border-radius: 6px !important;
     }
@@ -834,19 +868,22 @@ div[data-testid="stMetricValue"] div {
         margin-bottom: 8px !important;
     }
     
-    .netflix-navbar-master div[data-testid="stHorizontalBlock"] {
+    .netflix-navbar-master [data-testid="stHorizontalBlock"] {
         flex-wrap: wrap !important;
         gap: 5px !important;
         justify-content: center !important;
+        flex-direction: row !important;
     }
     
-    div[data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) {
+    [data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) {
         margin-top: 15px !important;
         padding: 3px 0 !important;
         gap: 4px !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
     }
     
-    div[data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) button {
+    [data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) button {
         font-size: 12px !important;
         padding: 6px 10px !important;
         flex: 1 !important;
