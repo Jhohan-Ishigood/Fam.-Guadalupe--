@@ -238,21 +238,8 @@ st.markdown(f"""
     /* ============================================================================
     PARCHE DE CONTROL TRIDIMENSIONAL PARA CONTROLAR LAS 2 COLUMNAS ADMIN
        ============================================================================ */
-    /* Evita que el contenedor del panel administrativo sufra el colapso del 100% */
-    [data-testid="stMainBlockContainer"] [data-testid="stVerticalBlock"] [data-testid="stColumn"] {{
-        min-width: calc(50% - 12px) !important;
-        width: calc(50% - 12px) !important;
-        display: inline-block !important;
-        float: left !important;
-        margin-right: 12px !important;
-    }}
-
-    /* Limpieza estructural de flujo para que los botones de guardado no se encimen */
-    [data-testid="stMainBlockContainer"] [data-testid="stVerticalBlock"]::after {{
-        content: "" !important;
-        display: table !important;
-        clear: both !important;
-    }}
+    /* Quitar reglas forzadas de ancho para columnas Streamlit nativas que afectan el layout.
+       Streamlit administra las columnas automáticamente y estas reglas podían colapsar el diseño. */
     </style>
 
 """, unsafe_allow_html=True)
