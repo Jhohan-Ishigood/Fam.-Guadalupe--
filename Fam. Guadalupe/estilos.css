@@ -1,5 +1,5 @@
 /* ============================================================================
-    1. BLINDAJE ANTI-MODO CLARO Y ARQUITECTURA VISUAL GLOBAL (ORO FAM. GUADALUPE)
+    1. BLINDAJE ANTI-MODO CLARO Y ARQUITECTURA VISUAL GLOBAL (EDICIÓN ORO)
    ============================================================================ */
 
 /* 1. Permitimos transparencia solo en los contenedores maestros de la aplicación */
@@ -12,25 +12,9 @@ html, body, .stApp,
 
 /* 2. Fijamos el fondo oscuro estándar para la estructura de bloques generales */
 [data-testid="stVerticalBlock"] {
-    background-color: #0a0a0f !important;
+    background-color: transparent !important; /* Forzado transparente para lucir el fondo panorámico */
     color: #ffffff !important;
 }
-
-/* ============================================================================
-    3. PARCHE MAESTRO: Transparencia Absoluta por Inyección Directa
-   ============================================================================ */
-.bienvenida-transparente-master,
-.stApp:has(.bienvenida-transparente-master) [data-testid="stVerticalBlock"],
-.stApp:has(.bienvenida-transparente-master) [data-testid="stVerticalBlock"] > div,
-.stApp:has(.bienvenida-transparente-master) [data-testid="stMainBlockContainer"],
-.stApp:has(.bienvenida-transparente-master) [data-testid="stAppViewBlockContainer"],
-.stApp:has(.bienvenida-transparente-master) [data-testid="elementGrid"],
-.stApp:has(.bienvenida-transparente-master) .element-container {
-    background-color: transparent !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
 
 /* Configuración unificada de fuentes nítidas para toda la aplicación */
 .stApp {
@@ -41,10 +25,51 @@ html, body, .stApp,
 .block-container {
     max-width: 800px !important;
     margin: 0 auto !important;
-    padding-top: 25px !important; 
+    padding-top: 0px !important; /* Eliminamos el hueco del techo para máxima altura */
+}
+/* ============================================================================
+    2. MOTOR DE FONDO PANORÁMICO ANIMADO EN BUCLE INTEGRAL GLOBAL
+   ============================================================================ */
+.stApp {
+    /* Mapeo del fondo Base64 dinámico que lee desde Python */
+    background-size: cover !important;
+    background-position: 0% center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    
+    /* Activación del desplazamiento panorámico: ciclo infinito de vaivén de 24 segundos */
+    animation: desplazamientoPanoramicoLocal 24s ease-in-out infinite alternate !important;
 }
 
-/* Titulado Principal con Resplandor de Oro Vivo Premium */
+/* Definición matemática del bucle Ken Burns para deslizar la imagen suavemente */
+@keyframes desplazamientoPanoramicoLocal {
+    0% {
+        background-position: 0% center !important;
+    }
+    100% {
+        /* Desplaza el fondo hasta su extremo derecho para mostrar todo el panorama del local */
+        background-position: 100% center !important;
+    }
+}
+
+/* ============================================================================
+    3. TRANSPARENCIA ABSOLUTA DE BLOQUES (CERO FRANJAS NEGRAS GLOBALES)
+   ============================================================================ */
+/* Fuerza la remoción de los fondos oscuros nativos de Streamlit en catálogo, carrito y bienvenida */
+.bienvenida-transparente-master,
+.catalogo-transparente-master,
+.carrito-transparente-master,
+[data-testid="stAppViewBlockContainer"],
+[data-testid="elementGrid"],
+.element-container,
+div[role="radiogroup"] {
+    background-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+/* ============================================================================
+    4. TITULADO PRINCIPAL PREMIUM CON RESPLANDOR NEÓN RESPIRABLE
+   ============================================================================ */
 .titulo-principal {
     text-align: center;
     color: #d4af37 !important;
@@ -55,34 +80,53 @@ html, body, .stApp,
     transform: translateY(0px) !important;
     padding-top: 0px !important;
     
-    /* Capas de brillo neón en color Oro Guadalupe */
+    /* Capas tridimensionales de brillo neón en Oro Guadalupe */
     text-shadow: 0 0 4px rgba(212, 175, 55, 0.4),
-                0 0 10px rgba(212, 175, 55, 0.6),
-                0 0 20px rgba(212, 175, 55, 0.3) !important;
-                
+                 0 0 10px rgba(212, 175, 55, 0.6),
+                 0 0 20px rgba(212, 175, 55, 0.3) !important;
+                 
     /* Activación de la animación de brillo respirable */
     animation: pulsoBrilloOro 3s ease-in-out infinite alternate !important;
 }
 
-/* Efecto de pulsación suave para que el brillo se mueva elegantemente */
+/* Efecto de pulsación suave para que el brillo aumente y disminuya elegantemente */
 @keyframes pulsoBrilloOro {
     0% {
         text-shadow: 0 0 4px rgba(212, 175, 55, 0.4),
-                    0 0 10px rgba(212, 175, 55, 0.5),
-                    0 0 15px rgba(212, 175, 55, 0.2) !important;
+                     0 0 10px rgba(212, 175, 55, 0.5),
+                     0 0 15px rgba(212, 175, 55, 0.2) !important;
         filter: brightness(1);
     }
     100% {
         text-shadow: 0 0 6px rgba(212, 175, 55, 0.6),
-                    0 0 15px rgba(212, 175, 55, 0.8),
-                    0 0 25px rgba(212, 175, 55, 0.4) !important;
+                     0 0 15px rgba(212, 175, 55, 0.8),
+                     0 0 25px rgba(212, 175, 55, 0.4) !important;
         filter: brightness(1.15);
     }
 }
 
-
 /* ============================================================================
-    2. REDISEÑO TOTAL DEL BOTÓN DE CABECERA (MENÚ DE OPCIONES)
+    5. BLINDAJE DE CABECERA: REMOCIÓN ABSOLUTA DEL MENÚ NATIVO DERECHO
+   ============================================================================ */
+
+/* Ocultación absoluta del menú de tres puntos nativo y el pie de firma del servidor */
+#MainMenu, 
+.stAppDeployDropdown,
+div[data-testid="stHeader"] > div:last-child {
+    display: none !important;
+}
+
+/* Forzado estructural para limpiar los iconos de GitHub, Estrella y Compartir del lado derecho */
+div[data-testid="stHeader"] button {
+    display: none !important;
+}
+
+/* PARCHE EXCEPCIÓN: Mantenemos visible e intacto ÚNICAMENTE el botón de opciones administrativo izquierdo */
+div[data-testid="stHeader"] button[kind="headerNoPadding"] {
+    display: inline-flex !important;
+}
+/* ============================================================================
+    6. REDISEÑO TOTAL DEL BOTÓN DE CABECERA ADMINISTRATIVO (IZQUIERDO)
    ============================================================================ */
 
 /* Transformación del botón hamburguesa nativo en un botón POS estilizado en Oro */
@@ -108,13 +152,13 @@ button[kind="headerNoPadding"]::after {
 }
 
 /* Bloqueo de seguridad para evitar duplicaciones en el despliegue del Sidebar */
-section[data-testid="stSidebar"] button[kind="headerNoPadding"]::after,
-.stAppDeployDropdown button::after {
+section[data-testid="stSidebar"] button[kind="headerNoPadding"]::after {
     content: "" !important;
     display: none !important;
 }
+
 /* ============================================================================
-    3. REDISEÑO PREMIUM DE LA BARRA LATERAL (SIDEBAR POS)
+    7. REDISEÑO PREMIUM DE LA BARRA LATERAL (SIDEBAR POS)
    ============================================================================ */
 
 /* Configuración del fondo oscuro profundo de la barra lateral */
@@ -139,11 +183,6 @@ section[data-testid="stSidebar"] button[kind="headerNoPadding"]:hover {
     box-shadow: 0px 0px 8px rgba(231, 76, 60, 0.6) !important;
 }
 
-/* Optimización de espacios de los contenedores nativos del menú lateral */
-section[data-testid="stSidebar"] .element-container {
-    margin-bottom: 6px !important; 
-}
-
 /* Tarjetas unificadas de información en Azul Noche con acento Oro Metálico */
 section[data-testid="stSidebar"] .element-container:has(p), 
 section[data-testid="stSidebar"] .element-container:has(h4) {
@@ -166,7 +205,7 @@ section[data-testid="stSidebar"] h2 {
     letter-spacing: 0.5px !important;
 }
 
-/* Textos planos informativos de la barra lateral en alta nitidez */
+/* Textas planos informativos de la barra lateral en alta nitidez */
 section[data-testid="stSidebar"] p, 
 section[data-testid="stSidebar"] span,
 section[data-testid="stSidebar"] caption,
@@ -176,13 +215,7 @@ section[data-testid="stSidebar"] div {
     font-weight: 500 !important;
 }
 
-/* Proximidad compacta para el botón de login administrativo */
-section[data-testid="stSidebar"] .element-container:has(button[key*="btn_toggle_admin_login"]) {
-    margin-top: -4px !important; 
-}
-
-/* PARCHE DE CORRECCIÓN: Botón de WhatsApp esmeralda mapeado con llave de objeto (Evita selector roto) */
-section[data-testid="stSidebar"] .element-container:has(button[key*="link_whatsapp_soporte"]) button,
+/* Botón interactivo de WhatsApp con degradado esmeralda corregido por llave */
 section[data-testid="stSidebar"] button[key*="link_whatsapp_soporte"] {
     background: linear-gradient(135deg, #25d366 0%, #1cbd55 100%) !important;
     color: #ffffff !important;
@@ -203,28 +236,32 @@ section[data-testid="stSidebar"] hr {
     background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.4), transparent) !important;
 }
 /* ============================================================================
-    4. CATÁLOGO DE PRODUCTOS (CARDS PREMIUM)
+    8. CATÁLOGO DE PRODUCTOS (CARDS CON EFECTO ELEVACIÓN 3D E ILUMINACIÓN)
    ============================================================================ */
 
-/* Control de títulos de productos para evitar desbordes */
-.product-title {
-    font-size: 18px !important;               
-    font-weight: bold !important;
-    color: #ffffff !important;
-    line-height: 1.3 !important;
-    padding-right: 10px !important;           
+/* Contenedor de la columna nativa adaptado para soportar transiciones suaves */
+div[data-testid="stColumn"] {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    border-radius: 12px !important;
 }
 
-/* Precios destacados en Oro Guadalupe Sólido Impact */
-.product-price {
-    font-size: 22px !important;               
-    font-weight: 900 !important;
-    color: #d4af37 !important; /* Dorado oficial Fam. Guadalupe */
-    font-family: 'Impact', Charcoal, sans-serif !important;
-    white-space: nowrap !important;           
+/* --- [!] ANIMACIÓN DE ELEVACIÓN E ILUMINACIÓN INTERACTIVA (HOVER) --- */
+div[data-testid="stColumn"]:hover {
+    /* Eleva la tarjeta suavemente 5 píxeles hacia arriba */
+    transform: translateY(-5px) !important;
 }
 
-/* PARCHE UNIFICADO: Caja inferior de las tarjetas con todos los bordes calibrados */
+/* Efecto Micro-Zoom en la imagen del producto al seleccionarlo */
+div[data-testid="stColumn"] img {
+    transition: transform 0.4s ease !important;
+    border-radius: 12px 12px 0px 0px !important;
+}
+div[data-testid="stColumn"]:hover img {
+    /* Amplía la foto un 5% hacia adentro de forma contenida */
+    transform: scale(1.05) !important;
+}
+
+/* Estructura unificada para la base informativa de las fichas */
 .product-card-bottom {
     background-color: #111424 !important;
     padding: 12px 15px !important;            
@@ -236,16 +273,55 @@ section[data-testid="stSidebar"] hr {
     justify-content: space-between !important;
     align-items: center !important;
     box-shadow: 0px 4px 10px rgba(0,0,0,0.5) !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
 }
 
+/* Encendido del borde dorado neón al interactuar con el producto */
+div[data-testid="stColumn"]:hover .product-card-bottom {
+    border-left: 1px solid #d4af37 !important;
+    border-right: 1px solid #d4af37 !important;
+    border-bottom: 1px solid #d4af37 !important;
+    box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.3) !important;
+}
+
+/* Tipografías nítidas para títulos y precios dentro del catálogo */
+.product-title {
+    font-size: 18px !important;               
+    font-weight: bold !important;
+    color: #ffffff !important;
+    line-height: 1.3 !important;
+}
+.product-price {
+    font-size: 22px !important;               
+    font-weight: 900 !important;
+    color: #d4af37 !important;
+    font-family: 'Impact', Charcoal, sans-serif !important;
+    white-space: nowrap !important;           
+}
+
+/* --- [!] ANIMACIÓN DE APARICIÓN SUAVE (FADE-IN) AL CAMBIAR DE PESTAÑAS --- */
+.catalogo-transparente-master,
+.bienvenida-transparente-master,
+.carrito-transparente-master {
+    animation: aparicionSuaveDeslizada 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both !important;
+}
+
+@keyframes aparicionSuaveDeslizada {
+    0% {
+        transform: translateY(15px); /* Se desliza desde abajo */
+        opacity: 0;                   /* Inicia invisible */
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
 /* ============================================================================
-    5. BARRA DE NAVEGACIÓN HORIZONTAL MAESTRA (ESTILO NETFLIX OPTIMIZADO)
+    9. BARRA DE NAVEGACIÓN HORIZONTAL (ESTILO NETFLIX OPTIMIZADO)
    ============================================================================ */
 
-/* Reducimos los márgenes para pegar el catálogo y el título hacia arriba */
 .netflix-navbar-master {
     background: transparent !important;
-    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
@@ -255,32 +331,28 @@ section[data-testid="stSidebar"] hr {
     width: 100% !important;
 }
 
-/* Alineación horizontal rígida para evitar desbordes */
+/* Alineación rígida en fila para evitar desbordes */
 .netflix-navbar-master div[data-testid="stHorizontalBlock"] {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
     flex-wrap: nowrap !important;
-    margin-top: 0 !important; 
 }
 
-/* Forzado de flujo en línea recta para pestañas de navegación activas */
+/* Forzado de flujo en línea recta para las pestañas de categorías */
 div[data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) {
     display: flex !important;
     flex-direction: row !important; 
     align-items: center !important;
     justify-content: flex-start !important;
     flex-wrap: nowrap !important; 
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
     margin-top: 35px !important; 
     padding: 5px 0 !important;
     gap: 8px !important;
 }
 
-/* Rediseño de las cajas de búsqueda compactadas y enfocadas a Oro Guadalupe */
+/* Rediseño de las cajas de búsqueda enfocadas a Oro Guadalupe */
 div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input {
     background-color: rgba(17, 20, 36, 0.75) !important;
     border: 1px solid #222538 !important;
@@ -292,22 +364,46 @@ div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input:focus {
     border-color: #d4af37 !important;
     box-shadow: 0px 0px 8px rgba(212, 175, 55, 0.5) !important;
 }
+
 /* ============================================================================
-     NUEVOS ESTILOS PARA LOS CONTENEDORES DESPLEGABLES (ST.EXPANDER)
+    10. CONTADORES NUMÉRICOS REACTIVOS CON ANIMACIÓN DE PULSO NEÓN
    ============================================================================ */
 
-/* Rediseño exterior del componente expandible en Azul Noche (PARCHE: Sin margen negativo) */
+/* Inputs numéricos del catálogo (Número verde brillante con efecto neón) */
+div[data-testid="stColumn"] div[data-testid="stNumberInput"] input {
+    color: #2ecc71 !important;               
+    background-color: #111424 !important;     
+    font-size: 20px !important;               
+    font-weight: 900 !important;              
+    text-shadow: 0px 0px 8px rgba(46, 204, 113, 0.5) !important; 
+    border: 2px solid #222538 !important;
+    transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+}
+
+/* --- [!] ANIMACIÓN DE PULSO AL INTERACTUAR CON LOS CONTADORES --- */
+div[data-testid="stColumn"] div[data-testid="stNumberInput"] input:focus,
+div[data-testid="stColumn"] div[data-testid="stNumberInput"] input:active {
+    transform: scale(1.08) !important; /* Mini salto de escala rápido al presionar */
+    box-shadow: 0px 0px 12px rgba(46, 204, 113, 0.4) !important;
+    border-color: #2ecc71 !important;
+}
+/* ============================================================================
+    11. ACORDEONES DE PAGO (EXPANDERS) CON BORDES DE LUZ INTELIGENTES
+   ============================================================================ */
+
+/* Rediseño exterior de los bloques expandibles en Azul Noche */
 div[data-testid="stExpander"] {
     background-color: #111424 !important;
     border: 1px solid #222538 !important;
     border-radius: 8px !important;
     margin-bottom: 16px !important;
-    margin-top: 0px !important; /* Arreglado: Previene que se aplasten y encimen los bloques */
+    margin-top: 0px !important; /* Solucionado el aplastamiento anterior */
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4) !important;
     overflow: hidden !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
 }
 
-/* Encabezado o pestaña interactiva del desplegable */
+/* Encabezado interactivo del desplegable */
 div[data-testid="stExpander"] summary {
     background-color: #161a30 !important;
     padding: 12px 16px !important;
@@ -318,7 +414,7 @@ div[data-testid="stExpander"] summary {
     transition: all 0.3s ease !important;
 }
 
-/* Efecto visual al pasar el mouse por encima de la pestaña (Foco Dorado) */
+/* Efecto visual al pasar el mouse por encima del encabezado (Foco Dorado) */
 div[data-testid="stExpander"] summary:hover {
     background-color: #1e233d !important;
     color: #d4af37 !important;
@@ -329,14 +425,32 @@ div[data-testid="stExpander"] summary:hover {
 div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] {
     background-color: #0a0c16 !important;
     padding: 15px !important;
-    border-top: 1px solid #d4af37 !important; /* Hilo de acento Oro Guadalupe */
+    border-top: 1px solid #222538 !important;
+}
+
+/* --- [!] ENTRADA EN ESTADO ABIERTO: ILUMINACIÓN INTELIGENTE POR COLOR --- */
+
+/* 1. Banco de la Nación (Foco e hilo Azul Corporativo) */
+div[data-testid="stExpander"]:has(summary:contains("BANCO DE LA NACIÓN")):has(div[data-testid="stVerticalBlock"]) {
+    border-color: #2980b9 !important;
+    box-shadow: 0px 4px 15px rgba(41, 128, 185, 0.35) !important;
+}
+
+/* 2. Yape (Foco e hilo Morado Neón Eléctrico) */
+div[data-testid="stExpander"]:has(summary:contains("YAPE")):has(div[data-testid="stVerticalBlock"]) {
+    border-color: #8e44ad !important;
+    box-shadow: 0px 4px 15px rgba(142, 68, 173, 0.4) !important;
+}
+
+/* 3. Contacto Directo (Foco e hilo Verde Esmeralda WhatsApp) */
+div[data-testid="stExpander"]:has(summary:contains("CONTACTO DIRECTO")):has(div[data-testid="stVerticalBlock"]) {
+    border-color: #27ae60 !important;
+    box-shadow: 0px 4px 15px rgba(39, 174, 96, 0.35) !important;
 }
 
 /* ============================================================================
-    6. ALERTAS, TOTALIZADOR NEÓN Y ENTRADAS NUMÉRICAS
+    12. ALERTAS DE ESTADO DEL SISTEMA E INFORMACIÓN GENERAL
    ============================================================================ */
-
-/* Cuadros informativos de estados de procesamiento con línea en Oro Guadalupe */
 div.stAlert {
     background-color: #0b111e !important; 
     border: 1px solid #1a2436 !important;
@@ -344,53 +458,56 @@ div.stAlert {
     border-radius: 10px !important;
     box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.6) !important;
 }
-
 div.stAlert p, div.stAlert span {
     color: #ffffff !important;
     font-size: 15px !important;
     font-weight: 600 !important;
 }
+/* Alerta de errores o cancelaciones en Rojo carmesí */
 div.stAlert:has(svg[data-testid="stNotificationIconError"]) {
     border-left: 5px solid #c0392b !important; 
     background-color: #1a1111 !important;
     border-color: #471f1f !important;
 }
-
-/* INPUTS NUMÉRICOS DEL CATÁLOGO (NÚMERO VERDE BRILLANTE CON EFECTO NEÓN) */
-div[data-testid="stColumn"] div[data-testid="stNumberInput"] input {
-    color: #2ecc71 !important;               
-    background-color: #111424 !important;     
-    font-size: 20px !important;               
-    font-weight: 900 !important;              
-    text-shadow: 0px 0px 8px rgba(46, 204, 113, 0.5) !important; 
-    border: 2px solid #222538 !important;
+/* ============================================================================
+    13. ALERTA DE STOCK CRÍTICO NEÓN CON EFECTO PARPADEO RESPIRABLE
+   ============================================================================ */
+.mini-stock-alerta {
+    color: #e74c3c !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    margin-top: 5px !important;
+    margin-bottom: -5px !important;
+    margin-left: 5px !important;
+    text-transform: uppercase;
+    
+    /* Activación del parpadeo neón lento para aplicar psicología de escasez urgente */
+    animation: parpadeoStockCritico 1.8s ease-in-out infinite alternate !important;
 }
 
-/* VALOR DE LA MÉTRICA (TOTAL EN VERDE ESMERALDA NEÓN UNIFICADO SIN DOBLE BORDE) */
-div[data-testid="stMetricValue"] {
-    border: 2px solid #2ecc71 !important;     
-    background-color: #0f0f0f !important;     
-    padding: 12px 25px !important;            
-    border-radius: 8px !important;            
-    display: inline-block !important;
-    box-shadow: 0px 4px 15px rgba(46, 204, 113, 0.15) !important;
-    font-size: 46px !important;
-    font-weight: 900 !important;
-    color: #2ecc71 !important;
-    font-family: 'Impact', Charcoal, sans-serif !important;
-    text-shadow: 0px 0px 15px rgba(46, 204, 113, 0.6) !important;
+@keyframes parpadeoStockCritico {
+    0% {
+        opacity: 0.4;
+        text-shadow: none;
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 0px 0px 8px rgba(231, 76, 60, 0.6) !important;
+    }
 }
 
-/* Limpieza de sub-elementos de la métrica para evitar marcos duplicados */
-div[data-testid="stMetricValue"] > div,
-div[data-testid="stMetricValue"] span,
-div[data-testid="stMetricValue"] div {
-    border: none !important;
-    background-color: transparent !important;
-    padding: 0 !important;
-    box-shadow: none !important;
+.mini-stock-normal {
+    color: #888888 !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    margin-top: 5px !important;
+    margin-bottom: -5px !important;
+    margin-left: 5px !important;
 }
-/* ENTRADAS DE TEXTO GENERALES Y CAJAS ADMINISTRATIVAS */
+
+/* ============================================================================
+    14. ENTRADAS DE TEXTO GENERALES Y CAJAS ADMINISTRATIVAS
+   ============================================================================ */
 div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input, 
 div[data-testid="stNumberInput"]:not(:has(div[data-testid="stColumn"] *)) input {
     background-color: #111424 !important;     
@@ -402,7 +519,7 @@ div[data-testid="stNumberInput"]:not(:has(div[data-testid="stColumn"] *)) input 
     font-weight: 700 !important;              
 }
 
-/* BLINDAJE DE ETIQUETAS Y TEXTOS DE PREGUNTAS EN FORMULARIOS */
+/* Blindaje de etiquetas de texto en formularios */
 div[data-testid="stRadio"] label,
 div[data-testid="stSelectbox"] label,
 div[data-testid="stTextInput"] label,
@@ -422,7 +539,9 @@ div[data-testid="stMetricLabel"] p {
     opacity: 1 !important;
 }
 
-/* BOTONES PRINCIPALES Y DE ADMINISTRACIÓN EN DEGRADADO DORADO METÁLICO PREMIUM */
+/* ============================================================================
+    15. BOTONES DE ACCIÓN EN DEGRADADO DORADO METÁLICO PREMIUM
+   ============================================================================ */
 div[data-testid="stMainBlockContainer"] div.stButton > button,
 section[data-testid="stSidebar"] div.stButton > button {
     background-image: none !important;     
@@ -433,6 +552,7 @@ section[data-testid="stSidebar"] div.stButton > button {
     border: 1px solid #f1c40f !important;
     text-transform: uppercase !important;
     box-shadow: 0px 4px 12px rgba(212, 175, 55, 0.35) !important;
+    transition: filter 0.2s ease !important;
 }
 div[data-testid="stMainBlockContainer"] div.stButton > button {
     font-size: 20px !important;
@@ -447,48 +567,36 @@ section[data-testid="stSidebar"] div.stButton > button:hover {
     color: #0a0a0f !important;
 }
 
-/* DISEÑO CALIBRADO PARA LOS INVENTARIOS DEBAJO DE LAS TARJETAS */
-.mini-stock-alerta {
-    color: #e74c3c !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    margin-top: 5px !important;
-    margin-bottom: -5px !important;
-    margin-left: 5px !important;
-    text-transform: uppercase;
+/* ============================================================================
+    16. TOTALIZADOR NEÓN TRIDIMENSIONAL (METRIC VALUE)
+   ============================================================================ */
+div[data-testid="stMetricValue"] {
+    border: 2px solid #2ecc71 !important;     
+    background-color: #0f0f0f !important;     
+    padding: 12px 25px !important;            
+    border-radius: 8px !important;            
+    display: inline-block !important;
+    box-shadow: 0px 4px 15px rgba(46, 204, 113, 0.25) !important;
+    font-size: 46px !important;
+    font-weight: 900 !important;
+    color: #2ecc71 !important;
+    font-family: 'Impact', Charcoal, sans-serif !important;
+    text-shadow: 0px 0px 15px rgba(46, 204, 113, 0.6) !important;
 }
-.mini-stock-normal {
-    color: #888888 !important;
-    font-size: 12px !important;
-    font-weight: 500 !important;
-    margin-top: 5px !important;
-    margin-bottom: -5px !important;
-    margin-left: 5px !important;
+
+/* Limpieza de marcos duplicados nativos en el widget de la métrica */
+div[data-testid="stMetricValue"] > div,
+div[data-testid="stMetricValue"] span,
+div[data-testid="stMetricValue"] div {
+    border: none !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
 }
 
 /* ============================================================================
-    7. LOGOTIPO, PIE DE PÁGINA Y MEDIA QUERIES RESPONSIVAS AJUSTADAS
+    17. PIE DE PÁGINA CORPORATIVO Y MEDIA QUERIES RESPONSIVAS MÓVILES
    ============================================================================ */
-.contenedor-logo-portada {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    width: 100% !important;
-    margin-top: -15px !important;
-    margin-bottom: 20px !important;
-}
-/* Contenedor del logotipo adaptado para soportar capas de luz */
-.contenedor-logo-portada {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    width: 100% !important;
-    margin-top: -15px !important;
-    margin-bottom: 20px !important;
-    position: relative !important; /* Base para el destello */
-    overflow: hidden !important;   /* Recorta la luz sobrante fuera del área */
-}
-
 .social-footer {
     text-align: center !important;
     background-color: rgba(11, 12, 18, 0.9) !important;
@@ -513,9 +621,9 @@ section[data-testid="stSidebar"] div.stButton > button:hover {
     text-shadow: 0px 0px 8px rgba(46, 204, 113, 0.5) !important;
 }
 
-/* REFORZAMIENTO RESPONSIVO: Cuadrícula fluida adaptativa para tarjetas de productos */
+/* REFORZAMIENTO RESPONSIVO MÓVIL: Cuadrícula fluida adaptativa */
 @media (max-width: 768px) {
-    /* Mapea las columnas nativas de Streamlit a un ancho completo en móviles para evitar colapsos */
+    /* Rompe las columnas y las pone al 100% de ancho en celulares para evitar amontonamiento */
     div[data-testid="stColumn"] {
         min-width: 100% !important;
         width: 100% !important;

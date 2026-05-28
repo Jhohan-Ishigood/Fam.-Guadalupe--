@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, timezone
 import os
 import json
 import base64
+import time
 
 # Configuración inicial del lienzo responsivo de la aplicación
 st.set_page_config(
@@ -46,7 +47,6 @@ URL_QR_YAPE = cargar_imagen_base64(ruta_qr_local)
 
 # Inicialización por defecto de la variable de búsqueda global
 busqueda = ""
-
 # ============================================================================
 # 2. MOTOR DE PERSISTENCIA FIJA (OPTIMIZADO: SIN HISTORIAL INNECESARIO)
 # ============================================================================
@@ -78,9 +78,10 @@ def cargar_menu_desde_archivo():
         except (json.JSONDecodeError, Exception):
             return inventario_defecto
     return inventario_defecto
+
 def cargar_categorias_desde_archivo():
     """Carga las pestañas de navegación para evitar que las creadas por el admin se borren."""
-    categorias_defecto = ["Todos", "Ferretería & Electricidad", "Parlantes", "Celulares", "Útiles Escolares"]
+    categorias_defecto = ["Todos", "Abarrotes", "Ferretería & Electricidad", "Tecnología", "Línea Ecuestre", "Útiles Escolares"]
     if os.path.exists(RUTA_JSON_CATEGORIAS):
         try:
             with open(RUTA_JSON_CATEGORIAS, "r", encoding="utf-8") as archivo:
@@ -88,8 +89,6 @@ def cargar_categorias_desde_archivo():
         except (json.JSONDecodeError, Exception):
             return categorias_defecto
     return categorias_defecto
-
-
 # ============================================================================
 # 3. INICIALIZACIÓN DE VARIABLES REACTIVAS DE SESIÓN (ESTADOS DEL SISTEMA)
 # ============================================================================
@@ -113,11 +112,56 @@ if "mostrar_login_admin" not in st.session_state:
 
 # Anclaje y sincronización de reloj oficial para Perú (GMT-5)
 zona_peru = timezone(timedelta(hours=-5))
-fecha_actual = datetime.now(zona_peru).strftime("%d/%m/%Y %H:%M:%S")
-
+ahora_peru = datetime.now(zona_peru)
+fecha_actual = ahora_peru.strftime("%d/%m/%Y %H:%M:%S")
 
 # ============================================================================
-# 4. INYECCIÓN EXTERNA DE MARCA Y REGLAS DE DISEÑO DE AUTORÍA
+# 3.5 INYECCIÓN GLOBAL DEL MINI LOGOTIPO FLOTANTE GIRATORIO PERMANENTE (360°)
+# ============================================================================
+if URL_LOGO_PORTADA:
+    st.markdown(f"""
+        <style>
+        /* Estilo del Mini Logo fijo en la esquina superior derecha de la pantalla */
+        .mini-logo-flotante-master {{
+            position: fixed !important;
+            top: 60px !important;
+            right: 25px !important;
+            width: 65px !important;
+            height: 65px !important;
+            z-index: 999999 !important; /* Capa máxima absoluta por encima de todo */
+            pointer-events: none !important;
+        }}
+        .mini-logo-imagen-circular {{
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border-radius: 50% !important;
+            border: 2px solid #d4af37 !important;
+            background-color: #111424 !important;
+            box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.6) !important;
+            /* Rotación automática continua de 360 grados cada 4 segundos sin tocar el mouse */
+            animation: rotarMiniLogo360 4s linear infinite !important;
+        }}
+        @keyframes rotarMiniLogo360 {{
+            0% {{ transform: rotate(0deg); }}
+            100% {{ transform: rotate(360deg); }}
+        }}
+        /* Ocultar en pantallas muy pequeñas si estorba la visualización táctil */
+        @media (max-width: 480px) {{
+            .mini-logo-flotante-master {{
+                width: 50px !important;
+                height: 50px !important;
+                top: 70px !important;
+                right: 15px !important;
+            }}
+        }}
+        </style>
+        <div class="mini-logo-flotante-master">
+            <img src="{URL_LOGO_PORTADA}" class="mini-logo-imagen-circular">
+        </div>
+    """, unsafe_allow_html=True)
+# ============================================================================
+# 4. INJECTION EXTERNA DE MARCA Y REGLAS DE DISEÑO DE AUTORÍA
 # ============================================================================
 if os.path.exists(RUTA_CSS):
     with open(RUTA_CSS, "r", encoding="utf-8") as f:
@@ -128,45 +172,47 @@ st.markdown("<div class='sello-creador'>Página desarrollada por: Jhohan Guadalu
 
 
 # ============================================================================
-# 4.5 FUNCIONES AUXILIARES INTERFACES COMPARTIDAS (ANTI-REDUNDANCIA)
+# 4.5 FUNCIÓN CENTRALIZADA DE PASARELA DE PAGO (ANTI-REDUNDANCIA COMPLETA)
 # ============================================================================
 def renderizar_informacion_pago(total_contexto=None):
-    """Renderiza los expanders oficiales de pago centralizados para evitar código duplicado."""
+    """Renderiza la pasarela oficial de datos financieros con bordes de luz interactivos."""
     st.markdown("### 💳 INFORMACIÓN OFICIAL DE PAGO Y CONTACTO")
     st.caption("Selecciona el método de tu preferencia haciendo clic para desplegar los datos correspondientes:")
 
-    # --- PORTADA DESPLEGABLE 1: DATOS DE CUENTA BANCARIA ---
-    with st.expander("📐 VER N° DE CUENTA OFICIAL", expanded=False):
+    # --- PORTADA DESPLEGABLE 1: DATOS DE CUENTA BANCARIA (BORDE AZUL CONTINUO) ---
+    with st.expander("🏦 VER N° DE CUENTA DEL BANCO DE LA NACIÓN", expanded=False):
         st.markdown("""
-            <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; border-left: 4px solid #2980b9; margin-bottom: 10px;">
+            <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; border-left: 4px solid #2980b9; margin-bottom: 5px;">
                 <p style="color: #2980b9; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🏦 BANCO DE LA NACION / BNP</p>
                 <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número de Cuenta:</b> 570-98421345-0-88</p>
+                <hr style="border-color: #333; margin: 10px 0;">
                 <p style="color: #aaaaaa; margin: 0; font-size: 14px;"><b>Titular del Negocio:</b> Segundo Melquiades Guadalupe Sanchez</p>
             </div>
         """, unsafe_allow_html=True)
 
-    # --- PORTADA DESPLEGABLE 2: PROCESAMIENTO ELECTRÓNICO CON YAPE Y QR ---
-    with st.expander("📱 VER NÚMERO Y QR DE YAPE", expanded=False):
+    # --- PORTADA DESPLEGABLE 2: PROCESAMIENTO ELECTRÓNICO CON YAPE Y QR (BORDE MORADO NEÓN) ---
+    with st.expander("🟣 VER NÚMERO Y QR DE YAPE", expanded=False):
         if total_contexto is not None:
-            st.markdown(f"**Monto exacto a transferir:** S/{total_contexto:.2f}")
+            st.markdown(f"<p style='color:#ffffff; font-weight:bold; font-size:15px; margin-bottom:10px;'>Monto exacto a transferir: <span style='color:#2ecc71;'>S/{total_contexto:.2f}</span></p>", unsafe_allow_html=True)
             
         src_qr = URL_QR_YAPE if URL_QR_YAPE else "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><circle cx='8.5' cy='8.5' r='1.5'/><polyline points='21 15 16 10 5 21'/></svg>"
         
         st.markdown(f"""
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 15px auto; max-width: 450px; background-color: #1e1e24; padding: 20px; border-radius: 16px; border: 2px solid #8e44ad; text-align: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 5px auto; max-width: 450px; background-color: #1e1e24; padding: 20px; border-radius: 16px; border: 2px solid #8e44ad; text-align: center;">
                 <p style="color: #aaaaaa; font-size: 13px; margin-bottom: 12px; font-weight: bold;">Escanee con la cámara del celular si desea pagar:</p>
                 <img src="{src_qr}" style="width: 240px; height: 240px; object-fit: contain; border-radius: 12px; box-shadow: 0px 4px 15px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px;" />
                 <span style="color: #8e44ad; font-size: 14px; font-weight: bold; letter-spacing: 1px;">🟣 NÚMERO ASOCIADO: 950 239 350</span>
             </div>
         """, unsafe_allow_html=True)
 
-    # --- PORTADA DESPLEGABLE 3: TELEFONO DE CONTACTO ---
+    # --- PORTADA DESPLEGABLE 3: TELÉFONO DE CONTACTO DIRECTO (BORDE VERDE ESMERALDA) ---
     with st.expander("📞 VER TELÉFONO DE CONTACTO DIRECTO", expanded=False):
         st.markdown("""
             <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; border-left: 4px solid #27ae60;">
                 <p style="color: #27ae60; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🟢 WHATSAPP CORPORATIVO</p>
                 <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número Celular:</b> +51 950 239 350</p>
-                <p style="color: #aaaaaa; margin: 0; font-size: 13px;">Use este número para coordinar directamente o reportar consultas.</p>
+                <hr style="border-color: #333; margin: 10px 0;">
+                <p style="color: #aaaaaa; margin: 0; font-size: 13px;">Use este número para coordinar directamente el despacho de su mercadería o resolver consultas.</p>
             </div>
         """, unsafe_allow_html=True)
 # ============================================================================
@@ -197,9 +243,11 @@ PASS_PROD = st.secrets.get("admin_password", "18987915")
 
 es_admin = (usuario_input == USER_PROD and clave_input == PASS_PROD)
 
-# Retroalimentación interactiva del estado del usuario
+# BLINDAJE DE LOGIN (Autoborrado de seguridad para ocultar datos de accesos en caliente)
 if es_admin:
     st.sidebar.success("✔ Modo Administrador Activo")
+    # Esconde el formulario de acceso una vez logueado con éxito
+    st.session_state.mostrar_login_admin = False
 elif usuario_input or clave_input:
     st.sidebar.error("❌ Credenciales incorrectas")
 
@@ -207,26 +255,85 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("#### 🕒 HORARIO DE ATENCIÓN")
 st.sidebar.caption("Lunes a Domingo: 8:00 AM - 11:00 PM")
 
+# --- INDICADOR VISUAL "EN LÍNEA" AUTOMÁTICO CON RADAR (SISTEMA INTELIGENTE) ---
+hora_actual_int = ahora_peru.hour
+if 8 <= hora_actual_int < 23:
+    texto_radar = "🟢 EN LÍNEA - RECIBIENDO ÓRDENES"
+    color_radar = "#2ecc71"
+else:
+    texto_radar = "🌙 CERRADO - SIMULADOR ACTIVO"
+    color_radar = "#e67e22"
+
+st.sidebar.markdown(f"""
+    <style>
+    .contenedor-radar {{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background-color: #111424;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #222538;
+    }}
+    .punto-radar {{
+        width: 10px;
+        height: 10px;
+        background-color: {color_radar};
+        border-radius: 50%;
+        box-shadow: 0 0 0 0 {color_radar}88;
+        animation: pulsoRadarEfecto 1.6s infinite ease-in-out;
+    }}
+    @keyframes pulsoRadarEfecto {{
+        0% {{ box-shadow: 0 0 0 0 {color_radar}bb; }}
+        70% {{ box-shadow: 0 0 0 10px {color_radar}00; }}
+        100% {{ box-shadow: 0 0 0 0 {color_radar}00; }}
+    }}
+    .texto-radar {{
+        font-size: 12.5px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+    }}
+    </style>
+    <div class="contenedor-radar">
+        <div class="punto-radar"></div>
+        <span class="texto-radar">{texto_radar}</span>
+    </div>
+""", unsafe_allow_html=True)
+
+st.sidebar.markdown("<br>", unsafe_allow_html=True)
 st.sidebar.markdown("#### 📍 NUESTRA UBICACIÓN")
 st.sidebar.caption("Av. Principal El Gran Búfalo 742, Trujillo, Perú")
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("#### 📞 ¿NECESITAS AYUDA?")
 
-# Enlace de soporte por WhatsApp optimizado con el número y prefijo del catálogo
+# Enlace de soporte por WhatsApp optimizado directo al chat de soporte
 st.sidebar.link_button(
     "💬 Chatear con Soporte",
     "https://wa.me",
     use_container_width=True,
     key="link_whatsapp_soporte"
 )
-
 # ============================================================================
 # 6. PANEL DE CONTROL DE ADMINISTRACIÓN - GESTOR DE SECCIONES (JSON)
 # ============================================================================
 if es_admin:
     st.markdown("<h1 class='titulo-principal'>📊 PANEL DE ADMINISTRACIÓN</h1>", unsafe_allow_html=True)
     st.info(f"📋 **Reporte Gerencial del Grupo 5** — Sincronizado en tiempo real: {fecha_actual}")
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # --- TABLERO DE MÉTRICAS GERENCIALES EN TIEMPO REAL (CONTROL DE INVENTARIO) ---
+    prod_registrados = len(st.session_state.menu_dinamico)
+    prod_agotados = sum(1 for p in st.session_state.menu_dinamico.values() if p.get("stock", 0) <= 0)
+    valor_total_capital = sum(p.get("stock", 0) * p.get("precio", 0.0) for p in st.session_state.menu_dinamico.values())
+
+    col_m1, col_m2, col_m3 = st.columns(3)
+    with col_m1:
+        st.metric(label="📦 TOTAL PRODUCTOS", value=f"{prod_registrados} ítems")
+    with col_m2:
+        st.metric(label="🚨 PRODUCTOS AGOTADOS", value=f"{prod_agotados} ítems")
+    with col_m3:
+        st.metric(label="💰 CAPITAL TOTAL EN STOCK", value=f"S/{valor_total_capital:,.2f}")
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Bloque expandible de control de pestañas y categorías
@@ -286,7 +393,7 @@ if es_admin:
         st.caption("Complete los datos para agregar un producto nuevo subiendo una imagen desde su dispositivo.")
         nuevo_nombre = st.text_input("Nombre del nuevo producto:", placeholder="Ej. Filtro de agua, Cables...").strip()
         
-        col_new1, col_new2, col_new3, col_new4 = st.columns([1, 1, 1, 1])
+        col_new1, col_new2, col_new3, col_new4 = st.columns(4)
         with col_new1:
             nuevo_precio = st.number_input("Precio de venta (S/):", min_value=0.5, value=10.0, step=0.5)
         with col_new2:
@@ -326,22 +433,22 @@ if es_admin:
                 st.error("⚠️ Error: El nombre del producto no puede estar vacío.")
 
     # ============================================================================
-    # 8. PANEL DE CONTROL DE ADMINISTRACIÓN - FILTRADO INTELIGENTE Y EDICIÓN (REFINADO)
+    # 8. PANEL DE CONTROL DE ADMINISTRACIÓN - GESTIÓN DE PRECIOS, STOCK Y ELIMINACIÓN
     # ============================================================================
     st.markdown("### 📝 GESTIÓN DE PRECIOS, STOCK Y ELIMINACIÓN")
-    st.caption(f"Filtro actual: **{st.session_state.categoria_activa}**")
+    st.caption(f"Filtro por pestaña activa: **{st.session_state.categoria_activa}**")
     productos_lista = list(st.session_state.menu_dinamico.keys())
     cambios_detectados = False
 
     # Renderizado y procesamiento de edición en bloque para el administrador
     for prod in productos_lista:
         info_prod = st.session_state.menu_dinamico[prod]
-        cat_prod = info_prod.get("categoria", "Ferretería & Electricidad")
+        cat_prod = info_prod.get("categoria", "Abarrotes")
         
         # Filtra correctamente para que el administrador gestione el catálogo según la pestaña
         if st.session_state.categoria_activa == "Todos" or st.session_state.categoria_activa == cat_prod:
             with st.container(border=True):
-                col_e1, col_e2, col_e3, col_e4 = st.columns([2, 1, 1, 1])
+                col_e1, col_e2, col_e3, col_e4 = st.columns(4)
                 with col_e1:
                     st.markdown(f"**{info_prod['icono']} {prod}** ({cat_prod})")
                 with col_e2:
@@ -374,28 +481,16 @@ else:
     # 9. ENTORNO CLIENTE - PANTALLA 1: BIENVENIDA MULTIMEDIA PREMIUM
     # ============================================================================
     if st.session_state.pantalla_actual == "bienvenida":
-        # Aplicamos el fondo premium en la app
-        if URL_BANNER_LOCAL:
-            st.markdown(f"""
-                <style>
-                .stApp {{
-                    background-image: linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)), url("{URL_BANNER_LOCAL}");
-                    background-size: cover !important;
-                    background-position: center !important;
-                    background-repeat: no-repeat !important;
-                    background-attachment: fixed !important;
-                }}
-                </style>
-            """, unsafe_allow_html=True)
-
-        # --- PARCHE DE FUERZA BRUTA: Abrimos un contenedor HTML transparente ---
+        
+        # --- PARCHE DE FUERZA BRUTA: Abrimos un contenedor HTML transparente global ---
         st.markdown('<div class="bienvenida-transparente-master">', unsafe_allow_html=True)
 
-        # [!] PRIMERO: TÍTULOS PRINCIPALES (QUEDAN DEBAJO DEL AUTOR VERDE NATIIVO Y ARRIBA DEL LOGO)
-        st.markdown("<h3 class='titulo-principal'>BIENVENIDOS AL CATÁLOGO DE PRODUCTOS DISPONIBLES</h3>", unsafe_allow_html=True)
+        # 1. TÍTULOS PRINCIPALES CON MÁXIMA ALTURA SUPERIOR
+        st.markdown("<h3 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES</h3>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-size: 20px; margin-top: -10px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # [!] SEGUNDO: INYECCIÓN MAESTRA DEL LOGOTIPO CON DESTELLO METÁLICO INYECTADO DIRECTO
+        # 2. INYECCIÓN MAESTRA DEL LOGOTIPO CON DESTELLO METÁLICO INYECTADO DIRECTO
         if URL_LOGO_PORTADA:
             st.markdown(f"""
                 <style>
@@ -437,7 +532,7 @@ else:
                         rgba(255, 255, 255, 0.2) 25%,
                         rgba(255, 255, 255, 0.85) 50%,
                         rgba(255, 255, 255, 0.2) 75%,
-                        rgba(255, 255, 255, 0) 100
+                        rgba(255, 255, 255, 0) 100%
                     ) !important;
                     transform: rotate(25deg) !important;
                     z-index: 5 !important;
@@ -445,15 +540,10 @@ else:
                     animation: efectoLuzReflectante 4s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
                 }}
                 @keyframes efectoLuzReflectante {{
-                    0% {{
-                        left: -150%;
-                    }}
-                    25%, 100% {{
-                        left: 150%;
-                    }}
+                    0% {{ left: -150%; }}
+                    25%, 100% {{ left: 150%; }}
                 }}
                 </style>
-
                 <div class="contenedor-logo-destello-fijo">
                     <div class="mascara-redonda-logo">
                         <img src="{URL_LOGO_PORTADA}" class="imagen-escudo-circular">
@@ -469,14 +559,13 @@ else:
                 </div>
             """, unsafe_allow_html=True)
 
-        
-        # 1. BOTÓN PRINCIPAL DE ACCIÓN
+        # 3. BOTÓN PRINCIPAL DE ACCIÓN DE LA BIENVENIDA
         cambiar_a_catalogo = st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master")
 
-        # 2. DESPLEGABLES CENTRALIZADOS (Muestra la info de pago sin duplicar código en el archivo)
+        # 4. RENDERIZADO DE CUENTAS BANCARIAS CENTRALIZADAS TRANSPARENTES
         renderizar_informacion_pago()
             
-        # 3. REDES SOCIALES: Footer estático
+        # 5. REDES SOCIALES: Footer estático
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("""
             <div class='social-footer'>
@@ -487,6 +576,8 @@ else:
             </div>
         """, unsafe_allow_html=True)
 
+        st.markdown('</div>', unsafe_allow_html=True) # Cierre del contenedor maestro transparente
+
         if cambiar_a_catalogo:
             st.session_state.pantalla_actual = "catalogo"
             st.rerun()
@@ -494,6 +585,7 @@ else:
     # 10. ENTORNO CLIENTE - PANTALLA 2: CATÁLOGO DINÁMICO DE PRODUCTOS
     # ============================================================================
     elif st.session_state.pantalla_actual == "catalogo" and not st.session_state.pedido_guardado:
+        st.markdown('<div class="catalogo-transparente-master">', unsafe_allow_html=True)
         st.markdown("\n<h2 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES</h2>", unsafe_allow_html=True)
         st.markdown(f"<h3 style='text-align: center; color: #aaa;'>Fecha y hora oficial de Perú (GMT-5): {fecha_actual}</h3>\n", unsafe_allow_html=True)
         
@@ -536,7 +628,7 @@ else:
                 continue
                 
             info_prod = st.session_state.menu_dinamico[prod]
-            cat_prod = info_prod.get("categoria", "Ferretería & Electricidad")
+            cat_prod = info_prod.get("categoria", "Abarrotes")
 
             if st.session_state.categoria_activa == "Todos" or st.session_state.categoria_activa == cat_prod:
                 productos_filtrados.append(prod)
@@ -566,6 +658,7 @@ else:
                         </div>
                     """, unsafe_allow_html=True)
                     
+                    # ALERTA DE STOCK CRÍTICO NEÓN CON EFECTO PARPADEO
                     if stock_actual <= 3:
                         st.markdown(f"<p class='mini-stock-alerta'>🔥 ¡Solo quedan {stock_actual} unidades! 🔥</p>", unsafe_allow_html=True)
                     else:
@@ -594,14 +687,17 @@ else:
                 st.rerun()
             else:
                 st.error("⚠️ Error: Debe seleccionar al menos 1 producto.")
+        st.markdown('</div>', unsafe_allow_html=True)
     # ============================================================================
     # 11. ENTORNO CLIENTE - PANTALLA 3: SIMULACIÓN DE PEDIDO Y DATOS DE TRANSFERENCIA
     # ============================================================================
     else:
+        st.markdown('<div class="carrito-transparente-master">', unsafe_allow_html=True)
         st.html("<div style='height: 15px;'></div>")
         st.subheader("📦 LISTA DE PRODUCTOS SELECCIONADOS")
         
         # Muestra la lista de productos elegidos manteniendo el estilo visual premium
+        texto_proforma_whatsapp = "Hola Familia Guadalupe, deseo coordinar mi pedido desde el catálogo web:\n\n"
         for item in st.session_state.carrito:
             icono_p = st.session_state.menu_dinamico[item['producto']]['icono']
             st.markdown(f"""
@@ -609,6 +705,8 @@ else:
                     {icono_p} {item['producto']} x{item['cantidad']} &nbsp;|&nbsp; Subtotal: S/{item['subtotal']:.2f}
                 </div>
             """, unsafe_allow_html=True)
+            # Acumula la lista formateada para el mensaje directo de WhatsApp
+            texto_proforma_whatsapp += f"• {icono_p} {item['producto']} x{item['cantidad']} (Subtotal: S/{item['subtotal']:.2f})\n"
         
         st.markdown("---")
         
@@ -616,39 +714,66 @@ else:
         st.metric(label="Monto Total a Procesar", value=f"S/{st.session_state.total_acumulado:.2f}")
         st.markdown("<br>", unsafe_allow_html=True)
         
+        # Cierre del cuerpo del mensaje automatizado para concretar la venta
+        texto_proforma_whatsapp += f"\n💰 *Monto Total Neto a Procesar: S/{st.session_state.total_acumulado:.2f}*\n📌 Generado el: {fecha_actual}\n\nQuedo a la espera para coordinar el despacho."
+        texto_codificado_url = base64.b64encode(texto_proforma_whatsapp.encode('utf-8')).decode('utf-8')
+        # Alternativa cruda limpia para compatibilidad directa con API de WhatsApp
+        import urllib.parse
+        mensaje_parseado_url = urllib.parse.quote(texto_proforma_whatsapp)
+
         # Renderizado unificado y consistente de cuentas oficiales (Previene datos cruzados)
         renderizar_informacion_pago(total_contexto=st.session_state.total_acumulado)
 
-        st.markdown("<br><br>", unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # --- [!] REQUERIMIENTO: NOTA ESTRATÉGICA DE RECOMENDACIÓN DE CAPTURA DE PANTALLA ---
+        st.markdown("""
+            <div style="background-color: rgba(212, 175, 55, 0.1); border: 2px dashed #d4af37; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 25px; box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.15);">
+                <p style="color: #ffffff; font-size: 14.5px; font-weight: bold; margin: 0; line-height: 1.5;">
+                    ⚠️ Recomendación: Tómale una captura de pantalla a esta lista para que no olvides los productos que quieres comprar antes de realizar tu transferencia bancaria.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
 
         # ============================================================================
-        # 12. CONFIRMACIÓN SIMULADA Y ACTUALIZACIÓN TEMPORAL DE STOCK
+        # 12. CONFIRMACIÓN SIMULADA, DESPACHO WHATSAPP Y ENLACE DE CIERRE DE VENTA
         # ============================================================================
-        if st.button("💾 CONFIRMAR SIMULACIÓN DE PEDIDO", use_container_width=True):
-            st.success("✔ Simulación procesada correctamente. Los productos han sido reservados en tu sesión.")
-            st.balloons()
-            
-            # Descuenta temporalmente el stock disponible en el archivo persistente JSON
-            for item in st.session_state.carrito:
-                prod_comprado = item["producto"]
-                cant_comprada = item["cantidad"]
-                stock_previo = st.session_state.menu_dinamico[prod_comprado].get("stock", 0)
-                st.session_state.menu_dinamico[prod_comprado]["stock"] = max(0, stock_previo - cant_comprada)
-                st.session_state.menu_dinamico[prod_comprado]["disponible"] = st.session_state.menu_dinamico[prod_comprado]["stock"] > 0
-            
-            guardar_json(RUTA_JSON_MENU, st.session_state.menu_dinamico)
-            st.session_state.pedido_guardado = True
-            
-            # Pequeña pausa de cortesía para que el usuario disfrute la animación de los globos antes de recargar
-            import time
-            time.sleep(2.5)
-            st.rerun()
+        col_c1, col_c2 = st.columns(2)
+        with col_c1:
+            if st.button("💾 CONFIRMAR SIMULACIÓN EN SESIÓN", use_container_width=True):
+                st.success("✔ Simulación procesada correctamente. Los productos han sido reservados en tu sesión.")
+                st.balloons()
+                
+                # Descuenta temporalmente el stock disponible en el archivo persistente JSON
+                for item in st.session_state.carrito:
+                    prod_comprado = item["producto"]
+                    cant_comprada = item["cantidad"]
+                    stock_previo = st.session_state.menu_dinamico[prod_comprado].get("stock", 0)
+                    st.session_state.menu_dinamico[prod_comprado]["stock"] = max(0, stock_previo - cant_comprada)
+                    st.session_state.menu_dinamico[prod_comprado]["disponible"] = st.session_state.menu_dinamico[prod_comprado]["stock"] > 0
+                
+                guardar_json(RUTA_JSON_MENU, st.session_state.menu_dinamico)
+                st.session_state.pedido_guardado = True
+                
+                # Pausa controlada para disfrutar la animación de los globos sin interrupción prematura
+                time.sleep(2.5)
+                st.rerun()
+                
+        with col_c2:
+            # Botón maestro de cierre de venta: Envia la orden masticada y lista al WhatsApp del local
+            st.link_button(
+                "🟢 ENVIAR PEDIDO POR WHATSAPP",
+                f"https://wa.me{mensaje_parseado_url}",
+                use_container_width=True
+            )
 
+        st.markdown("<br>", unsafe_allow_html=True)
         # Botón estructural para regresar a la pantalla de bienvenida e iniciar un flujo nuevo
-        if st.session_state.pedido_guardado:
+        if st.session_state.pedido_guardado or st.session_state.total_acumulado > 0:
             if st.button("🔄 Crear una nueva orden / Volver a Explorar", use_container_width=True, key="btn_nueva_orden_final"):
                 st.session_state.carrito = []
                 st.session_state.total_acumulado = 0.0
                 st.session_state.pedido_guardado = False
                 st.session_state.pantalla_actual = "bienvenida"
                 st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
