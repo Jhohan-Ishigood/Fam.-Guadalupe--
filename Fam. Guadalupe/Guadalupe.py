@@ -136,9 +136,20 @@ if os.path.exists(RUTA_CSS):
 # Inyección maestra de estilos y elementos físicos requeridos (mini-logo, destello, animaciones, admin-grid)
 st.markdown(f"""
     <style>
-    /* Ocultar elementos técnicos (mantener sidebar visible) */
-    #MainMenu, .stAppDeployDropdown, [data-testid="stHeader"] > div:last-child {{ display:none !important; }}
-    section[data-testid='stSidebar'], div[data-testid='stSidebar'] {{ display:block !important; position:relative !important; z-index:999999 !important; }}
+    /* Ajustes de visibilidad para barra lateral y menú (mantener visibles) */
+    /* No ocultamos #MainMenu ni el stHeader para preservar el menú de opciones */
+    section[data-testid='stSidebar'], div[data-testid='stSidebar'] {{
+        display:block !important;
+        position:fixed !important;
+        top:0 !important;
+        right:0 !important;
+        height:100% !important;
+        z-index:1000000 !important;
+        background:transparent !important;
+        pointer-events:auto !important;
+    }}
+    /* Asegurar que el contenedor principal quede por debajo de la sidebar en z-order */
+    [data-testid="stAppViewContainer"] {{ position:relative !important; z-index:1 !important; }}
 
     /* Fondo panorámico - colocar arriba para evitar mostrar logo central duplicado */
     [data-testid="stAppViewContainer"] {{
@@ -149,10 +160,10 @@ st.markdown(f"""
         background-attachment: fixed !important;
     }}
 
-    /* Mini-logo flotante: PC derecha, móvil izquierda. Animación rotateY coin-like */
+    /* Mini-logo flotante: PC y móvil derecha. Animación rotateY coin-like */
     .mini-logo-flotante-master {{ z-index:999999 !important; pointer-events:none !important; position:fixed !important; perspective:1000px !important; }}
-    @media (min-width:769px) {{ .mini-logo-flotante-master {{ top:80px !important; left:25px !important; width:65px !important; height:65px !important; }} .mini-logo-imagen-circular {{ width:100% !important; height:100% !important; object-fit:cover !important; border-radius:50% !important; border:2px solid #d4af37 !important; box-shadow:0 0 15px rgba(212,175,55,0.6) !important; transform-style:preserve-3d !important; animation:rotarMiniLogo3D 4s linear infinite !important; }} }}
-    @media (max-width:768px) {{ .mini-logo-flotante-master {{ top:25px !important; left:15px !important; right:auto !important; width:45px !important; height:45px !important; }} .mini-logo-imagen-circular {{ width:100% !important; height:100% !important; object-fit:cover !important; border-radius:50% !important; border:2px solid #d4af37 !important; box-shadow:0 0 10px rgba(212,175,55,0.5) !important; animation:rotarMiniLogo3D 4s linear infinite !important; }} }}
+    @media (min-width:769px) {{ .mini-logo-flotante-master {{ top:80px !important; right:25px !important; left:auto !important; width:65px !important; height:65px !important; }} .mini-logo-imagen-circular {{ width:100% !important; height:100% !important; object-fit:cover !important; border-radius:50% !important; border:2px solid #d4af37 !important; box-shadow:0 0 15px rgba(212,175,55,0.6) !important; transform-style:preserve-3d !important; animation:rotarMiniLogo3D 4s linear infinite !important; }} }}
+    @media (max-width:768px) {{ .mini-logo-flotante-master {{ top:25px !important; right:15px !important; left:auto !important; width:45px !important; height:45px !important; }} .mini-logo-imagen-circular {{ width:100% !important; height:100% !important; object-fit:cover !important; border-radius:50% !important; border:2px solid #d4af37 !important; box-shadow:0 0 10px rgba(212,175,55,0.5) !important; animation:rotarMiniLogo3D 4s linear infinite !important; }} }}
     @keyframes rotarMiniLogo3D {{ 0% {{ transform:rotateY(0deg); }} 100% {{ transform:rotateY(360deg); }} }}
 
     /* Logo central con destello físico */
