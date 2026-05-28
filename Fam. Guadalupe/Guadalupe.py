@@ -181,19 +181,20 @@ st.markdown(f"""
         display: inline-flex !important;
     }}
 
-    /* 2. TRUCO DE FUERZA BRUTA: Aplicamos el fondo panorámico en el lienzo raíz absolute */
+    /* 2. MOTOR DEL FONDO PANORÁMICO ANIMADO EN BUCLE GLOBAL INTEGRAL */
     [data-testid="stAppViewContainer"] {{
         background-color: #0a0a0f !important;
         background-image: linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)), url("{URL_BANNER_LOCAL}") !important;
-        background-size: cover !important;
+        /* [!] CAMBIO CLAVE: Mantiene la altura pero libera el ancho para que la foto pueda deslizarse */
+        background-size: auto 100% !important; 
         background-position: 0% center !important;
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
-        animation: desplazamientoPanoramicoLocal 24s ease-in-out infinite alternate !important;
+        animation: desplazamientoPanoramicoLocal 20s ease-in-out infinite alternate !important;
     }}
     @keyframes desplazamientoPanoramicoLocal {{
         0% {{ background-position: 0% center !important; }}
-        100% {{ background-position: 100% center !important; }}
+        100% {{ background-position: 30% center !important; }}
     }}
 
     /* 3. TRANSPARENCIA RADICAL EN TODAS LAS CAPAS INTERMEDIAS */
@@ -546,7 +547,7 @@ else:
         st.markdown("<p style='text-align: center; font-size: 20px; margin-top: -10px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # [!] SEGUNDO: INYECCIÓN DEL LOGOTIPO CON FRANJA DE LUZ FÍSICA INLINE
+        # [!] SEGUNDO: INYECCIÓN DEL LOGOTIPO CON FRANJA DE LUZ FÍSICA INLINE EN EL NÚCLEO
         if URL_LOGO_PORTADA:
             st.markdown(f"""
                 <style>
@@ -563,7 +564,7 @@ else:
                     width: 206px !important;
                     height: 206px !important;
                     border-radius: 50% !important;
-                    overflow: hidden !important; /* Corta la luz sobrante */
+                    overflow: hidden !important; /* Corta la luz fuera del escudo */
                     box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important;
                     border: 3px solid #d4af37 !important;
                 }}
@@ -575,7 +576,7 @@ else:
                     background-color: #111424 !important;
                     display: block !important;
                 }}
-                /* CAMBIO: Creamos una clase para un DIV físico real para simular la luz reflectante */
+                /* Capa física de luz reflectante con degradado metálico diagonal */
                 .destello-fisico-linea {{
                     position: absolute !important;
                     top: -50% !important;
@@ -593,9 +594,8 @@ else:
                     transform: rotate(25deg) !important;
                     z-index: 99 !important;
                     pointer-events: none !important;
-                    animation: efectoLuzReflectante 4s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
                 }}
-                @keyframes efectoLuzReflectante {{
+                @keyframes viajeLuzObligatorio {{
                     0% {{ left: -150%; }}
                     25%, 100% {{ left: 150%; }}
                 }}
@@ -603,8 +603,8 @@ else:
                 <div class="contenedor-logo-destello-fijo">
                     <div class="mascara-redonda-logo">
                         <img src="{URL_LOGO_PORTADA}" class="imagen-escudo-circular">
-                        <!-- Añadimos la capa de luz física real que cruzará por encima de la foto -->
-                        <div class="destello-fisico-linea"></div>
+                        /* [!] Vinculamos la animación directa inline en la etiqueta física */
+                        <div class="destello-fisico-linea" style="animation: viajeLuzObligatorio 4s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;"></div>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
@@ -616,6 +616,7 @@ else:
                     </div>
                 </div>
             """, unsafe_allow_html=True)
+
 
 
         # 3. BOTÓN PRINCIPAL DE ACCIÓN DE LA BIENVENIDA
