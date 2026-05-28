@@ -9,6 +9,7 @@ html, body, .stApp,
 [data-testid="stVerticalBlock"] {
     background-color: #0a0a0f !important;
     color: #ffffff !important;
+    
 }
 
 /* Configuración unificada de fuentes nítidas para toda la aplicación */
@@ -594,3 +595,4 @@ div[data-testid="stMetricValue"] {
     box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important; 
     transition: transform 0.4s ease-in-out !important;
 }
+
