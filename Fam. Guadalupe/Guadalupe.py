@@ -123,7 +123,8 @@ URL_LOGO_FINAL = URL_LOGO_LOCAL if URL_LOGO_LOCAL else "https://unsplash.com"
 
 st.markdown(
     f"""
-    <div class="header-container">
+    <!-- Añadimos translate="no" para bloquear traducciones automáticas destructivas de Chrome -->
+    <div class="header-container" translate="no">
         <!-- 1. Nombre del autor en la parte superior con separación controlada -->
         <div class="autor-text">
             PÁGINA DESARROLLADA POR: JHOHAN GUADALUPE
@@ -131,10 +132,7 @@ st.markdown(
         
         <!-- 2. Envoltura del Logo y el Título para permitir la superposición (z-index) -->
         <div class="logo-title-wrapper">
-            <!-- Imagen del logo optimizada en tamaño -->
             <img src="{URL_LOGO_FINAL}" class="logo-img" alt="Logo Almacén Guadalupe">
-            
-            <!-- Título que flota físicamente sobre la base del círculo -->
             <h1 class="titulo-catalogo">
                 CATÁLOGO DE PRODUCTOS DISPONIBLES
             </h1>
@@ -148,6 +146,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 # Separador estético sutil para dar paso a la botonera de navegación
 st.markdown("<div style='margin-bottom: 25px;'></div>", unsafe_allow_html=True)
