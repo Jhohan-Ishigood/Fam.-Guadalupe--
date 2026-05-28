@@ -7,6 +7,7 @@ import os
 import json
 import base64
 import time
+import mimetypes
 
 # Configuración inicial del lienzo responsivo de la aplicación
 st.set_page_config(
@@ -29,8 +30,11 @@ def cargar_imagen_base64(ruta_archivo):
     """Carga y codifica una imagen local a Base64 una sola vez para rendimiento óptimo."""
     if os.path.exists(ruta_archivo):
         try:
+            mime_type, _ = mimetypes.guess_type(ruta_archivo)
+            if not mime_type:
+                mime_type = "image/png"
             with open(ruta_archivo, "rb") as archivo:
-                return f"data:image/png;base64,{base64.b64encode(archivo.read()).decode()}"
+                return f"data:{mime_type};base64,{base64.b64encode(archivo.read()).decode()}"
         except Exception:
             return ""
     return ""
@@ -407,7 +411,7 @@ st.sidebar.markdown("#### 📞 ¿NECESITAS AYUDA?")
 
 st.sidebar.link_button(
     "💬 Chatear con Soporte",
-    "https://wa.me",
+    "https://wa.me/51950239350",
     use_container_width=True,
     key="link_whatsapp_soporte"
 )
@@ -509,8 +513,9 @@ if es_admin:
                 if nuevo_nombre not in st.session_state.menu_dinamico:
                     if archivo_foto is not None:
                         bytes_foto = archivo_foto.getvalue()
+                        mime_type = archivo_foto.type or "image/png"
                         encoded_foto = base64.b64encode(bytes_foto).decode()
-                        src_final_foto = f"data:image/png;base64,{encoded_foto}"
+                        src_final_foto = f"data:{mime_type};base64,{encoded_foto}"
                     else:
                         src_final_foto = "data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><circle cx='8.5' cy='8.5' r='1.5'/><polyline points='21 15 16 10 5 21'/></svg>"
 
@@ -579,8 +584,9 @@ if es_admin:
                 
                 if nueva_foto_individual is not None:
                     bytes_foto_edit = nueva_foto_individual.getvalue()
+                    mime_type_edit = nueva_foto_individual.type or "image/png"
                     encoded_foto_edit = base64.b64encode(bytes_foto_edit).decode()
-                    st.session_state.menu_dinamico[prod]["foto"] = f"data:image/png;base64,{encoded_foto_edit}"
+                    st.session_state.menu_dinamico[prod]["foto"] = f"data:{mime_type_edit};base64,{encoded_foto_edit}"
                     cambios_detectados = True
                 
                 st.markdown("<div style='height:5px;'></div>", unsafe_allow_html=True)
@@ -845,10 +851,10 @@ else:
         
         # Cierre del cuerpo del mensaje automatizado para concretar la venta
         texto_proforma_whatsapp += f"\n💰 *Monto Total Neto a Procesar: S/{st.session_state.total_acumulado:.2f}*\n📌 Generado el: {fecha_actual}\n\nQuedo a la espera para coordinar el despacho."
-        texto_codificado_url = base64.b64encode(texto_proforma_whatsapp.encode('utf-8')).decode('utf-8')
-        # Alternativa cruda limpia para compatibilidad directa con API de WhatsApp
         import urllib.parse
         mensaje_parseado_url = urllib.parse.quote(texto_proforma_whatsapp)
+        telefono_whatsapp = "51950239350"
+        url_whatsapp = f"https://api.whatsapp.com/send?phone={telefono_whatsapp}&text={mensaje_parseado_url}"
 
         # Renderizado unificado y consistente de cuentas oficiales (Previene datos cruzados)
         renderizar_informacion_pago(total_contexto=st.session_state.total_acumulado)
@@ -883,16 +889,13 @@ else:
                 
                 guardar_json(RUTA_JSON_MENU, st.session_state.menu_dinamico)
                 st.session_state.pedido_guardado = True
-                
-                # Pausa controlada para disfrutar la animación de los globos sin interrupción prematura
-                time.sleep(2.5)
                 st.rerun()
                 
         with col_c2:
             # Botón maestro de cierre de venta: Envia la orden masticada y lista al WhatsApp del local
             st.link_button(
                 "🟢 ENVIAR PEDIDO POR WHATSAPP",
-                f"https://wa.me{mensaje_parseado_url}",
+                url_whatsapp,
                 use_container_width=True
             )
 
