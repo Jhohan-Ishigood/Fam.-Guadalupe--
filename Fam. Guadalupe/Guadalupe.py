@@ -123,9 +123,9 @@ URL_QR_YAPE = cargar_recurso_base64(os.path.join(BASE_DIR, "miqr1.png"), "imagen
 URL_QR_YAPE = cargar_recurso_base64(os.path.join(BASE_DIR, "Logotipo.png"), "imagen")
 
 # Enlaces directos en la nube para que el servidor de Streamlit no se sature
-URL_VIDEO_PC = "https://githubusercontent.com"
-URL_VIDEO_MOVIL = "https://githubusercontent.com"
-URL_VIDEO_LOGO = "https://githubusercontent.com"
+URL_VIDEO_PC = "https://streamable.com/hovyqm"
+URL_VIDEO_MOVIL = "https://streamable.com/6oo3z9"
+URL_VIDEO_LOGO = "https://streamable.com/4gffqo"
 
 if os.path.exists(RUTA_CSS):
     try:
