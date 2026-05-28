@@ -15,15 +15,7 @@ st.set_page_config(
 )
 
 # Determinación dinámica y automática de la ruta raíz en servidores de producción
-BASE_DIR = ""
-OPCIONES_CARPETA = [
-    "Fam. Guadalupe", "Fam. Guadalupe", 
-    "Fam. Guadalupe", "Fam. Guadalupe Pitón"
-]
-for carpeta in OPCIONES_CARPETA:
-    if os.path.exists(carpeta):
-        BASE_DIR = f"{carpeta}/"
-        break
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Mapeo unificado de archivos físicos de la base de datos local
 RUTA_CSS = os.path.join(BASE_DIR, "estilos.css")
