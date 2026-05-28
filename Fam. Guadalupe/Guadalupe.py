@@ -122,9 +122,10 @@ URL_FOTO_TIENDA = cargar_recurso_base64(os.path.join(BASE_DIR, "establecimiento.
 URL_QR_YAPE = cargar_recurso_base64(os.path.join(BASE_DIR, "miqr1.png"), "imagen")
 
 # Enlaces directos en la nube para que el servidor de Streamlit no se sature
-URL_VIDEO_PC = "https://githubusercontent.com"
-URL_VIDEO_MOVIL = "https://githubusercontent.com"
-URL_VIDEO_LOGO = "https://githubusercontent.com"
+URL_VIDEO_PC = "https://jsdelivr.net"
+URL_VIDEO_MOVIL = "https://jsdelivr.net"
+URL_VIDEO_LOGO = "https://jsdelivr.net"
+
 
 
 if os.path.exists(RUTA_CSS):
