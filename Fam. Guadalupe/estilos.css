@@ -1,27 +1,618 @@
-/* ==============================================================================
-   1. VARIABLES GLOBALES Y CONFIGURACIÓN BASE (Tema Oscuro Elegante)
-   ============================================================================== */
-:root {
-    --fondo-oscuro: #0E1117;
-    --fondo-tarjeta: #1A1C23;
-    --dorado-principal: #FFD700;
-    --verde-autor: #4CAF50;
-    --borde-morado: #3F3D56;
-    --texto-blanco: #FFFFFF;
-    --texto-gris: #B0B0B0;
+/* ============================================================================
+    1. BLINDAJE ANTI-MODO CLARO Y ARQUITECTURA VISUAL GLOBAL (EDICIÓN ORO FAM. GUADALUPE)
+   ============================================================================ */
+
+/* 1. Permitimos transparencia solo en los contenedores maestros de la aplicación */
+html, body, .stApp, 
+[data-testid="stAppViewContainer"], 
+[data-testid="stMainBlockContainer"] {
+    background-color: transparent !important;
+    color: #ffffff !important;
 }
 
-/* Reducción de márgenes globales de Streamlit para ganar espacio en celulares */
+/* 2. Fijamos el fondo oscuro estándar para la estructura de bloques generales */
+[data-testid="stVerticalBlock"] {
+    background-color: #0a0a0f !important;
+    color: #ffffff !important;
+}
+
+/* 3. PARCHE MAESTRO: Forzamos transparencia en todos los sub-contenedores de la Bienvenida */
+.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"],
+.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"] div,
+.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stMarkdownContainer"],
+.stApp:has(button[key="btn_empezar_pedido_master"]) .element-container {
+    background-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+
+/* Configuración unificada de fuentes nítidas para toda la aplicación */
+.stApp, :app {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+}
+
+/* Centrado estructural optimizado del bloque principal de contenido */
 .block-container {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    padding-top: 25px !important; 
 }
 
-/* ==============================================================================
-   2. ENCABEZADO PRINCIPAL (Responsive y Superpuesto)
-   ============================================================================== */
+/* Titulado Principal Adaptado al Oro Metálico de tu Logotipo */
+.titulo-principal {
+    text-align: center;
+    color: #d4af37 !important;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 38px;
+    text-shadow: 0px 0px 12px rgba(212, 175, 55, 0.5);
+    margin-top: 15px !important;            
+    margin-bottom: 10px !important;           
+    transform: translateY(0px) !important;    
+}
+
+/* Ocultación absoluta del menú nativo de tres puntos de Streamlit */
+#MainMenu {
+    display: none !important;
+}
+
+/* Remoción estética de la barra superior estándar del servidor */
+div[data-testid="stHeader"] {
+    background-color: transparent !important;
+}
+div[data-testid="stHeader"] > div:first-child {
+    display: none !important;
+}
+
+/* ============================================================================
+    2. REDISEÑO TOTAL DEL BOTÓN DE CABECERA (MENÚ DE OPCIONES)
+   ============================================================================ */
+
+/* Transformación del botón hamburguesa nativo en un botón POS estilizado en Oro */
+button[kind="headerNoPadding"] {
+    background-color: #111424 !important;
+    border: 1px solid #d4af37 !important;
+    border-radius: 6px !important;
+    padding: 6px 14px !important;
+    height: auto !important;
+    width: auto !important;
+    margin-left: 10px !important;
+    margin-top: 5px !important;
+}
+button[kind="headerNoPadding"] svg {
+    display: none !important;
+}
+button[kind="headerNoPadding"]::after {
+    content: " Menú de Opciones" !important;
+    color: #d4af37 !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    font-family: 'Segoe UI', sans-serif !important;
+}
+
+/* Bloqueo de seguridad para evitar duplicaciones en el despliegue del Sidebar */
+section[data-testid="stSidebar"] button[kind="headerNoPadding"]::after,
+.stAppDeployDropdown button::after {
+    content: "" !important;
+    display: none !important;
+}
+/* ============================================================================
+    3. REDISEÑO PREMIUM DE LA BARRA LATERAL (SIDEBAR POS)
+   ============================================================================ */
+
+/* Configuración del fondo oscuro profundo de la barra lateral */
+section[data-testid="stSidebar"] {
+    background-color: #0b0c12 !important;
+}
+
+/* Botón personalizado carmesí para cerrar la barra de opciones */
+section[data-testid="stSidebar"] button[kind="headerNoPadding"] {
+    background-color: #c0392b !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 4px 12px !important;
+}
+section[data-testid="stSidebar"] button[kind="headerNoPadding"]::after {
+    content: "✕ Cerrar" !important;
+    color: #ffffff !important;
+    font-size: 12px !important;
+}
+section[data-testid="stSidebar"] button[kind="headerNoPadding"]:hover {
+    background-color: #e74c3c !important;
+    box-shadow: 0px 0px 8px rgba(231, 76, 60, 0.6) !important;
+}
+
+/* Optimización de espacios de los contenedores nativos del menú lateral */
+section[data-testid="stSidebar"] .element-container {
+    margin-bottom: 6px !important; 
+}
+
+/* Tarjetas unificadas de información en Azul Noche con acento Oro Metálico de tu Escudo */
+section[data-testid="stSidebar"] .element-container:has(p), 
+section[data-testid="stSidebar"] .element-container:has(h4) {
+    background-color: #111424 !important; 
+    padding: 10px 14px !important; 
+    border-radius: 12px !important; 
+    border-left: 4px solid #d4af37 !important; 
+    margin-bottom: 6px !important;
+    box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.15) !important;
+}
+
+/* Títulos internos de la barra lateral en blanco puro destacado */
+section[data-testid="stSidebar"] h4, 
+section[data-testid="stSidebar"] b,
+section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p strong,
+section[data-testid="stSidebar"] h2 {
+    color: #ffffff !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Textos planos informativos de la barra lateral en alta nitidez */
+section[data-testid="stSidebar"] p, 
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] caption,
+section[data-testid="stSidebar"] div {
+    color: #e0e0e0 !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+}
+
+/* Proximidad compacta para el botón de login administrativo */
+section[data-testid="stSidebar"] .element-container:has(button[key*="btn_toggle_admin_login"]) {
+    margin-top: -4px !important; 
+}
+
+/* Botón interactivo de WhatsApp con degradado esmeralda */
+section[data-testid="stSidebar"] button:has(span:contains("Chatear")) {
+    background: linear-gradient(135deg, #25d366 0%, #1cbd55 100%) !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    box-shadow: 0px 4px 12px rgba(37, 211, 102, 0.3) !important;
+    border: none !important;
+}
+
+/* Líneas divisorias refinadas con desvanecimiento lateral en Oro Guadalupe */
+section[data-testid="stSidebar"] hr {
+    margin-top: 12px !important;
+    margin-bottom: 12px !important;
+    border: 0 !important;
+    height: 1px !important;
+    background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.4), transparent) !important;
+}
+
+/* ============================================================================
+    4. CATÁLOGO DE PRODUCTOS (CARDS PREMIUM)
+   ============================================================================ */
+
+/* Bloque inferior de información para las tarjetas de productos en azul noche sutil */
+.product-card-bottom {
+    background-color: #111424 !important;
+    padding: 15px;
+    border-radius: 0px 0px 12px 12px;
+    border-left: 1px solid #222538;
+    border-right: 1px solid #222538;
+    border-bottom: 1px solid #222538;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.6);
+}
+
+/* Control del título para evitar desbordes */
+.product-title {
+    font-size: 15px !important;               
+    font-weight: bold !important;
+    color: #ffffff !important;
+    line-height: 1.3 !important;
+    padding-right: 10px !important;           
+}
+/* Precios destacados en Oro Guadalupe Sólido Impact */
+.product-price {
+    font-size: 18px !important;               
+    font-weight: 900 !important;
+    color: #d4af37 !important;
+    font-family: 'Impact', Charcoal, sans-serif;
+    white-space: nowrap !important;           
+}
+
+/* Ajustamos el contenedor para darle una distribución perfecta de lado a lado */
+.product-card-bottom {
+    background-color: #111424 !important;
+    padding: 12px 15px !important;            
+    border-radius: 0px 0px 12px 12px;
+    border-left: 1px solid #222538;
+    border-right: 1px solid #222538;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+}
+
+/* ============================================================================
+    5. BARRA DE NAVEGACIÓN HORIZONTAL MAESTRA (ESTILO NETFLIX OPTIMIZADO)
+   ============================================================================ */
+
+/* Reducimos los márgenes para pegar el catálogo y el título hacia arriba */
+.netflix-navbar-master {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-top: 5px !important;    
+    margin-bottom: 5px !important;  
+    display: block !important;
+    width: 100% !important;
+}
+
+/* Alineación horizontal rígida para evitar desbordes */
+.netflix-navbar-master div[data-testid="stHorizontalBlock"] {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    margin-top: 0 !important; 
+}
+
+/* Forzado de flujo en línea recta para pestañas de navegación activas */
+div[data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) {
+    display: flex !important;
+    flex-direction: row !important; 
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex-wrap: nowrap !important; 
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin-top: 35px !important; 
+    padding: 5px 0 !important;
+    gap: 8px !important;
+}
+
+/* Rediseño de las cajas de búsqueda compactadas y enfocadas a Oro Guadalupe */
+div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input {
+    background-color: rgba(17, 20, 36, 0.75) !important;
+    border: 1px solid #222538 !important;
+    border-radius: 4px !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+}
+div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input:focus {
+    border-color: #d4af37 !important;
+    box-shadow: 0px 0px 8px rgba(212, 175, 55, 0.5) !important;
+}
+
+/* ============================================================================
+     NUEVOS ESTILOS PARA LOS CONTENEDORES DESPLEGABLES (ST.EXPANDER)
+   ============================================================================ */
+
+/* Rediseño exterior del componente expandible en Azul Noche */
+div[data-testid="stExpander"] {
+    background-color: #111424 !important;
+    border: 1px solid #222538 !important;
+    border-radius: 8px !important;
+    margin-bottom: 12px !important;
+    margin-top: -23px !important;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4) !important;
+    overflow: hidden !important;
+}
+
+/* Encabezado o pestaña interactiva del desplegable */
+div[data-testid="stExpander"] summary {
+    background-color: #161a30 !important;
+    padding: 12px 16px !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    font-size: 15px !important;
+    border-bottom: 1px solid transparent !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Efecto visual al pasar el mouse por encima de la pestaña (Foco Dorado) */
+div[data-testid="stExpander"] summary:hover {
+    background-color: #1e233d !important;
+    color: #d4af37 !important;
+    cursor: pointer !important;
+}
+
+/* Contenedor interno de datos cuando el menú se encuentra desplegado */
+div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] {
+    background-color: #0a0c16 !important;
+    padding: 15px !important;
+    border-top: 1px solid #d4af37 !important; /* Hilo de acento Oro Guadalupe */
+}
+/* ============================================================================
+    6. ALERTAS, TOTALIZADOR NEÓN Y MEDIA QUERIES RESPONSIVAS
+   ============================================================================ */
+
+/* Cuadros informativos de estados de procesamiento con línea en Oro Guadalupe */
+div.stAlert {
+    background-color: #0b111e !important; 
+    border: 1px solid #1a2436 !important;
+    border-left: 5px solid #d4af37 !important; 
+    border-radius: 10px !important;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.6) !important;
+}
+
+div.stAlert p, div.stAlert span {
+    color: #ffffff !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+}
+div.stAlert:has(svg[data-testid="stNotificationIconError"]) {
+    border-left: 5px solid #c0392b !important; 
+    background-color: #1a1111 !important;
+    border-color: #471f1f !important;
+}
+
+/* REFORZAMIENTO RESPONSIVO MÓVIL BLINDADO 2X2 */
+@media (max-width: 768px) {
+    [data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+    [data-testid="stHorizontalBlock"] > div,
+    [data-testid="stHorizontalBlock"] > div[data-testid="column"],
+    [data-testid="stHorizontalBlock"] * .stColumn {
+        width: calc(50% - 6px) !important;
+        min-width: calc(50% - 6px) !important;
+        max-width: calc(50% - 6px) !important;
+        flex: 1 1 calc(50% - 6px) !important;
+    }
+    .product-title {
+        font-size: 16px !important;
+        font-weight: 800 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    .product-card-bottom {
+        padding: 10px 12px !important;
+        flex-direction: column !important; 
+        align-items: flex-start !important;
+        gap: 4px !important;
+    }
+}
+
+/* Pie de página corporativo de redes sociales */
+.social-footer {
+    text-align: center !important;
+    background-color: rgba(11, 12, 18, 0.9) !important;
+    padding: 20px !important;
+    border-radius: 10px !important;
+    border: 1px solid #222538 !important;
+    margin-top: 40px !important;
+    max-width: 600px !important;
+    margin: 40px auto 0 auto !important;
+}
+.social-icon, .social-footer a {
+    color: #d4af37 !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+}
+/* SELLO DEL AUTOR CORREGIDO EN POSICIÓN Y RESPLANDOR */
+.sello-creador {
+    position: relative !important;
+    display: block !important;
+    text-align: left !important;            
+    color: #2ecc71 !important;             
+    font-size: 13.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    margin-top: 40px !important;            
+    margin-left: 20px !important;           
+    margin-bottom: 5px !important;
+    text-shadow: 0px 0px 8px rgba(46, 204, 113, 0.5) !important;
+    z-index: 99999 !important;
+}
+
+/* BOTÓN CENTRAL DE BIENVENIDA Y ACCIONES EN DEGRADADO DORADO METÁLICO PREMIUM */
+div[data-testid="stMainBlockContainer"] div.stButton > button {
+    background-image: none !important;     
+    background: linear-gradient(135deg, #d4af37 0%, #aa8416 100%) !important; 
+    color: #0a0a0f !important;             
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    font-family: 'Arial Black', Gadget, sans-serif !important;
+    border: 2px solid #f1c40f !important;
+    box-shadow: 0px 6px 20px rgba(212, 175, 55, 0.4) !important;
+}
+
+/* BOTÓN ADMINISTRADOR EN LA BARRA LATERAL EN TONO DORADO */
+section[data-testid="stSidebar"] div.stButton > button {
+    background-image: none !important;                 
+    background: linear-gradient(135deg, #d4af37 0%, #aa8416 100%) !important; 
+    color: #0a0a0f !important;                         
+    font-weight: 900 !important;
+    font-size: 13px !important;
+    border: 1px solid #f1c40f !important;
+    box-shadow: 0px 4px 10px rgba(212, 175, 55, 0.3) !important;
+    text-transform: uppercase !important;
+}
+
+/* EFECTOS HOVER COMPARTIDOS */
+div[data-testid="stMainBlockContainer"] div.stButton > button:hover,
+section[data-testid="stSidebar"] div.stButton > button:hover {
+    filter: brightness(1.2) !important;
+    color: #0a0a0f !important;
+}
+
+/* INPUTS NUMÉRICOS DEL CATÁLOGO (NÚMERO VERDE BRILLANTE CON EFECTO NEÓN) */
+div[data-testid="stColumn"] div[data-testid="stNumberInput"] input {
+    color: #2ecc71 !important;               
+    background-color: #111424 !important;     
+    font-size: 20px !important;               
+    font-weight: 900 !important;              
+    text-shadow: 0px 0px 8px rgba(46, 204, 113, 0.5) !important; 
+    border: 2px solid #222538 !important;
+}
+
+/* ENTRADAS DE TEXTO GENERALES Y CAJAS ADMINISTRATIVAS */
+div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input, 
+div[data-testid="stNumberInput"]:not(:has(div[data-testid="stColumn"] *)) input {
+    background-color: #111424 !important;     
+    color: #ffffff !important;                
+    border: 2px solid #222538 !important;     
+    border-radius: 8px !important;
+    padding: 10px 14px !important;
+    font-size: 16px !important;               
+    font-weight: 700 !important;              
+}
+/* BLINDAJE DE ETIQUETAS Y TEXTOS DE PREGUNTAS EN FORMULARIOS */
+div[data-testid="stRadio"] label,
+div[data-testid="stSelectbox"] label,
+div[data-testid="stTextInput"] label,
+div[data-testid="stNumberInput"] label,
+div[data-testid="stRadio"] p,
+div[data-testid="stSelectbox"] p,
+div[data-testid="stTextInput"] p,
+div[data-testid="stNumberInput"] p,
+.stWidgetLabel p,
+label[data-testid="stWidgetLabel"],
+div[data-testid="stRadio"] div[role="radiogroup"] label span p,
+div[data-testid="stRadio"] div[role="radiogroup"] span {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* TITULO DE LA MÉTRICA EN BLANCO */
+div[data-testid="stMetricLabel"],
+div[data-testid="stMetricLabel"] > div,
+div[data-testid="stMetricLabel"] p,
+[data-testid="stMetricLabel"] {
+    color: #ffffff !important;
+    font-weight: bold !important;
+    opacity: 1 !important;
+}
+
+/* VALOR DE LA MÉTRICA (TOTAL EN VERDE ESMERALDA NEÓN TRIDIMENSIONAL) */
+div[data-testid="stMetricValue"],
+div[data-testid="stMetricValue"] > div,
+div[data-testid="stMetricValue"] span,
+[data-testid="stMetricValue"] {
+    font-size: 46px !important;
+    font-weight: 900 !important;
+    color: #2ecc71 !important;
+    font-family: 'Impact', Charcoal, sans-serif !important;
+    text-shadow: 0px 0px 15px rgba(46, 204, 113, 0.6) !important;
+    background-color: #0f0f0f !important;
+    padding: 12px 25px !important;
+    border-radius: 8px !important;
+    display: inline-block !important;
+    border: 2px solid #2ecc71 !important;
+    opacity: 1 !important;
+}
+
+/* DISEÑO CALIBRADO PARA LOS INVENTARIOS DEBAJO DE LAS TARJETAS */
+.mini-stock-alerta {
+    color: #e74c3c !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    margin-top: 5px !important;
+    margin-bottom: -5px !important;
+    margin-left: 5px !important;
+    text-transform: uppercase;
+}
+
+.mini-stock-normal {
+    color: #888888 !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    margin-top: 5px !important;
+    margin-bottom: -5px !important;
+    margin-left: 5px !important;
+}
+
+.product-price {
+    font-size: 22px !important;               
+    font-weight: 900 !important;
+    color: #d4af37 !important; /* Dorado oficial Fam. Guadalupe */
+    font-family: 'Impact', Charcoal, sans-serif;
+    white-space: nowrap !important;           
+}
+
+.product-title {
+    font-size: 18px !important;               
+    font-weight: bold !important;
+    color: #ffffff !important;
+}
+
+/* Quita el espacio excesivo superior en los títulos de los formularios */
+h3, [data-testid="stMarkdownContainer"] h3 {
+    margin-top: -10px !important;
+    padding-top: 0 !important;
+}
+
+/* ============================================================================
+    PARCHE DE REFINAMIENTO: FIJAR UN SOLO CUADRO PARA EL TOTALIZADOR NEÓN
+   ============================================================================ */
+
+/* 1. Removemos el borde repetido del sub-element interno */
+div[data-testid="stMetricValue"] > div,
+div[data-testid="stMetricValue"] span,
+div[data-testid="stMetricValue"] div {
+    border: none !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+/* 2. Aseguramos que solo la caja principal tenga el borde verde y el fondo oscuro */
+div[data-testid="stMetricValue"] {
+    border: 2px solid #2ecc71 !important;     
+    background-color: #0f0f0f !important;     
+    padding: 12px 25px !important;            
+    border-radius: 8px !important;            
+    display: inline-block !important;
+    box-shadow: 0px 4px 15px rgba(46, 204, 113, 0.15) !important;
+}
+
+/* ============================================================================
+    8. REFINAMIENTO DE CONTACTO Y CONTRASTE EN PANTALLA DE BIENVENIDA
+   ============================================================================ */
+
+/* Blindaje visual para que los desplegables mantengan contraste sólido en la bienvenida */
+.stApp div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] p,
+.stApp div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] span,
+.stApp div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] b {
+    color: #ffffff !important;
+    text-shadow: none !important;
+}
+/* ============================================================================
+    9. DISEÑO DE LOGOTIPO DE PORTADA PREMIUM - FAM. GUADALUPE
+   ============================================================================ */
+.contenedor-logo-portada {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: -15px !important;
+    margin-bottom: 20px !important;
+}
+
+.logo-portada-circular {
+    width: 206px !important;
+    height: 206px !important;
+    object-fit: cover !important;
+    border-radius: 50% !important; 
+    border: 3px solid #d4af37 !important; 
+    background-color: #111424 !important; /* Mantiene la sintonía azul noche de tu marca */
+    box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important; 
+    transition: transform 0.4s ease-in-out !important;
+}
+
+/* Contenedor principal del encabezado */
 .header-container {
     display: flex;
     flex-direction: column;
@@ -29,154 +620,44 @@
     justify-content: center;
     text-align: center;
     width: 100%;
+    padding: 10px;
     box-sizing: border-box;
 }
 
-/* Nombre del autor: Mantiene distancia perfecta del logo */
+/* Nombre del autor en la parte superior */
 .autor-text {
-    font-size: clamp(0.75rem, 2vw, 1.05rem);
-    margin-bottom: 25px; 
-    color: var(--verde-autor);
+    font-size: clamp(0.7rem, 2vw, 1rem); /* Se encoge en celular y crece en PC */
+    margin-bottom: 20px; /* Mantiene la distancia con el logo */
+    color: #4CAF50; /* Tu color verde actual */
     font-weight: bold;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
 }
 
-/* Envoltura del Logo y el Título para permitir la superposición */
+/* Contenedor del Logo y el Título Superpuesto */
 .logo-title-wrapper {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin-bottom: 30px; /* Distancia con el texto de abajo */
 }
 
-/* Imagen del Logo Circular */
+/* Imagen del Logo */
 .logo-img {
-    width: clamp(160px, 45vw, 260px); /* Fluido: pequeño en móvil, ideal en PC */
+    width: clamp(150px, 40vw, 280px); /* Tamaño adaptativo para PC y celular */
     height: auto;
     z-index: 1; /* Capa inferior */
-    filter: drop-shadow(0px 4px 15px rgba(0, 0, 0, 0.5));
 }
 
-/* Título que pasa por encima de la base del logo */
+/* Título que pasa por encima */
 .titulo-catalogo {
     position: absolute;
-    bottom: -15px; /* Se monta exactamente en la base del círculo */
+    bottom: -15px; /* Lo posiciona exactamente encima de la base del logo */
     z-index: 2; /* Capa superior (pasa por encima) */
-    font-size: clamp(1.05rem, 3.8vw, 2.1rem); /* Tamaño inteligente que no se desborda */
-    background-color: rgba(14, 17, 23, 0.92); /* Fondo oscuro nítido para legibilidad */
-    color: var(--texto-blanco) !important;
-    padding: 8px 18px;
-    border-radius: 6px;
-    border: 2px solid var(--dorado-principal);
-    width: 92%; 
-    max-width: 580px;
-    margin: 0 auto;
-    font-weight: 800;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.6);
-    box-sizing: border-box;
-}
-
-/* Subtítulo o texto de bienvenida fluido */
-.texto-bienvenida {
-    font-size: clamp(0.85rem, 2.5vw, 1.3rem);
-    text-align: center;
-    width: 90%;
-    max-width: 700px;
-}
-
-/* ==============================================================================
-   3. INFORMACIÓN DE PAGO Y DESPLEGABLES
-   ============================================================================== */
-.boton-desplegable-info {
-    background-color: rgba(26, 28, 35, 0.5);
-    padding: 15px;
-    border-radius: 6px;
-    border-left: 4px solid var(--dorado-principal);
-    color: var(--texto-blanco);
-    font-size: clamp(0.85rem, 2.2vw, 1.05rem);
-    line-height: 1.6;
-}
-
-/* Estilo personalizado para los expanders nativos de Streamlit */
-.stExpander {
-    border: 1px solid var(--borde-morado) !important;
-    background-color: var(--fondo-tarjeta) !important;
-    border-radius: 6px !important;
-    margin-bottom: 12px !important;
-    box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
-}
-
-/* ==============================================================================
-   4. CUADRÍCULA DE PRODUCTOS (CSS Grid Responsivo Automático)
-   ============================================================================== */
-.contenedor-productos {
-    display: grid;
-    /* Ajusta columnas solo: 1 columna en celular, 2 en tablets, 3 o 4 en laptops */
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    width: 100%;
-    margin-top: 15px;
-    box-sizing: border-box;
-}
-
-/* Tarjeta individual de cada producto */
-.tarjeta-producto {
-    background-color: var(--fondo-tarjeta);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Efecto hover elegante en PC (se desactiva solo en móvil al tocar) */
-@media (hover: hover) {
-    .tarjeta-producto:hover {
-        transform: translateY(-4px);
-        border-color: var(--dorado-principal);
-        box-shadow: 0px 6px 15px rgba(255, 215, 0, 0.15);
-    }
-}
-
-/* Nombre del artículo dentro de la tarjeta */
-.nombre-producto {
-    color: var(--texto-blanco);
-    font-size: clamp(0.95rem, 2.5vw, 1.15rem);
-    margin: 8px 0;
-    font-weight: 600;
-    line-height: 1.4;
-}
-
-/* Pequeña etiqueta de la categoría dentro de la tarjeta */
-.etiqueta-categoria {
-    align-self: flex-start;
-    background-color: rgba(255, 215, 0, 0.1);
-    color: var(--dorado-principal);
-    font-size: 0.7rem;
-    font-weight: bold;
-    padding: 3px 8px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.divisor-tarjeta {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.06);
-    margin: 10px 0;
-    width: 100%;
-}
-
-/* Precio destacado del artículo */
-.precio-producto {
-    color: var(--dorado-principal);
-    font-size: clamp(1.1rem, 2.8vw, 1.35rem);
-    font-weight: 700;
-    margin: 0;
+    font-size: clamp(1.2rem, 4vw, 2.2rem); /* Tamaño fluido responsivo */
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente para leer bien */
+    padding: 5px 15px;
+    border-radius: 5px;
+    width: 90%; /* Evita que se salga en celulares */
+    max-width: 600px;
 }
