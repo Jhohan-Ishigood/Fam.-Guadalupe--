@@ -126,6 +126,7 @@ URL_VIDEO_PC = "https://githubusercontent.com"
 URL_VIDEO_MOVIL = "https://githubusercontent.com"
 URL_VIDEO_LOGO = "https://githubusercontent.com"
 
+
 if os.path.exists(RUTA_CSS):
     try:
         with open(RUTA_CSS, "r", encoding="utf-8") as f:
