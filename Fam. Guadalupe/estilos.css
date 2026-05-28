@@ -2,19 +2,23 @@
     1. BLINDAJE ANTI-MODO CLARO Y ARQUITECTURA VISUAL GLOBAL (EDICIÓN ORO FAM. GUADALUPE)
    ============================================================================ */
 
-/* Permitimos que el fondo sea transparente para que se vea el banner de Python */
+/* 1. Forzamos transparencia absoluta en todos los contenedores principales del lienzo */
 html, body, .stApp, 
 [data-testid="stAppViewContainer"], 
-[data-testid="stMainBlockContainer"] {
+[data-testid="stMainBlockContainer"],
+[data-testid="stVerticalBlock"] {
     background-color: transparent !important;
+    background: transparent !important;
     color: #ffffff !important;
 }
 
-/* El fondo oscuro sólido se aplicará únicamente en los bloques verticales internos */
-[data-testid="stVerticalBlock"] {
+/* 2. Aplicamos el fondo oscuro sólido ÚNICAMENTE a los elementos del catálogo y del panel admin para que no afecte a la portada */
+[data-testid="element-container"]:has(.product-card-bottom),
+.stTable, 
+div[border="true"] {
     background-color: #0a0a0f !important;
-    color: #ffffff !important;
 }
+
 
 
 /* Configuración unificada de fuentes nítidas para toda la aplicación */
