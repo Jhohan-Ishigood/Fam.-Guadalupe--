@@ -124,308 +124,6 @@ URL_LOGO_PORTADA = cargar_imagen_base64(ruta_logo_portada)
 ruta_qr_local = os.path.join(BASE_DIR, "mi_qr_yape de MELQUIADES.png")
 URL_QR_YAPE = cargar_imagen_base64(ruta_qr_local)
 
-# ============================================================================
-# 5. INYECCIÓN MAESTRA DE ESTILOS CSS Y ANIMACIONES GLOBALES
-# ============================================================================
-st.markdown(f"""
-    <style>
-    /* ====== BLINDAJE TOTAL: OCULTACIÓN DE ELEMENTOS TÉCNICOS ====== */
-    #MainMenu, .stAppDeployDropdown, [data-testid="stHeader"] > div:last-child {{
-        display: none !important;
-    }}
-    
-    /* ====== 1. SISTEMA DE FONDO PANORÁMICO INTEGRAL EN MOVIMIENTO ====== */
-    
-    /* PC / LAPTOP (> 768px) - Se mueve lo que queda de imagen por la expansión */
-    @media (min-width: 769px) {{
-        [data-testid="stAppViewContainer"] {{
-            background-color: #0a0a0f !important;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url("{URL_BANNER_LOCAL}") !important;
-            background-size: 130% auto !important; /* Expansión controlada para PC */
-            background-position: 0% center !important;
-            background-repeat: no-repeat !important;
-            background-attachment: fixed !important;
-            animation: recorridoPanoramicoPC 25s ease-in-out infinite alternate !important;
-        }}
-        @keyframes recorridoPanoramicoPC {{
-            0% {{ background-position: 0% center !important; }}
-            100% {{ background-position: 100% center !important; }}
-        }}
-    }}
-    
-    /* CELULAR (≤ 768px) - ¡Máximo desplazamiento aprovechando el exceso de foto! */
-    @media (max-width: 768px) {{
-        [data-testid="stAppViewContainer"] {{
-            background-color: #0a0a0f !important;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80)), url("{URL_BANNER_LOCAL}") !important;
-            background-size: auto 100% !important; /* Ajusta el alto y deja libre el ancho masivo */
-            background-position: 0% center !important;
-            background-repeat: no-repeat !important;
-            background-attachment: scroll !important;
-            /* Animación fluida de vaivén completo de extremo a extremo */
-            animation: recorridoPanoramicoCelular 30s linear infinite alternate !important;
-        }}
-        @keyframes recorridoPanoramicoCelular {{
-            0% {{ background-position: 0% center !important; }}
-            100% {{ background-position: 100% center !important; }}
-        }}
-    }}
-    
-    /* ====== 2. MINI-LOGO FLOTANTE 3D EN ESQUINA SUPERIOR DERECHA (DESACTIVADO DEL FLUJO TRADICIONAL) ====== */
-    .mini-logo-flotante-master, .mini-logo-imagen-circular {{
-        display: none !important;
-    }}
-
-    
-    /* ====== 3. TRANSPARENCIA RADICAL EN BLOQUES INTERMEDIOS ====== */
-    .stApp, [data-testid="stMainBlockContainer"], [data-testid="stVerticalBlock"],
-    [data-testid="stAppViewBlockContainer"], [data-testid="elementGrid"],
-    .element-container, div[role="radiogroup"], 
-    .bienvenida-transparente-master, .catalogo-transparente-master, 
-    .carrito-transparente-master {{
-        background-color: transparent !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }}
-    
-    /* ====== 4. LOGOTIPO GRANDE CENTRAL CON DESTELLO METÁLICO ====== */
-    .contenedor-logo-destello-fijo {{
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        width: 100% !important;
-        margin: 20px auto !important;
-    }}
-    
-    .marco-escudo-brillante {{
-        position: relative !important;
-        width: 206px !important;
-        height: 206px !important;
-        border-radius: 50% !important;
-        overflow: hidden !important;
-        border: 3px solid #d4af37 !important;
-        box-shadow: 0px 0px 30px rgba(212, 175, 55, 0.5) !important;
-        background-color: #111424 !important;
-        transform: none !important;
-        transform-style: flat !important;
-    }}
-    
-    .foto-logo-real {{
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        transform: none !important;
-        display: block !important;
-    }}
-    
-    .destello-fisico-linea {{
-        position: absolute !important;
-        top: 0 !important;
-        left: -100% !important;
-        width: 50% !important;
-        height: 100% !important;
-        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%) !important;
-        transform: skewX(-25deg) !important;
-        animation: cruzarDestelloMetalico 4s ease-in-out infinite !important;
-        pointer-events: none !important;
-        z-index: 1 !important;
-    }}
-    
-    @keyframes cruzarDestelloMetalico {{
-        0% {{ left: -100%; }}
-        20% {{ left: -100%; }}
-        50% {{ left: 150%; }}
-        100% {{ left: 150%; }}
-    }}
-    
-    /* ====== 5. ANIMACIONES VISUALES SUPREMAS ====== */
-    
-    /* Fade-In en cambio de pantallas */
-    .bienvenida-transparente-master, .catalogo-transparente-master, 
-    .carrito-transparente-master {{
-        animation: aparicionSuaveDeslizada 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both !important;
-    }}
-    
-    @keyframes aparicionSuaveDeslizada {{
-        0% {{ transform: translateY(15px); opacity: 0; }}
-        100% {{ transform: translateY(0); opacity: 1; }}
-    }}
-    
-    /* Elevación 3D e iluminación en tarjetas (Hover) */
-    div[data-testid="stColumn"] {{
-        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-        border-radius: 12px !important;
-    }}
-    
-    div[data-testid="stColumn"]:hover {{
-        transform: translateY(-5px) !important;
-    }}
-    
-    div[data-testid="stColumn"] img {{
-        transition: transform 0.4s ease !important;
-        border-radius: 12px 12px 0px 0px !important;
-    }}
-    
-    div[data-testid="stColumn"]:hover img {{
-        transform: scale(1.05) !important;
-    }}
-    
-    .product-card-bottom {{
-        background-color: #111424 !important;
-        padding: 12px 15px !important;
-        border-radius: 0px 0px 12px 12px !important;
-        border: 1px solid #222538 !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.5) !important;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
-    }}
-    
-    div[data-testid="stColumn"]:hover .product-card-bottom {{
-        border-color: #d4af37 !important;
-        box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.3) !important;
-    }}
-    
-    /* Botones con luz escáner */
-    .btn-luz-escaner {{
-        position: relative !important;
-        overflow: hidden !important;
-    }}
-    
-    .btn-luz-escaner::after {{
-        content: "" !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: -100% !important;
-        width: 100% !important;
-        height: 100% !important;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent) !important;
-        animation: cruzarLuzBoton 3s infinite !important;
-    }}
-    
-    @keyframes cruzarLuzBoton {{
-        0% {{ left: -100%; }}
-        100% {{ left: 100%; }}
-    }}
-    
-    /* Pulso neón en contadores */
-    div[data-testid="stNumberInput"] input:focus {{
-        animation: pulsoNeonContador 0.3s ease !important;
-    }}
-    
-    @keyframes pulsoNeonContador {{
-        0%, 100% {{ transform: scale(1); }}
-        50% {{ transform: scale(1.08); }}
-    }}
-    
-    /* ====== 6. ESTILOS DE TEXTO Y CONTENIDO ====== */
-    .titulo-principal {{
-        text-align: center !important;
-        color: #d4af37 !important;
-        font-family: 'Arial Black', Gadget, sans-serif !important;
-        font-size: 38px !important;
-        margin: 10px 0 !important;
-        text-shadow: 0 0 10px rgba(212, 175, 55, 0.6), 0 0 20px rgba(212, 175, 55, 0.3) !important;
-        animation: pulsoBrilloOro 3s ease-in-out infinite alternate !important;
-    }}
-    
-    @keyframes pulsoBrilloOro {{
-        0% {{ text-shadow: 0 0 4px rgba(212, 175, 55, 0.4), 0 0 10px rgba(212, 175, 55, 0.5), 0 0 15px rgba(212, 175, 55, 0.2) !important; }}
-        100% {{ text-shadow: 0 0 6px rgba(212, 175, 55, 0.6), 0 0 15px rgba(212, 175, 55, 0.8), 0 0 25px rgba(212, 175, 55, 0.4) !important; }}
-    }}
-    
-    @media (max-width: 768px) {{
-        .titulo-principal {{
-            font-size: 28px !important;
-        }}
-    }}
-    
-    .product-title {{
-        font-size: 18px !important;
-        font-weight: bold !important;
-        color: #ffffff !important;
-        line-height: 1.3 !important;
-    }}
-    
-    .product-price {{
-        font-size: 22px !important;
-        font-weight: 900 !important;
-        color: #d4af37 !important;
-        font-family: 'Impact', Charcoal, sans-serif !important;
-    }}
-    
-    .sello-creador {{
-        color: #2ecc71 !important;
-        font-size: 13.5px !important;
-        font-weight: 800 !important;
-        letter-spacing: 1px !important;
-        text-transform: uppercase !important;
-        text-shadow: 0px 0px 8px rgba(46, 204, 113, 0.5) !important;
-    }}
-    
-    /* ====== 7. MÓDULO ADMIN EN 2 COLUMNAS ESTRICTAS ====== */
-    .admin-grid-2col {{
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: wrap !important;
-        gap: 15px !important;
-        width: 100% !important;
-    }}
-    
-    .admin-tarjeta {{
-        flex: 0 0 calc(50% - 8px) !important;
-        min-width: calc(50% - 8px) !important;
-        max-width: calc(50% - 8px) !important;
-    }}
-    
-    @media (max-width: 768px) {{
-        .admin-tarjeta {{
-            flex: 0 0 100% !important;
-            min-width: 100% !important;
-            max-width: 100% !important;
-        }}
-    }}
-    
-    /* ====== 8. PIE DE PÁGINA Y REDES SOCIALES ====== */
-    .social-footer {{
-        text-align: center !important;
-        background-color: rgba(11, 12, 18, 0.9) !important;
-        padding: 20px !important;
-        border-radius: 10px !important;
-        border: 1px solid #222538 !important;
-        margin: 40px auto 0 auto !important;
-        max-width: 600px !important;
-    }}
-    
-    .social-icon {{
-        color: #d4af37 !important;
-        font-weight: 800 !important;
-        text-decoration: none !important;
-    }}
-    
-    /* ====== 9. NOTA DE CAPTURA ESTRATÉGICA ====== */
-    .nota-captura-estrategica {{
-        background-color: rgba(212, 175, 55, 0.1) !important;
-        border: 2px dashed #d4af37 !important;
-        padding: 15px !important;
-        border-radius: 10px !important;
-        text-align: center !important;
-        margin-bottom: 25px !important;
-        box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.15) !important;
-    }}
-    
-    .nota-captura-estrategica p {{
-        color: #ffffff !important;
-        font-size: 14.5px !important;
-        font-weight: bold !important;
-        margin: 0 !important;
-        line-height: 1.5 !important;
-    }}
-    
-    </style>
-""", unsafe_allow_html=True)
-
 # Cargar CSS externo si existe
 if os.path.exists(RUTA_CSS):
     try:
@@ -469,11 +167,12 @@ if URL_LOGO_PORTADA:
             100% {{ transform: rotateY(360deg); }}
         }}
 
-        /* FORMATO EXCLUSIVO PARA CELULAR: Lo encoge a 45px y lo sube para no estorbar */
+        /* FORMATO EXCLUSIVO PARA CELULAR: Lo encoge y lo clava en la esquina IZQUIERDA */
         @media (max-width: 768px) {{
             #logo-raiz-universal {{
                 top: 15px !important;
-                right: 15px !important;
+                left: 15px !important;
+                right: auto !important;
                 width: 45px !important;
                 height: 45px !important;
             }}
@@ -515,8 +214,7 @@ def renderizar_informacion_pago(total_contexto=None):
 
     with st.expander("🟣 VER NÚMERO Y QR DE YAPE", expanded=False):
         if total_contexto is not None:
-            st.markdown(f"<p style='color:#ffffff; font-weight:bold; font-size:15px; margin-bottom:10px;'>Monto exacto: <span style='color:#2ecc71;'>S/{total_contexto:.2f}</span></p>", unsafe_allow_html=True)
-        
+            st.markdown(f"<p style='color:#ffffff; font-weight:bold; font-size:15px; margin-bottom:10px;'>Monto exacto: <span style='color:#2ecc71;'>S/{total_contexto:.2f}</span></p>", unsafe_allow_html=True)        
         src_qr = URL_QR_YAPE if URL_QR_YAPE else ""
         st.markdown(f"""
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 5px auto; max-width: 450px; background-color: #1e1e24; padding: 20px; border-radius: 16px; border: 2px solid #8e44ad; text-align: center;">
@@ -714,56 +412,60 @@ if es_admin:
         if st.session_state.categoria_activa == "Todos" or st.session_state.categoria_activa == cat_prod:
             productos_visibles_admin.append(prod)
 
-    col_pantalla_izquierda, col_pantalla_derecha = st.columns(2, gap="large")
-    
+    # Renderizar el grid administrativo usando un wrapper HTML (2 columnas estrictas)
+    st.markdown('<div class="admin-grid-2col">', unsafe_allow_html=True)
+
     for pos, prod in enumerate(productos_visibles_admin):
         info_prod = st.session_state.menu_dinamico[prod]
         cat_prod = info_prod.get("categoria", "Abarrotes")
-        
-        columna_destino = col_pantalla_izquierda if pos % 2 == 0 else col_pantalla_derecha
-        
-        with columna_destino:
-            with st.container(border=True):
-                col_det1, col_det2 = st.columns([1, 2])
-                with col_det1:
-                    foto_actual = info_prod.get("foto", "")
-                    st.markdown(f'<img src="{foto_actual}" style="width:100%; height:75px; object-fit:cover; border-radius:6px; border:1px solid #d4af37;">', unsafe_allow_html=True)
-                with col_det2:
-                    st.markdown(f"**{info_prod['icono']} {prod}**")
-                    st.caption(f"Sección: {cat_prod}")
-                
-                st.markdown("<hr style='margin:10px 0; border-color:#222538;'>", unsafe_allow_html=True)
-                
-                col_inputs1, col_inputs2 = st.columns(2)
-                with col_inputs1:
-                    precio_edit = st.number_input(f"Precio (S/) {prod}", min_value=0.1, value=float(info_prod["precio"]), step=0.1, key=f"edit_p_{prod}")
-                with col_inputs2:
-                    stock_edit = st.number_input(f"Stock {prod}", min_value=0, value=int(info_prod["stock"]), step=1, key=f"edit_s_{prod}")
-                
-                nueva_foto_individual = st.file_uploader(f"🔄 Foto de {prod}:", type=["jpg", "jpeg", "png"], key=f"foto_edit_{prod}")
-                
-                if nueva_foto_individual is not None:
-                    bytes_foto_edit = nueva_foto_individual.getvalue()
-                    mime_type_edit = nueva_foto_individual.type or "image/png"
-                    encoded_foto_edit = base64.b64encode(bytes_foto_edit).decode()
-                    st.session_state.menu_dinamico[prod]["foto"] = f"data:{mime_type_edit};base64,{encoded_foto_edit}"
-                    cambios_detectados = True
-                
-                st.markdown("<div style='height:5px;'></div>", unsafe_allow_html=True)
-                
-                if st.button("🗑️ ELIMINAR", key=f"del_{prod}", use_container_width=True):
-                    del st.session_state.menu_dinamico[prod]
-                    guardar_json(RUTA_JSON_MENU, st.session_state.menu_dinamico)
-                    st.warning(f"✔ '{prod}' removido")
-                    st.rerun()
-            
+
+        # cada tarjeta física controla su 50% de ancho
+        st.markdown(f'<div class="admin-tarjeta">', unsafe_allow_html=True)
+        with st.container(border=True):
+            col_det1, col_det2 = st.columns([1, 2])
+            with col_det1:
+                foto_actual = info_prod.get("foto", "")
+                st.markdown(f'<img src="{foto_actual}" style="width:100%; height:75px; object-fit:cover; border-radius:6px; border:1px solid #d4af37;">', unsafe_allow_html=True)
+            with col_det2:
+                st.markdown(f"**{info_prod['icono']} {prod}**")
+                st.caption(f"Sección: {cat_prod}")
+
+            st.markdown("<hr style='margin:10px 0; border-color:#222538;'>", unsafe_allow_html=True)
+
+            col_inputs1, col_inputs2 = st.columns(2)
+            with col_inputs1:
+                precio_edit = st.number_input(f"Precio (S/) {prod}", min_value=0.1, value=float(info_prod["precio"]), step=0.1, key=f"edit_p_{prod}")
+            with col_inputs2:
+                stock_edit = st.number_input(f"Stock {prod}", min_value=0, value=int(info_prod["stock"]), step=1, key=f"edit_s_{prod}")
+
+            # file_uploader por ítem (actualiza la foto en caliente)
+            nueva_foto_individual = st.file_uploader(f"🔄 Foto de {prod}:", type=["jpg", "jpeg", "png"], key=f"foto_edit_{prod}")
+            if nueva_foto_individual is not None:
+                bytes_foto_edit = nueva_foto_individual.getvalue()
+                mime_type_edit = nueva_foto_individual.type or "image/png"
+                encoded_foto_edit = base64.b64encode(bytes_foto_edit).decode()
+                st.session_state.menu_dinamico[prod]["foto"] = f"data:{mime_type_edit};base64,{encoded_foto_edit}"
+                cambios_detectados = True
+
+            st.markdown("<div style='height:5px;'></div>", unsafe_allow_html=True)
+
+            if st.button("🗑️ ELIMINAR", key=f"del_{prod}", use_container_width=True):
+                del st.session_state.menu_dinamico[prod]
+                guardar_json(RUTA_JSON_MENU, st.session_state.menu_dinamico)
+                st.warning(f"✔ '{prod}' removido")
+                st.rerun()
+
+            # aplicar cambios detectados en precio/stock
             if precio_edit != info_prod["precio"] or stock_edit != info_prod["stock"]:
                 st.session_state.menu_dinamico[prod]["precio"] = precio_edit
                 st.session_state.menu_dinamico[prod]["stock"] = stock_edit
                 st.session_state.menu_dinamico[prod]["disponible"] = stock_edit > 0
                 cambios_detectados = True
-                
-        st.markdown("<div style='margin-bottom:15px;'></div>", unsafe_allow_html=True)
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("<div style='margin-bottom:15px;'></div>", unsafe_allow_html=True)
 
     if cambios_detectados:
         st.markdown("<br>", unsafe_allow_html=True)
@@ -803,7 +505,9 @@ else:
                 </div>
             """, unsafe_allow_html=True)
 
+        st.markdown('<div class="btn-luz-escaner">', unsafe_allow_html=True)
         cambiar_a_catalogo = st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master")
+        st.markdown('</div>', unsafe_allow_html=True)
 
         renderizar_informacion_pago()
             
@@ -960,20 +664,22 @@ else:
         col_c1, col_c2 = st.columns(2)
         with col_c1:
             if st.button("💾 CONFIRMAR SIMULACIÓN", use_container_width=True):
-                st.success("✔ Simulación procesada correctamente!")
-                st.balloons()
-                
+                # Marcar la bandera ANTES de persistir y hacer rerun para evitar doble descuento por refresh
+                st.session_state.pedido_guardado = True
+
+                # aplicar reserva / descuento de stock localmente
                 for item in st.session_state.carrito:
                     prod_comprado = item["producto"]
                     cant_comprada = item["cantidad"]
                     stock_previo = st.session_state.menu_dinamico[prod_comprado].get("stock", 0)
                     st.session_state.menu_dinamico[prod_comprado]["stock"] = max(0, stock_previo - cant_comprada)
                     st.session_state.menu_dinamico[prod_comprado]["disponible"] = st.session_state.menu_dinamico[prod_comprado]["stock"] > 0
-                
-                # Activamos la bandera para fijar la sesión y bloquear el stock fantasma
-                st.session_state.pedido_guardado = True
+
+                # persistir cambios de inventario y confirmar al usuario
                 guardar_json(RUTA_JSON_MENU, st.session_state.menu_dinamico)
-                time.sleep(2.0)
+                st.success("✔ Simulación procesada correctamente!")
+                st.balloons()
+                time.sleep(1.0)
                 st.rerun()
 
             st.link_button("🟢 ENVIAR PEDIDO POR WHATSAPP", url_whatsapp, use_container_width=True)
