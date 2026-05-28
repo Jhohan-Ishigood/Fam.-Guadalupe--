@@ -1,70 +1,57 @@
 /* ============================================================================
-    1. BLINDAJE ANTI-MODO CLARO Y ARQUITECTURA VISUAL GLOBAL (EDICIÓN ORO)
+    1. BLINDAJE ANTI-MODO CLARO Y ARQUITECTURA VISUAL GLOBAL (EDICIÓN ORO v3.0)
    ============================================================================ */
 
-/* 1. Permitimos transparencia solo en los contenedores maestros de la aplicación */
+/* Forza la transparencia absoluta en la estructura nativa para revelar los videos de fondo */
 html, body, .stApp, 
 [data-testid="stAppViewContainer"], 
-[data-testid="stMainBlockContainer"] {
-    background-color: transparent !important;
-    color: #ffffff !important;
-}
-
-/* 2. Fijamos el fondo oscuro estándar para la estructura de bloques generales */
+[data-testid="stMainBlockContainer"],
 [data-testid="stVerticalBlock"] {
-    background-color: transparent !important; /* Forzado transparente para lucir el fondo panorámico */
+    background-color: transparent !important;
+    background: transparent !important;
     color: #ffffff !important;
 }
 
-/* Configuración unificada de fuentes nítidas para toda la aplicación */
+/* Inyección tipográfica de nitidez global en el sistema */
 .stApp {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
 }
 
-/* Centrado estructural optimizado del bloque principal de contenido */
+/* Optimización y centrado estructural del contenedor maestro */
 .block-container {
     max-width: 100% !important;
     margin: 0 auto !important;
     padding-top: 0px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
     width: 100% !important;
 }
+
 /* ============================================================================
-    2. MOTOR DE FONDO PANORÁMICO ANIMADO EN BUCLE INTEGRAL GLOBAL
+    2. MOTOR DE REPRODUCCIÓN MULTIMEDIA DE FONDO (CAPA INTERNA ABSOLUTA)
    ============================================================================ */
-.stApp {
-    /* Mapeo del fondo Base64 dinámico que lee desde Python */
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    
-    /* Activación del desplazamiento panorámico: ciclo infinito de vaivén de 24 segundos */
-    animation: desplazamientoPanoramicoLocal 24s ease-in-out infinite alternate !important;
+
+/* Contenedor físico de los videos de fondo fijado detrás de la interfaz */
+.video-background-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: -1 !important; /* Capa Z oculta por debajo del software */
+    overflow: hidden !important;
+    pointer-events: none !important;
 }
 
-/* Optimización de fondo para móvil */
-@media (max-width: 480px) {
-    .stApp {
-        background-size: cover !important;
-        background-position: center center !important;
-        background-attachment: scroll !important;
-        background-size: 100% auto !important;
-    }
+/* Control maestro de estiramiento y suavizado para los clips de fondo .mp4 */
+.video-fondo-maestro {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    filter: brightness(0.35) contrast(1.05) !important; /* Filtro oscuro para legibilidad del catálogo */
 }
-
-/* Definición matemática del bucle Ken Burns para deslizar la imagen suavemente */
-@keyframes desplazamientoPanoramicoLocal {
-    0% {
-        background-position: 0% center !important;
-    }
-    100% {
-        /* Desplaza el fondo hasta su extremo derecho para mostrar todo el panorama del local */
-        background-position: 100% center !important;
-    }
-}
-
 /* ============================================================================
-    3. TRANSPARENCIA ABSOLUTA DE BLOQUES (CERO FRANJAS NEGRAS GLOBALES)
+    3. TRANSPARENCIA DE BLOQUES (CERO FRANJAS NEGRAS GLOBALES)
    ============================================================================ */
 /* Fuerza la remoción de los fondos oscuros nativos de Streamlit en catálogo, carrito y bienvenida */
 .bienvenida-transparente-master,
@@ -78,6 +65,7 @@ div[role="radiogroup"] {
     background: transparent !important;
     box-shadow: none !important;
 }
+
 /* ============================================================================
     4. TITULADO PRINCIPAL PREMIUM CON RESPLANDOR NEÓN RESPIRABLE
    ============================================================================ */
@@ -115,7 +103,6 @@ div[role="radiogroup"] {
         filter: brightness(1.15);
     }
 }
-
 /* ============================================================================
     5. BLINDAJE DE CABECERA: REMOCIÓN ABSOLUTA DEL MENÚ NATIVO DERECHO
    ============================================================================ */
@@ -136,6 +123,7 @@ div[data-testid="stHeader"] button {
 div[data-testid="stHeader"] button[kind="headerNoPadding"] {
     display: inline-flex !important;
 }
+
 /* ============================================================================
     6. REDISEÑO TOTAL DEL BOTÓN DE CABECERA ADMINISTRATIVO (IZQUIERDO)
    ============================================================================ */
@@ -204,7 +192,6 @@ section[data-testid="stSidebar"] .element-container:has(h4) {
     margin-bottom: 6px !important;
     box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.15) !important;
 }
-
 /* Títulos internos de la barra lateral en blanco puro destacado */
 section[data-testid="stSidebar"] h4, 
 section[data-testid="stSidebar"] b,
@@ -216,7 +203,7 @@ section[data-testid="stSidebar"] h2 {
     letter-spacing: 0.5px !important;
 }
 
-/* Textas planos informativos de la barra lateral en alta nitidez */
+/* Textos planos informativos de la barra lateral en alta nitidez */
 section[data-testid="stSidebar"] p, 
 section[data-testid="stSidebar"] span,
 section[data-testid="stSidebar"] caption,
@@ -226,7 +213,7 @@ section[data-testid="stSidebar"] div {
     font-weight: 500 !important;
 }
 
-/* Botón interactivo de WhatsApp con degradado esmeralda corregido por llave */
+/* Botón de soporte WhatsApp con degradado esmeralda corregido */
 section[data-testid="stSidebar"] button[key*="link_whatsapp_soporte"] {
     background: linear-gradient(135deg, #25d366 0%, #1cbd55 100%) !important;
     color: #ffffff !important;
@@ -246,33 +233,32 @@ section[data-testid="stSidebar"] hr {
     height: 1px !important;
     background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.4), transparent) !important;
 }
+
 /* ============================================================================
-    8. CATÁLOGO DE PRODUCTOS (CARDS CON EFECTO ELEVACIÓN 3D E ILUMINACIÓN)
+    8. FICHA DE PRODUCTOS (CARDS CON EFECTO ELEVACIÓN 3D E ILUMINACIÓN)
    ============================================================================ */
 
-/* Contenedor de la columna nativa adaptado para soportar transiciones suaves */
-div[data-testid="stColumn"] {
+/* Envoltura para aislar cada tarjeta individual en la grilla adaptativa */
+.tarjeta-producto-individual {
     transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
     border-radius: 12px !important;
 }
 
-/* --- [!] ANIMACIÓN DE ELEVACIÓN E ILUMINACIÓN INTERACTIVA (HOVER) --- */
-div[data-testid="stColumn"]:hover {
-    /* Eleva la tarjeta suavemente 5 píxeles hacia arriba */
+/* Animación de elevación interactiva */
+.tarjeta-producto-individual:hover {
     transform: translateY(-5px) !important;
 }
 
-/* Efecto Micro-Zoom en la imagen del producto al seleccionarlo */
-div[data-testid="stColumn"] img {
+/* Efecto Micro-Zoom en la imagen de catálogo al seleccionarla */
+.tarjeta-producto-individual img {
     transition: transform 0.4s ease !important;
     border-radius: 12px 12px 0px 0px !important;
 }
-div[data-testid="stColumn"]:hover img {
-    /* Amplía la foto un 5% hacia adentro de forma contenida */
+.tarjeta-producto-individual:hover img {
     transform: scale(1.05) !important;
 }
 
-/* Estructura unificada para la base informativa de las fichas */
+/* Estructura base informativa de los productos */
 .product-card-bottom {
     background-color: #111424 !important;
     padding: 12px 15px !important;            
@@ -287,21 +273,22 @@ div[data-testid="stColumn"]:hover img {
     transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
 }
 
-/* Encendido del borde dorado neón al interactuar con el producto */
-div[data-testid="stColumn"]:hover .product-card-bottom {
+/* Encendido de bordes en Oro Metálico al interactuar con el artículo */
+.tarjeta-producto-individual:hover .product-card-bottom {
     border-left: 1px solid #d4af37 !important;
     border-right: 1px solid #d4af37 !important;
     border-bottom: 1px solid #d4af37 !important;
     box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.3) !important;
 }
 
-/* Tipografías nítidas para títulos y precios dentro del catálogo */
+/* Tipografías para títulos y precios en catálogo */
 .product-title {
     font-size: 18px !important;               
     font-weight: bold !important;
     color: #ffffff !important;
     line-height: 1.3 !important;
 }
+
 .product-price {
     font-size: 22px !important;               
     font-weight: 900 !important;
@@ -309,8 +296,7 @@ div[data-testid="stColumn"]:hover .product-card-bottom {
     font-family: 'Impact', Charcoal, sans-serif !important;
     white-space: nowrap !important;           
 }
-
-/* --- [!] ANIMACIÓN DE APARICIÓN SUAVE (FADE-IN) AL CAMBIAR DE PESTAÑAS --- */
+/* --- ANIMACIÓN DE APARICIÓN SUAVE (FADE-IN) AL CAMBIAR DE PESTAÑAS --- */
 .catalogo-transparente-master,
 .bienvenida-transparente-master,
 .carrito-transparente-master {
@@ -319,18 +305,18 @@ div[data-testid="stColumn"]:hover .product-card-bottom {
 
 @keyframes aparicionSuaveDeslizada {
     0% {
-        transform: translateY(15px); /* Se desliza desde abajo */
-        opacity: 0;                   /* Inicia invisible */
+        transform: translateY(15px);
+        opacity: 0;
     }
     100% {
         transform: translateY(0);
         opacity: 1;
     }
 }
+
 /* ============================================================================
     9. BARRA DE NAVEGACIÓN HORIZONTAL (ESTILO NETFLIX OPTIMIZADO)
    ============================================================================ */
-
 .netflix-navbar-master {
     background: transparent !important;
     border: none !important;
@@ -379,9 +365,8 @@ div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input:focus {
 /* ============================================================================
     10. CONTADORES NUMÉRICOS REACTIVOS CON ANIMACIÓN DE PULSO NEÓN
    ============================================================================ */
-
 /* Inputs numéricos del catálogo (Número verde brillante con efecto neón) */
-div[data-testid="stColumn"] div[data-testid="stNumberInput"] input {
+div[data-testid="stNumberInput"] input {
     color: #2ecc71 !important;               
     background-color: #111424 !important;     
     font-size: 20px !important;               
@@ -391,10 +376,10 @@ div[data-testid="stColumn"] div[data-testid="stNumberInput"] input {
     transition: transform 0.1s ease, box-shadow 0.1s ease !important;
 }
 
-/* --- [!] ANIMACIÓN DE PULSO AL INTERACTUAR CON LOS CONTADORES --- */
-div[data-testid="stColumn"] div[data-testid="stNumberInput"] input:focus,
-div[data-testid="stColumn"] div[data-testid="stNumberInput"] input:active {
-    transform: scale(1.08) !important; /* Mini salto de escala rápido al presionar */
+/* Animación de pulso neón al hacer foco o interactuar */
+div[data-testid="stNumberInput"] input:focus,
+div[data-testid="stNumberInput"] input:active {
+    transform: scale(1.08) !important;
     box-shadow: 0px 0px 12px rgba(46, 204, 113, 0.4) !important;
     border-color: #2ecc71 !important;
 }
@@ -408,7 +393,7 @@ div[data-testid="stExpander"] {
     border: 1px solid #222538 !important;
     border-radius: 8px !important;
     margin-bottom: 16px !important;
-    margin-top: 0px !important; /* Solucionado el aplastamiento anterior */
+    margin-top: 0px !important;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4) !important;
     overflow: hidden !important;
     transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
@@ -439,7 +424,7 @@ div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] {
     border-top: 1px solid #222538 !important;
 }
 
-/* --- [!] ENTRADA EN ESTADO ABIERTO: ILUMINACIÓN INTELIGENTE POR COLOR --- */
+/* --- ENTRADA EN ESTADO ABIERTO: ILUMINACIÓN INTELIGENTE POR COLOR --- */
 
 /* 1. Banco de la Nación (Foco e hilo Azul Corporativo) */
 div[data-testid="stExpander"]:has(summary:contains("BANCO DE LA NACIÓN")):has(div[data-testid="stVerticalBlock"]) {
@@ -480,6 +465,7 @@ div.stAlert:has(svg[data-testid="stNotificationIconError"]) {
     background-color: #1a1111 !important;
     border-color: #471f1f !important;
 }
+
 /* ============================================================================
     13. ALERTA DE STOCK CRÍTICO NEÓN CON EFECTO PARPADEO RESPIRABLE
    ============================================================================ */
@@ -520,7 +506,7 @@ div.stAlert:has(svg[data-testid="stNotificationIconError"]) {
     14. ENTRADAS DE TEXTO GENERALES Y CAJAS ADMINISTRATIVAS
    ============================================================================ */
 div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input, 
-div[data-testid="stNumberInput"]:not(:has(div[data-testid="stColumn"] *)) input {
+div[data-testid="stNumberInput"] input {
     background-color: #111424 !important;     
     color: #ffffff !important;                
     border: 2px solid #222538 !important;     
@@ -530,7 +516,7 @@ div[data-testid="stNumberInput"]:not(:has(div[data-testid="stColumn"] *)) input 
     font-weight: 700 !important;              
 }
 
-/* Blindaje de etiquetas de texto en formularios */
+/* Blindaje estricto de etiquetas de texto en formularios */
 div[data-testid="stRadio"] label,
 div[data-testid="stSelectbox"] label,
 div[data-testid="stTextInput"] label,
@@ -549,7 +535,6 @@ div[data-testid="stMetricLabel"] p {
     font-weight: 700 !important;
     opacity: 1 !important;
 }
-
 /* ============================================================================
     15. BOTONES DE ACCIÓN EN DEGRADADO DORADO METÁLICO PREMIUM
    ============================================================================ */
@@ -595,7 +580,6 @@ div[data-testid="stMetricValue"] {
     text-shadow: 0px 0px 15px rgba(46, 204, 113, 0.6) !important;
 }
 
-/* Limpieza de marcos duplicados nativos en el widget de la métrica */
 div[data-testid="stMetricValue"] > div,
 div[data-testid="stMetricValue"] span,
 div[data-testid="stMetricValue"] div {
@@ -606,7 +590,7 @@ div[data-testid="stMetricValue"] div {
 }
 
 /* ============================================================================
-    17. PIE DE PÁGINA CORPORATIVO Y MEDIA QUERIES RESPONSIVAS MÓVILES
+    17. PIE DE PÁGINA CORPORATIVO
    ============================================================================ */
 .social-footer {
     text-align: center !important;
@@ -633,327 +617,283 @@ div[data-testid="stMetricValue"] div {
 }
 
 /* ============================================================================
-    MEDIA QUERIES RESPONSIVAS POR DISPOSITIVO
+    18. MEDIA QUERIES - ARQUITECTURA ADAPTATIVA DE CONFIGURACIÓN MÁSTER
    ============================================================================ */
 
 /* ══════════════════════════════════════════════════════════════════════════
-   FORMATO PARA LAPTOP/COMPUTADORA (Desktop > 1024px)
+   FORMATO EN MODO PC / LAPTOP (Desktop > 1024px) - 4 COLUMNAS DE PRODUCTOS
    ══════════════════════════════════════════════════════════════════════════ */
 @media (min-width: 1025px) {
+    /* Gestión del fondo de video PC */
+    .pc-only { display: block !important; }
+    .movil-only { display: none !important; }
+
+    /* Forzado del contenedor ancho expandido para lucir las 4 columnas */
     .block-container {
-        max-width: 800px !important;
+        max-width: 1400px !important;
         margin: 0 auto !important;
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+
+    /* Grilla de productos: Activación del motor Flexbox */
+    .grid-productos-responsivo {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        width: 100% !important;
+        gap: 16px !important;
+    }
+
+    /* Tarjetas individuales calibradas estrictamente al 25% (4 columnas por fila) */
+    .tarjeta-producto-individual {
+        flex: 0 0 calc(25% - 12px) !important;
+        max-width: calc(25% - 12px) !important;
+        min-width: calc(25% - 12px) !important;
+        margin: 0 !important;
+    }
+
+    /* Calibración milimétrica adaptativa del mini-logo flotante en la esquina de la PC */
+    .mini-logo-flotante-master {
+        display: block !important;
+        position: fixed !important;
+        top: 20px !important;
+        right: 20px !important;
+        left: auto !important;
+        width: 65px !important;
+        height: 65px !important;
+        z-index: 999999 !important;
+        perspective: 1000px !important;
+        pointer-events: none !important;
+    }
+    .mini-logo-imagen-circular {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 50% !important;
+        border: 2px solid #d4af37 !important;
+        box-shadow: 0 0 15px rgba(212,175,55,0.6) !important;
+        transform-style: preserve-3d !important;
+        animation: rotarMiniLogo3D 4s linear infinite !important;
+    }
+
+    /* Formato de la nueva tarjeta de bienvenida central ejecutiva */
+    .tarjeta-bienvenida-yape {
+        max-width: 550px !important;
+        margin: 0 auto !important;
+        background-color: #111424 !important;
+        border: 2px solid #222538 !important;
+        border-radius: 16px !important;
+        padding: 20px !important;
+        box-shadow: 0px 8px 25px rgba(0,0,0,0.7) !important;
+    }
+    .foto-tienda-yape {
+        width: 100% !important;
+        height: 280px !important;
+        object-fit: cover !important;
+        border-radius: 12px !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+    }
+    .video-logo-yape-base {
+        width: 180px !important;
+        height: 180px !important;
+        display: block !important;
+        margin: 15px auto 0 auto !important;
+        border-radius: 50% !important;
+        border: 2px solid #d4af37 !important;
+        box-shadow: 0 0 20px rgba(212,175,55,0.4) !important;
+    }
+}
+@keyframes rotarMiniLogo3D { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+/* ══════════════════════════════════════════════════════════════════════════
+   FORMATO EN MODO TABLET (481px a 1024px) - ENCOMIENDA ADAPTATIVA MEDIA
+   ══════════════════════════════════════════════════════════════════════════ */
+@media (min-width: 481px) and (max-width: 1024px) {
+    .pc-only { display: block !important; }
+    .movil-only { display: none !important; }
+
+    .block-container {
+        max-width: 100% !important;
         padding-left: 20px !important;
         padding-right: 20px !important;
     }
     
-    .titulo-principal {
-        font-size: 38px !important;
-    }
-    
-    .product-title {
-        font-size: 18px !important;
-    }
-    
-    .product-price {
-        font-size: 22px !important;
-    }
-    
-    div[data-testid="stMainBlockContainer"] div.stButton > button {
-        font-size: 20px !important;
-        padding: 10px 20px !important;
-        min-height: auto !important;
-    }
-    
-    div[data-testid="stNumberInput"] input {
-        font-size: 16px !important;
-        padding: 10px 14px !important;
-    }
-    
-    .mini-logo-flotante-master {
-        display: block !important;
-    }
-}
-
-/* ══════════════════════════════════════════════════════════════════════════
-   FORMATO PARA TABLET (481px - 1024px)
-   ══════════════════════════════════════════════════════════════════════════ */
-@media (min-width: 481px) and (max-width: 1024px) {
-    .block-container {
-        max-width: 100% !important;
-        margin: 0 auto !important;
-        padding-left: 15px !important;
-        padding-right: 15px !important;
-    }
-    
-    .catalogo-transparente-master div[data-testid="stColumn"] {
-        min-width: 100% !important;
+    .grid-productos-responsivo {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
         width: 100% !important;
+        gap: 12px !important;
+    }
+
+    .tarjeta-producto-individual {
+        flex: 0 0 calc(50% - 6px) !important;
+        max-width: calc(50% - 6px) !important;
+        min-width: calc(50% - 6px) !important;
         margin-bottom: 10px !important;
     }
     
-    .titulo-principal {
-        font-size: 30px !important;
-        margin-bottom: 8px !important;
-    }
-    
-    .product-title {
-        font-size: 16px !important;
-    }
-    
-    .product-price {
-        font-size: 19px !important;
-    }
-    
-    div[data-testid="stMainBlockContainer"] div.stButton > button {
-        font-size: 16px !important;
-        padding: 8px 16px !important;
-        width: 100% !important;
-    }
-    
-    div[data-testid="stNumberInput"] input {
-        font-size: 15px !important;
-        padding: 9px 12px !important;
-        min-height: 38px !important;
-    }
-    
-    .netflix-navbar-master div[data-testid="stHorizontalBlock"] {
-        flex-wrap: wrap !important;
-        gap: 5px !important;
-    }
-    
-    .mini-logo-flotante-master {
-        display: none !important;
+    .mini-logo-flotante-master { display: none !important; }
+
+    .tarjeta-bienvenida-yape {
+        max-width: 90% !important;
+        margin: 0 auto !important;
+        background-color: #111424 !important;
+        border-radius: 14px !important;
+        padding: 15px !important;
     }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   FORMATO PRIORIZADO PARA CELULAR (≤ 480px) - MULTI-COLUMNA COMO DESKTOP
+   FORMATO PRIORIZADO PARA CELULAR (≤ 480px) - GRID DE 2 COLUMNAS COMPACTAS
    ══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
-    /* === CONTENEDORES PRINCIPALES - PERMITE FLUJO NATURAL === */
-    html, body {
+    /* Gestión del fondo de video vertical optimizado para móviles */
+    .pc-only { display: none !important; }
+    .movil-only { display: block !important; }
+
+    /* Forzado estructural rígido al 100% del viewport para evitar desbordes */
+    html, body, .stApp {
         padding: 0 !important;
         margin: 0 !important;
         width: 100% !important;
-    }
-    
-    .stApp {
-        padding: 0 !important;
-        margin: 0 !important;
-        width: 100% !important;
+        overflow-x: hidden !important;
     }
     
     .block-container {
         max-width: 100% !important;
         width: 100% !important;
         margin: 0 auto !important;
-        padding: 0 6px !important;
+        padding: 0 8px !important;
     }
     
-    [data-testid="stAppViewContainer"],
-    [data-testid="stMainBlockContainer"] {
-        width: 100% !important;
-        padding: 0 !important;
-    }
-    
-    /* Centrado de todos los textos y contenido */
-    [data-testid="stMarkdownContainer"],
-    p, span, h1, h2, h3, h4 {
+    /* Centrado tipográfico absoluto para coherencia de lectura táctil */
+    [data-testid="stMarkdownContainer"], p, span, h1, h2, h3, h4 {
         text-align: center !important;
     }
     
-    /* === MANTÉN COLUMNAS HORIZONTALES PARA PRODUCTOS === */
-    [data-testid="stHorizontalBlock"],
-    .row-widget {
+    /* Activación del contenedor Grid flexible responsivo */
+    .grid-productos-responsivo {
         display: flex !important;
         flex-direction: row !important;
-        width: 100% !important;
         flex-wrap: wrap !important;
-        gap: 8px !important;
-    }
-    
-    [data-testid="stColumn"] {
-        flex: 0 0 calc(50% - 4px) !important;
-        max-width: calc(50% - 4px) !important;
-        min-width: calc(50% - 4px) !important;
-        margin: 0 !important;
-    }
-    
-    /* === CATÁLOGO - 2 COLUMNAS DE PRODUCTOS === */
-    .catalogo-transparente-master [data-testid="stHorizontalBlock"] {
-        display: flex !important;
-        flex-direction: row !important;
         width: 100% !important;
-        gap: 8px !important;
-        flex-wrap: wrap !important;
+        gap: 8px !important; /* Espaciado compacto entre las fichas */
+        padding: 0 !important;
     }
     
-    .catalogo-transparente-master [data-testid="stColumn"] {
+    /* Regla maestra: Fuerza a cada producto a ocupar el 50% exacto de la fila (2 columnas) */
+    .tarjeta-producto-individual {
         flex: 0 0 calc(50% - 4px) !important;
         max-width: calc(50% - 4px) !important;
         min-width: calc(50% - 4px) !important;
         margin-bottom: 8px !important;
     }
     
-    .catalogo-transparente-master [data-testid="stColumn"] img {
+    /* Escalado adaptativo de las imágenes del catálogo en celular */
+    .tarjeta-producto-individual img {
         max-width: 100% !important;
-        height: auto !important;
+        height: 140px !important; /* Altura compactada para optimizar espacio en pantalla */
         border-radius: 10px 10px 0 0 !important;
     }
     
-    /* === TÍTULOS COMPACTOS === */
+    /* Títulos e inputs ultracompactos para evitar saltos de línea desalineados */
     .titulo-principal {
-        font-size: 28px !important;
-        margin-top: 10px !important;
-        margin-bottom: 10px !important;
-        line-height: 1.3 !important;
-        text-align: center !important;
-        width: 100% !important;
-        padding: 0 10px !important;
+        font-size: 26px !important;
+        line-height: 1.2 !important;
+        padding: 0 5px !important;
     }
     
-    /* === PRODUCTOS COMPACTOS === */
     .product-title {
-        font-size: 13px !important;
+        font-size: 12px !important;
         line-height: 1.2 !important;
         font-weight: bold !important;
-        min-height: 26px !important;
+        min-height: 28px !important; /* Alineación geométrica forzada */
     }
     
     .product-price {
-        font-size: 16px !important;
+        font-size: 15px !important;
         font-weight: 900 !important;
     }
     
     .product-card-bottom {
-        padding: 8px 10px !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
+        padding: 6px 8px !important;
     }
-    
-    /* === BOTONES OPTIMIZADOS === */
-    div[data-testid="stMainBlockContainer"] div.stButton > button,
-    section[data-testid="stSidebar"] div.stButton > button {
-        font-size: 12px !important;
-        padding: 10px 8px !important;
-        width: 100% !important;
-        min-height: 40px !important;
-        font-weight: 900 !important;
-        border-radius: 6px !important;
-    }
-    
-    /* === INPUTS === */
-    div[data-testid="stNumberInput"] input {
-        font-size: 15px !important;
-        padding: 8px 10px !important;
-        min-height: 36px !important;
-    }
-    
-    div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input {
-        font-size: 12px !important;
-        padding: 8px 10px !important;
-        width: 100% !important;
-        min-height: 36px !important;
-    }
-    
-    /* === BARRA DE NAVEGACIÓN === */
-    .netflix-navbar-master {
-        margin-top: 5px !important;
-        margin-bottom: 5px !important;
-    }
-    
-    .netflix-navbar-master [data-testid="stHorizontalBlock"] {
-        flex-wrap: wrap !important;
-        gap: 4px !important;
-    }
-    
-    [data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) button {
-        font-size: 11px !important;
-        padding: 5px 8px !important;
-        flex: 1 !important;
-        min-width: auto !important;
-    }
-    
-    /* === ACORDEONES === */
-    div[data-testid="stExpander"] {
-        margin-bottom: 8px !important;
-    }
-    
-    div[data-testid="stExpander"] summary {
-        font-size: 11px !important;
-        padding: 9px 10px !important;
-    }
-    
-    /* === MÉTRICAS === */
-    div[data-testid="stMetricValue"] {
-        font-size: 26px !important;
-        padding: 6px 10px !important;
-    }
-    
-    /* === ALERTAS === */
-    div.stAlert {
-        padding: 8px 8px !important;
-        margin-bottom: 8px !important;
-    }
-    
-    div.stAlert p, div.stAlert span {
-        font-size: 11px !important;
-    }
-    
-    /* === PIE DE PÁGINA === */
-    .social-footer {
-        max-width: 100% !important;
-        padding: 10px 6px !important;
-        margin: 10px 0 !important;
-    }
-    
-    .social-icon, .social-footer a {
-        font-size: 11px !important;
-    }
-    
-    .sello-creador {
-        font-size: 9px !important;
-        margin: 6px 0 2px 5px !important;
-        text-align: center !important;
-    }
-    
-    /* === SECCIÓN DE BIENVENIDA CENTRADA === */
-    .bienvenida-transparente-master {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 100% !important;
-        text-align: center !important;
-    }
-    
-    .bienvenida-transparente-master [data-testid="stMarkdownContainer"] {
-        text-align: center !important;
-        width: 100% !important;
-    }
-    
-    .bienvenida-transparente-master p,
-    .bienvenida-transparente-master span,
-    .bienvenida-transparente-master h1,
-    .bienvenida-transparente-master h2,
-    .bienvenida-transparente-master h3 {
-        text-align: center !important;
-        width: 100% !important;
-    }
-    
-    /* === ELEMENTOS FLOTANTES === */
+
+    /* Calibración milimétrica para pegar el mini-logo en la esquina superior del celular */
     .mini-logo-flotante-master {
         display: block !important;
         position: fixed !important;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%) !important;
-        width: 150px !important;
-        height: 150px !important;
-        z-index: 100 !important;
+        top: 15px !important;
+        right: 15px !important;
+        left: auto !important;
+        width: 45px !important;
+        height: 45px !important;
+        z-index: 999999 !important;
         pointer-events: none !important;
-        margin: 0 !important;
     }
+    .mini-logo-imagen-circular {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 50% !important;
+        border: 2px solid #d4af37 !important;
+        box-shadow: 0 0 10px rgba(212,175,55,0.5) !important;
+        animation: rotarMiniLogo3D 4s linear infinite !important;
+    }
+
+    /* Ajuste de la tarjeta de bienvenida adaptada al ancho completo del teléfono */
+    .tarjeta-bienvenida-yape {
+        width: 100% !important;
+        background-color: #111424 !important;
+        border: 1px solid #222538 !important;
+        border-radius: 12px !important;
+        padding: 12px !important;
+        box-shadow: 0px 6px 18px rgba(0,0,0,0.6) !important;
+    }
+    .foto-tienda-yape {
+        width: 100% !important;
+        height: 180px !important; /* Foto compactada de la fachada para celulares */
+        object-fit: cover !important;
+        border-radius: 8px !important;
+    }
+    .video-logo-yape-base {
+        width: 120px !important; /* Escudo más pequeño abajo para pantallas angostas */
+        height: 120px !important;
+        display: block !important;
+        margin: 10px auto 0 auto !important;
+        border-radius: 50% !important;
+        border: 2px solid #d4af37 !important;
+        box-shadow: 0 0 12px rgba(212,175,55,0.4) !important;
+    }
+
+    /* Ergonomía táctil para botones e inputs en dispositivos móviles */
+    div[data-testid="stMainBlockContainer"] div.stButton > button {
+        font-size: 12px !important;
+        padding: 10px 8px !important;
+        min-height: 40px !important;
+    }
+    div[data-testid="stNumberInput"] input {
+        font-size: 14px !important;
+        min-height: 34px !important;
+    }
+    div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input {
+        font-size: 12px !important;
+        min-height: 34px !important;
+    }
+
+    /* Distribución fluida de las pestañas de categorías estilo Netflix en celular */
+    [data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) button {
+        font-size: 10px !important;
+        padding: 4px 6px !important;
+        flex: 1 !important;
+    }
+
+    /* Compactación del checkout final y alertas en dispositivos móviles */
+    div[data-testid="stExpander"] summary { font-size: 11px !important; padding: 8px 10px !important; }
+    div[data-testid="stMetricValue"] { font-size: 24px !important; padding: 5px 8px !important; }
+    div.stAlert p, div.stAlert span { font-size: 11px !important; }
+    .social-footer { padding: 10px 5px !important; margin-top: 15px !important; }
+    .social-icon, .social-footer a { font-size: 11px !important; }
+    .sello-creador { font-size: 9px !important; text-align: center !important; margin: 5px 0 !important; }
 }
