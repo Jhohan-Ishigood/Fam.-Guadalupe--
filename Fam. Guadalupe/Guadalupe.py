@@ -36,7 +36,7 @@ def cargar_imagen_base64(ruta_archivo):
     return ""
 
 # Precarga segura de recursos estáticos del sistema
-ruta_foto_fisica = os.path.join(BASE_DIR, "Foto del establecimiento.png")
+ruta_foto_fisica = os.path.join(BASE_DIR, "establecimiento.png")
 URL_BANNER_LOCAL = cargar_imagen_base64(ruta_foto_fisica)
 
 ruta_logo_portada = os.path.join(BASE_DIR, "Logotipo.png")
@@ -116,20 +116,21 @@ ahora_peru = datetime.now(zona_peru)
 fecha_actual = ahora_peru.strftime("%d/%m/%Y %H:%M:%S")
 
 # ============================================================================
-# 3.5 INYECCIÓN GLOBAL DEL MINI LOGOTIPO FLOTANTE GIRATORIO PERMANENTE (360°)
+# 3.5 INYECCIÓN GLOBAL DEL MINI LOGOTIPO FLOTANTE GIRATORIO EN 3D (TIPO MONEDA)
 # ============================================================================
 if URL_LOGO_PORTADA:
     st.markdown(f"""
         <style>
-        /* Estilo del Mini Logo fijo en la esquina superior derecha de la pantalla */
+        /* Contenedor fijo en la esquina superior derecha con profundidad de perspectiva */
         .mini-logo-flotante-master {{
             position: fixed !important;
             top: 60px !important;
             right: 25px !important;
             width: 65px !important;
             height: 65px !important;
-            z-index: 999999 !important; /* Capa máxima absoluta por encima de todo */
+            z-index: 999999 !important; /* Capa máxima por encima de todo */
             pointer-events: none !important;
+            perspective: 1000px !important; /* Habilita el entorno tridimensional real */
         }}
         .mini-logo-imagen-circular {{
             width: 100% !important;
@@ -139,14 +140,19 @@ if URL_LOGO_PORTADA:
             border: 2px solid #d4af37 !important;
             background-color: #111424 !important;
             box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.6) !important;
-            /* Rotación automática continua de 360 grados cada 4 segundos sin tocar el mouse */
-            animation: rotarMiniLogo360 4s linear infinite !important;
+            
+            /* [!] CORRECCIÓN SUPREMA: Rota horizontalmente en 3D cada 4 segundos manteniéndose derecho */
+            animation: rotarMiniLogo3DMoneda 4s linear infinite !important;
+            transform-style: preserve-3d !important;
         }}
-        @keyframes rotarMiniLogo360 {{
-            0% {{ transform: rotate(0deg); }}
-            100% {{ transform: rotate(360deg); }}
+        
+        /* Animación que simula una moneda girando de perfil de forma continua e infinita */
+        @keyframes rotarMiniLogo3DMoneda {{
+            0% {{ transform: rotateY(0deg); }}
+            100% {{ transform: rotateY(360deg); }}
         }}
-        /* Ocultar en pantallas muy pequeñas si estorba la visualización táctil */
+        
+        /* Optimización responsiva para que en pantallas móviles no estorbe */
         @media (max-width: 480px) {{
             .mini-logo-flotante-master {{
                 width: 50px !important;
@@ -160,9 +166,62 @@ if URL_LOGO_PORTADA:
             <img src="{URL_LOGO_PORTADA}" class="mini-logo-imagen-circular">
         </div>
     """, unsafe_allow_html=True)
+
+    
 # ============================================================================
-# 4. INJECTION EXTERNA DE MARCA Y REGLAS DE DISEÑO DE AUTORÍA
+# 4. INYECCIÓN NATIVA MAESTRA DE ESTILOS Y CONTROL DE MARCA (BLINDAJE TOTAL)
 # ============================================================================
+# Forzamos las transparencias y la inyección multimedia para independizarnos del CSS externo
+st.markdown(f"""
+    <style>
+    /* 1. ELIMINACIÓN ABSOLUTA DEL MENÚ NATIVO DEL SERVIDOR (DERECHO) */
+    #MainMenu, .stAppDeployDropdown, [data-testid="stHeader"] > div:last-child, div[data-testid="stHeader"] button {{
+        display: none !important;
+    }}
+    
+    /* EXCEPCIÓN DE SEGURIDAD: Mantenemos vivo el botón administrativo izquierdo */
+    div[data-testid="stHeader"] button[kind="headerNoPadding"] {{
+        display: inline-flex !important;
+    }}
+
+    /* 2. MOTOR DEL FONDO PANORÁMICO ANIMADO EN BUCLE GLOBAL INTEGRAL */
+    .stApp {{
+        background-image: linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)), url("{URL_BANNER_LOCAL}") !important;
+        background-size: cover !important;
+        background-position: 0% center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+        animation: desplazamientoPanoramicoLocal 24s ease-in-out infinite alternate !important;
+    }}
+    @keyframes desplazamientoPanoramicoLocal {{
+        0% {{ background-position: 0% center !important; }}
+        100% {{ background-position: 100% center !important; }}
+    }}
+
+    /* 3. TRANSPARENCIA ABSOLUTA GLOBAL (CERO FRANJAS BLANCAS O OSCURAS) */
+    .stApp, [data-testid="stAppViewContainer"], [data-testid="stMainBlockContainer"],
+    [data-testid="stVerticalBlock"], [data-testid="stAppViewBlockContainer"],
+    [data-testid="elementGrid"], .element-container, div[role="radiogroup"],
+    .bienvenida-transparente-master, .catalogo-transparente-master, .carrito-transparente-master {{
+        background-color: transparent !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }}
+
+    /* 4. CONFIGURACIÓN DEL SELLO DEL CREADOR DEL SISTEMA */
+    .sello-creador {{
+        color: #2ecc71 !important;             
+        font-size: 13.5px !important;
+        font-weight: 800 !important;
+        letter-spacing: 1px !important;
+        text-transform: uppercase !important;
+        margin: 20px 0 10px 10px !important;
+        text-shadow: 0px 0px 8px rgba(46, 204, 113, 0.5) !important;
+    }}
+    </style>
+""", unsafe_allow_html=True)
+
+# Lector de respaldo para arrastrar las reglas complementarias del archivo CSS externo
 if os.path.exists(RUTA_CSS):
     with open(RUTA_CSS, "r", encoding="utf-8") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -490,7 +549,6 @@ else:
         st.markdown("<p style='text-align: center; font-size: 20px; margin-top: -10px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # 2. INYECCIÓN MAESTRA DEL LOGOTIPO CON DESTELLO METÁLICO INYECTADO DIRECTO
         if URL_LOGO_PORTADA:
             st.markdown(f"""
                 <style>
@@ -519,6 +577,7 @@ else:
                     background-color: #111424 !important;
                     display: block !important;
                 }}
+                /* LA CAPA DE LUZ CORREGIDA CON EL % PARA EMITIR EL DESTELLO */
                 .mascara-redonda-logo::after {{
                     content: "" !important;
                     position: absolute !important;
@@ -558,6 +617,7 @@ else:
                     </div>
                 </div>
             """, unsafe_allow_html=True)
+
 
         # 3. BOTÓN PRINCIPAL DE ACCIÓN DE LA BIENVENIDA
         cambiar_a_catalogo = st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master")
