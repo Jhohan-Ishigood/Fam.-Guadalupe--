@@ -374,7 +374,7 @@ else:
     # 9. ENTORNO CLIENTE - PANTALLA 1: BIENVENIDA MULTIMEDIA PREMIUM
     # ============================================================================
     if st.session_state.pantalla_actual == "bienvenida":
-        # PARCHE CORREGIDO: Se evalúa sobre la existencia del archivo físico, no el Base64
+        # Aplicamos el fondo premium en la app
         if URL_BANNER_LOCAL:
             st.markdown(f"""
                 <style>
@@ -388,13 +388,12 @@ else:
                 </style>
             """, unsafe_allow_html=True)
 
-        # INYECCIÓN MAESTRA DEL LOGOTIPO EN LA PARTE SUPERIOR (CORREGIDO CON RESPALDO)
+        # --- PARCHE DE FUERZA BRUTA: Abrimos un contenedor HTML transparente ---
+        st.markdown('<div class="bienvenida-transparente-master">', unsafe_allow_html=True)
+
+        # INYECCIÓN MAESTRA DEL LOGOTIPO EN LA PARTE SUPERIOR
         if URL_LOGO_PORTADA:
-            st.markdown(f"""
-                <div class="contenedor-logo-portada">
-                    <img src="{URL_LOGO_PORTADA}" class="logo-portada-circular">
-                </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f'<div class="contenedor-logo-portada"><img src="{URL_LOGO_PORTADA}" class="logo-portada-circular"></div>', unsafe_allow_html=True)
         else:
             st.markdown("""
                 <div class="contenedor-logo-portada">

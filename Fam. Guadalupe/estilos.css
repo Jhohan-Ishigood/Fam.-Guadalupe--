@@ -16,21 +16,21 @@ html, body, .stApp,
     color: #ffffff !important;
 }
 
-/* 3. PARCHE MAESTRO: Transparencia Absoluta en Bloques de la Bienvenida */
-.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"],
-.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"] > div,
-.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stMainBlockContainer"],
-.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stAppViewBlockContainer"] {
+/* ============================================================================
+    3. PARCHE MAESTRO: Transparencia Absoluta por Inyección Directa
+   ============================================================================ */
+.bienvenida-transparente-master,
+.stApp:has(.bienvenida-transparente-master) [data-testid="stVerticalBlock"],
+.stApp:has(.bienvenida-transparente-master) [data-testid="stVerticalBlock"] > div,
+.stApp:has(.bienvenida-transparente-master) [data-testid="stMainBlockContainer"],
+.stApp:has(.bienvenida-transparente-master) [data-testid="stAppViewBlockContainer"],
+.stApp:has(.bienvenida-transparente-master) [data-testid="elementGrid"],
+.stApp:has(.bienvenida-transparente-master) .element-container {
     background-color: transparent !important;
     background: transparent !important;
     box-shadow: none !important;
 }
 
-.stApp:has(button[key="btn_empezar_pedido_master"]) .element-container,
-.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="elementGrid"] {
-    background-color: transparent !important;
-    background: transparent !important;
-}
 
 /* Configuración unificada de fuentes nítidas para toda la aplicación */
 .stApp {
