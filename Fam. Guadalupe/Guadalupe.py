@@ -394,7 +394,6 @@ else:
         # [!] PRIMERO: TÍTULOS PRINCIPALES (QUEDAN DEBAJO DEL AUTOR VERDE NATIIVO Y ARRIBA DEL LOGO)
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("<h3 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES</h3>", unsafe_allow_html=True)
-        st.markdown("<br><p style='text-align: center; font-size: 20px; margin-top: -30px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
         # [!] SEGUNDO: INYECCIÓN MAESTRA DEL LOGOTIPO (AHORA QUEDA ABAJO DEL TÍTULO)
@@ -411,7 +410,7 @@ else:
 
 
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("<h3 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES</h3>", unsafe_allow_html=True)
+        st.markdown("<br><p style='text-align: left; font-size: 20px; margin-top: -54px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
         # 1. BOTÓN PRINCIPAL DE ACCIÓN
