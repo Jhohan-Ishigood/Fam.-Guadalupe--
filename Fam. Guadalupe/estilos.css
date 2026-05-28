@@ -52,16 +52,21 @@ html, body, .stApp,
     }
 }
 
-    /* TRANSPARENCIA ABSOLUTA GLOBAL (CERO FRANJAS BLANCAS O OSCURAS) */
-    .stApp, [data-testid="stAppViewContainer"], [data-testid="stMainBlockContainer"],
-    [data-testid="stVerticalBlock"], [data-testid="stAppViewBlockContainer"],
-    [data-testid="elementGrid"], .element-container, div[role="radiogroup"],
-    .bienvenida-transparente-master, .catalogo-transparente-master, .carrito-transparente-master {
-        background-color: transparent !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }
-
+/* ============================================================================
+    3. TRANSPARENCIA ABSOLUTA DE BLOQUES (CERO FRANJAS NEGRAS GLOBALES)
+   ============================================================================ */
+/* Fuerza la remoción de los fondos oscuros nativos de Streamlit en catálogo, carrito y bienvenida */
+.bienvenida-transparente-master,
+.catalogo-transparente-master,
+.carrito-transparente-master,
+[data-testid="stAppViewBlockContainer"],
+[data-testid="elementGrid"],
+.element-container,
+div[role="radiogroup"] {
+    background-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
 /* ============================================================================
     4. TITULADO PRINCIPAL PREMIUM CON RESPLANDOR NEÓN RESPIRABLE
    ============================================================================ */
