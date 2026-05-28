@@ -395,24 +395,90 @@ else:
         st.markdown("<h3 class='titulo-principal'>BIENVENIDOS AL CATÁLOGO DE PRODUCTOS DISPONIBLES</h3>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # [!] SEGUNDO: INYECCIÓN MAESTRA DEL LOGOTIPO CON DESTELLO METÁLICO INCRUSTADO
+        # [!] SEGUNDO: INYECCIÓN MAESTRA DEL LOGOTIPO CON DESTELLO METÁLICO INYECTADO DIRECTO
         if URL_LOGO_PORTADA:
             st.markdown(f"""
-                <div class="contenedor-logo-portada">
-                    <div class="mascara-destello-circular">
-                        <img src="{URL_LOGO_PORTADA}" class="logo-portada-circular">
-                        <div class="linea-destello-brillante"></div>
+                <style>
+                /* Contenedor principal que centra el escudo */
+                .contenedor-logo-destello-fijo {{
+                    display: flex !important;
+                    justify-content: center !important;
+                    align-items: center !important;
+                    width: 100% !important;
+                    margin-top: -15px !important;
+                    margin-bottom: 20px !important;
+                }}
+
+                /* Máscara redonda obligatoria que recorta la luz fuera del círculo */
+                .mascara-redonda-logo {{
+                    position: relative !important;
+                    width: 206px !important;
+                    height: 206px !important;
+                    border-radius: 50% !important;
+                    overflow: hidden !important; /* Corta la luz sobrante */
+                    box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important;
+                }}
+
+                /* Estilo de la imagen del escudo */
+                .imagen-escudo-circular {{
+                    width: 100% !important;
+                    height: 100% !important;
+                    object-fit: cover !important;
+                    border-radius: 50% !important;
+                    border: 3px solid #d4af37 !important;
+                    background-color: #111424 !important;
+                    display: block !important;
+                }}
+
+                /* LA CAPA DE LUZ: Franja blanca reflectante que cruzará el escudo */
+                .mascara-redonda-logo::after {{
+                    content: "" !important;
+                    position: absolute !important;
+                    top: -50% !important;
+                    left: -150% !important; /* Comienza oculta a la izquierda */
+                    width: 55px !important;
+                    height: 200% !important;
+                    background: linear-gradient(
+                        to right,
+                        rgba(255, 255, 255, 0) 0%,
+                        rgba(255, 255, 255, 0.2) 25%,
+                        rgba(255, 255, 255, 0.85) 50%,
+                        rgba(255, 255, 255, 0.2) 75%,
+                        rgba(255, 255, 255, 0) 100%
+                    ) !important;
+                    transform: rotate(25deg) !important; /* Inclinación de la luz */
+                    z-index: 5 !important;
+                    pointer-events: none !important;
+                    animation: efectoLuzReflectante 4s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
+                }}
+
+                /* Definición del movimiento horizontal infinito de la animación */
+                @keyframes efectoLuzReflectante {{
+                    0% {{
+                        left: -150%;
+                    }}
+                    25%, 100% {{
+                        /* Cruza rápido en el primer cuarto de tiempo y espera oculta a la derecha */
+                        left: 150%;
+                    }}
+                }}
+                </style>
+
+                <div class="contenedor-logo-destello-fijo">
+                    <div class="mascara-redonda-logo">
+                        <img src="{URL_LOGO_PORTADA}" class="imagen-escudo-circular">
                     </div>
                 </div>
             """, unsafe_allow_html=True)
         else:
             st.markdown("""
-                <div class="contenedor-logo-portada">
-                    <div class="logo-portada-circular" style="display:flex; align-items:center; justify-content:center; background-color:#111424;">
+                <div class="contenedor-logo-destello-fijo">
+                    <div class="imagen-escudo-circular" style="width:206px; height:206px; border-radius:50%; display:flex; align-items:center; justify-content:center; background-color:#111424; border:3px solid #d4af37;">
                         <span style="color:#d4af37; font-size:12px; font-weight:bold; text-align:center;">CARGANDO LOGO...</span>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
+
 
 
         st.markdown("<br>", unsafe_allow_html=True)
