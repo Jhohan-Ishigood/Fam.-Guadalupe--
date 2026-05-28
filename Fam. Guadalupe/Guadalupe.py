@@ -173,17 +173,20 @@ if URL_LOGO_PORTADA:
 # ============================================================================
 st.markdown(f"""
     <style>
-    /* 1. ELIMINACIÓN CORREGIDA: SOLO BORRA EL MENÚ TÉCNICO DERECHO */
+    /* 1. ELIMINACIÓN CORREGIDA: BORRAMOS EL MENÚ MAESTRO DERECHO Y CONTENEDORES TÉCNICOS */
     #MainMenu, .stAppDeployDropdown, [data-testid="stHeader"] > div:last-child {{
         display: none !important;
     }}
     
-    /* BLINDAJE ABSOLUTO: Forzamos a que el botón izquierdo de la barra lateral SIEMPRE sea visible */
+    /* BLINDAJE UNIVERSAL: Forzamos la aparición del botón izquierdo por posición estructural */
+    header[data-testid="stHeader"] div:first-child,
+    header[data-testid="stHeader"] button,
     [data-testid="stHeader"] [data-testid="stSidebarCollapseButton"],
-    div[data-testid="stHeader"] button[kind="headerNoPadding"] {{
+    .stApp div[data-testid="stHeader"] button:first-of-type {{
         display: inline-flex !important;
         visibility: visible !important;
         opacity: 1 !important;
+        z-index: 999999 !important; /* Capa máxima para que flote por encima de todo */
     }}
 
     /* 2. MOTOR DEL FONDO PANORÁMICO ANIMADO EN BUCLE GLOBAL INTEGRAL */
