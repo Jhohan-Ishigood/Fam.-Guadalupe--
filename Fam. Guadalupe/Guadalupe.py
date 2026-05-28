@@ -547,7 +547,7 @@ else:
         st.markdown("<p style='text-align: center; font-size: 20px; margin-top: -10px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # [!] SEGUNDO: INYECCIÓN DEL LOGOTIPO CON FRANJA DE LUZ FÍSICA INLINE EN EL NÚCLEO
+        # [!] SEGUNDO: INYECCIÓN MAESTRA DEL LOGOTIPO CON DESTELLO DE LUZ DIRECTO DE NAVEGADOR
         if URL_LOGO_PORTADA:
             st.markdown(f"""
                 <style>
@@ -559,60 +559,53 @@ else:
                     margin-top: -15px !important;
                     margin-bottom: 20px !important;
                 }}
-                .mascara-redonda-logo {{
+                .marco-escudo-brillante {{
                     position: relative !important;
                     width: 206px !important;
                     height: 206px !important;
                     border-radius: 50% !important;
-                    overflow: hidden !important; /* Corta la luz fuera del escudo */
-                    box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important;
+                    overflow: hidden !important;
                     border: 3px solid #d4af37 !important;
+                    box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important;
+                    background-color: #111424 !important;
+                    
+                    /* [!] BLINDAJE: Forzamos a que el logo central ignore cualquier rotación 3D y se quede de frente */
+                    transform: none !important;
+                    transform-style: flat !important;
+                    perspective: none !important;
                 }}
-                .imagen-escudo-circular {{
+                .foto-logo-real {{
                     width: 100% !important;
                     height: 100% !important;
                     object-fit: cover !important;
-                    border-radius: 50% !important;
-                    background-color: #111424 !important;
-                    display: block !important;
+                    /* Evitamos que la imagen herede giros o distorsiones */
+                    transform: none !important;
                 }}
-                /* Capa física de luz reflectante con degradado metálico diagonal */
-                .destello-fisico-linea {{
+                /* Capa física de luz real que cruza por encima obligatoriamente */
+                .capa-luz-metalica {{
                     position: absolute !important;
-                    top: -50% !important;
-                    left: -150% !important;
-                    width: 55px !important;
-                    height: 200% !important;
+                    top: 0 !important;
+                    left: -100% !important;
+                    width: 50% !important;
+                    height: 100% !important;
                     background: linear-gradient(
-                        to right,
-                        rgba(255, 255, 255, 0) 0%,
-                        rgba(255, 255, 255, 0.3) 25%,
-                        rgba(255, 255, 255, 0.9) 50%,
-                        rgba(255, 255, 255, 0.3) 75%,
-                        rgba(255, 255, 255, 0) 100%
+                        90deg, 
+                        rgba(255,255,255,0) 0%, 
+                        rgba(255,255,255,0.6) 50%, 
+                        rgba(255,255,255,0) 100%
                     ) !important;
-                    transform: rotate(25deg) !important;
-                    z-index: 99 !important;
-                    pointer-events: none !important;
+                    transform: skewX(-25deg) !important;
+                    animation: cruzarDestelloOro 3s ease-in-out infinite !important;
                 }}
-                @keyframes viajeLuzObligatorio {{
-                    0% {{ left: -150%; }}
-                    25%, 100% {{ left: 150%; }}
+                @keyframes cruzarDestelloOro {{
+                    0% {{ left: -100%; }}
+                    30%, 100% {{ left: 150%; }}
                 }}
                 </style>
                 <div class="contenedor-logo-destello-fijo">
-                    <div class="mascara-redonda-logo">
-                        <img src="{URL_LOGO_PORTADA}" class="imagen-escudo-circular">
-                        /* [!] Vinculamos la animación directa inline en la etiqueta física */
-                        <div class="destello-fisico-linea" style="animation: viajeLuzObligatorio 4s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;"></div>
-                    </div>
-                </div>
-            """, unsafe_allow_html=True)
-        else:
-            st.markdown("""
-                <div class="contenedor-logo-destello-fijo">
-                    <div class="imagen-escudo-circular" style="width:206px; height:206px; border-radius:50%; display:flex; align-items:center; justify-content:center; background-color:#111424; border:3px solid #d4af37;">
-                        <span style="color:#d4af37; font-size:12px; font-weight:bold; text-align:center;">CARGANDO LOGO...</span>
+                    <div class="marco-escudo-brillante">
+                        <img src="{URL_LOGO_PORTADA}" class="foto-logo-real">
+                        <div class="capa-luz-metalica"></div>
                     </div>
                 </div>
             """, unsafe_allow_html=True)
