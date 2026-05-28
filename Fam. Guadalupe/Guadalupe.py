@@ -202,30 +202,38 @@ st.markdown(f"""
         }}
     }}
     
-    /* CELULAR (≤ 768px) - ¡Formato miniatura fijo en su esquina sin tocar el centro! */
+    /* CELULAR (≤ 768px) - ¡Blindaje de fuerza bruta absoluto para irse a la esquina! */
     @media (max-width: 768px) {{
         .mini-logo-flotante-master {{
             position: fixed !important;
             top: 15px !important; /* Lo subimos a la barra superior vacía de la app */
             right: 15px !important;
-            left: auto !important; /* [!] Bloqueo absoluto: destruye el centrado tosco del celular */
+            
+            /* [!] PARCHE MAESTRO: Destruimos cualquier alineación, centrado o flexbox de la nube */
+            left: auto !important; 
+            margin: 0 !important;
+            padding: 0 !important;
+            display: inline-block !important;
+            float: right !important;
             transform: none !important;
+            
             width: 45px !important; /* Tamaño compacto premium para móvil */
             height: 45px !important;
             z-index: 999999 !important;
             pointer-events: none !important;
-            display: block !important; /* Nos aseguramos de que vuelva a estar visible */
             visibility: visible !important;
             opacity: 1 !important;
         }}
         .mini-logo-imagen-circular {{
-            width: 100% !important;
-            height: 100% !important;
+            width: 45px !important; /* Forzamos el ancho exacto directo en la imagen */
+            height: 45px !important;
             object-fit: cover !important;
             border-radius: 50% !important;
             border: 2px solid #d4af37 !important;
             background-color: #111424 !important;
             box-shadow: 0px 0px 10px rgba(212, 175, 55, 0.5) !important;
+            margin: 0 !important;
+            transform: none !important;
             /* Mantiene el hermoso giro continuo de moneda en tu celular */
             animation: rotarMiniLogoCelular3D 4s linear infinite !important;
         }}
