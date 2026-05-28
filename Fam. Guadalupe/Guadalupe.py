@@ -166,12 +166,13 @@ st.markdown(f"""
     @media (max-width:768px) {{ .mini-logo-flotante-master {{ top:120px !important; right:15px !important; left:auto !important; width:45px !important; height:45px !important; }} .mini-logo-imagen-circular {{ width:100% !important; height:100% !important; object-fit:cover !important; border-radius:50% !important; border:2px solid #d4af37 !important; box-shadow:0 0 10px rgba(212,175,55,0.5) !important; animation:rotarMiniLogo3D 4s linear infinite !important; }} }}
     @keyframes rotarMiniLogo3D {{ 0% {{ transform:rotateY(0deg); }} 100% {{ transform:rotateY(360deg); }} }}
 
-    /* Logo central con destello físico - DESTELLO DIAGONAL CLARO Y VISIBLE */
+    /* Logo central con destello físico - EFECTO FLOTANTE + DESTELLO ESCÁNER CON REPOSO */
     .contenedor-logo-destello-fijo {{ display:flex !important; justify-content:center !important; align-items:center !important; width:100% !important; margin:20px auto !important; }}
-    .marco-escudo-brillante {{ position:relative !important; width:206px !important; height:206px !important; border-radius:50% !important; overflow:hidden !important; border:3px solid #d4af37 !important; box-shadow:0 0 30px rgba(212,175,55,0.8) !important; background-color:#111424 !important; transform:none !important; }}
+    .marco-escudo-brillante {{ position:relative !important; width:206px !important; height:206px !important; border-radius:50% !important; overflow:hidden !important; border:3px solid #d4af37 !important; box-shadow:0 0 30px rgba(212,175,55,0.8) !important; background-color:#111424 !important; transform:none !important; animation:flotarLogoSuave 3s ease-in-out infinite !important; }}
     .foto-logo-real {{ width:100% !important; height:100% !important; object-fit:cover !important; display:block !important; border-radius:50% !important; }}
-    .destello-fisico-linea {{ position:absolute !important; top:-50% !important; left:-50% !important; width:200% !important; height:200% !important; background:linear-gradient(45deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,0.9) 35%, rgba(255,220,100,1) 50%, rgba(255,255,255,0.9) 65%, rgba(255,255,255,0) 80%, rgba(255,255,255,0) 100%) !important; transform:skewX(-20deg) !important; animation:cruzarDestelloClaro 4s ease-out infinite !important; pointer-events:none !important; z-index:2 !important; }}
-    @keyframes cruzarDestelloClaro {{ 0% {{ left:-100%; opacity:0; }} 2% {{ left:-50%; opacity:1; }} 50% {{ left:100%; opacity:1; }} 98% {{ left:150%; opacity:0; }} 100% {{ left:150%; opacity:0; }} }}
+    .destello-fisico-linea {{ position:absolute !important; top:-50% !important; left:-50% !important; width:200% !important; height:200% !important; background:linear-gradient(45deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 15%, rgba(255,255,255,1) 30%, rgba(255,220,100,1) 50%, rgba(255,255,255,1) 70%, rgba(255,255,255,0) 85%, rgba(255,255,255,0) 100%) !important; transform:skewX(-20deg) !important; animation:destelloEscanerConReposo 6s ease-in-out infinite !important; pointer-events:none !important; z-index:2 !important; }}
+    @keyframes flotarLogoSuave {{ 0% {{ transform:translateY(0px); }} 50% {{ transform:translateY(-8px); }} 100% {{ transform:translateY(0px); }} }}
+    @keyframes destelloEscanerConReposo {{ 0% {{ left:-100%; opacity:0; }} 1% {{ left:-50%; opacity:1; }} 15% {{ left:120%; opacity:1; }} 16% {{ left:150%; opacity:0; }} 100% {{ left:150%; opacity:0; }} }}
 
 
 
