@@ -477,6 +477,19 @@ section[data-testid="stSidebar"] div.stButton > button:hover {
     margin-top: -15px !important;
     margin-bottom: 20px !important;
 }
+/* Contenedor del logotipo adaptado para soportar capas de luz */
+.contenedor-logo-portada {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: -15px !important;
+    margin-bottom: 20px !important;
+    position: relative !important; /* Base para el destello */
+    overflow: hidden !important;   /* Recorta la luz sobrante fuera del área */
+}
+
+/* Logotipo de Portada Estático con Bordes Definidos */
 .logo-portada-circular {
     width: 206px !important;
     height: 206px !important;
@@ -485,7 +498,45 @@ section[data-testid="stSidebar"] div.stButton > button:hover {
     border: 3px solid #d4af37 !important; 
     background-color: #111424 !important;
     box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important; 
+    position: relative !important;
+    z-index: 1 !important;
 }
+
+/* LA CAPA DE LUZ: Creación del destello reflectante diagonal */
+.contenedor-logo-portada::after {
+    content: "" !important;
+    position: absolute !important;
+    top: -50% !important;
+    left: -150% !important; /* Inicia completamente escondido a la izquierda */
+    width: 60px !important;
+    height: 200% !important;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.15) 30%,
+        rgba(255, 255, 255, 0.7) 50%,
+        rgba(255, 255, 255, 0.15) 70%,
+        rgba(255, 255, 255, 0) 100%
+    ) !important;
+    transform: rotate(30deg) !important; /* Inclinación de la línea de luz */
+    z-index: 2 !important; /* Pasa por encima del logo */
+    pointer-events: none !important;
+    
+    /* Duración total de 4 segundos, el destello cruza y espera el ciclo */
+    animation: destelloMetalicoOro 4s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
+}
+
+/* Animación que desplaza la luz de lado a lado */
+@keyframes destelloMetalicoOro {
+    0% {
+        left: -150%;
+    }
+    30%, 100% {
+        /* Cruza velozmente en el primer 30% del tiempo y el resto espera oculto */
+        left: 150%;
+    }
+}
+
 .social-footer {
     text-align: center !important;
     background-color: rgba(11, 12, 18, 0.9) !important;
