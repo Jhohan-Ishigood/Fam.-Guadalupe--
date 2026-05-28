@@ -538,7 +538,7 @@ if es_admin:
     productos_lista = list(st.session_state.menu_dinamico.keys())
     cambios_detectados = False
 
-    # 1. FILTRADO PREVIO: Creamos una lista limpia solo con los productos de la pestaña activa
+    # 1. FILTRADO PREVIO: Lista limpia con los productos de la pestaña activa
     productos_visibles_admin = []
     for prod in productos_lista:
         info_prod = st.session_state.menu_dinamico[prod]
@@ -546,20 +546,19 @@ if es_admin:
         if st.session_state.categoria_activa == "Todos" or st.session_state.categoria_activa == cat_prod:
             productos_visibles_admin.append(prod)
 
-    # 2. ARQUITECTURA DE ENTORNO EN 2 COLUMNAS REALES PARA EL PANEL ADMINISTRATIVO
-    col_admin1, col_admin2 = st.columns(2, gap="medium")
+    # 2. SEPARACIÓN EN DOS RIELES FIJOS FUERA DEL BUCLE
+    col_pantalla_izquierda, col_pantalla_derecha = st.columns(2, gap="large")
     
-    # Iteramos con un contador limpio (pos) sobre la lista ya filtrada
+    # 3. DISTRIBUCIÓN INTERCALADA MANDATORIA
     for pos, prod in enumerate(productos_visibles_admin):
         info_prod = st.session_state.menu_dinamico[prod]
         cat_prod = info_prod.get("categoria", "Abarrotes")
         
-        # Distribución matemática exacta de vaivén entre la columna 1 y la columna 2
-        target_col_admin = col_admin1 if pos % 2 == 0 else col_admin2
+        # Asignamos el producto al riel izquierdo o derecho estrictamente
+        columna_destino = col_pantalla_izquierda if pos % 2 == 0 else col_pantalla_derecha
         
-        with target_col_admin:
+        with columna_destino:
             with st.container(border=True):
-                # Fila superior: Foto miniatura del producto y su Nombre/Sección
                 col_det1, col_det2 = st.columns([1, 2])
                 with col_det1:
                     foto_actual = info_prod.get("foto", "")
@@ -570,14 +569,12 @@ if es_admin:
                 
                 st.markdown("<hr style='margin:10px 0; border-color:#222538;'>", unsafe_allow_html=True)
                 
-                # Fila intermedia: Cajas de control para editar Precios y Stock
                 col_inputs1, col_inputs2 = st.columns(2)
                 with col_inputs1:
                     precio_edit = st.number_input(f"Precio (S/) de {prod}", min_value=0.1, value=float(info_prod["precio"]), step=0.1, key=f"edit_p_{prod}")
                 with col_inputs2:
                     stock_edit = st.number_input(f"Stock de {prod}", min_value=0, value=int(info_prod["stock"]), step=1, key=f"edit_s_{prod}")
                 
-                # Cargador individual en caliente para cambiar la imagen del producto
                 nueva_foto_individual = st.file_uploader(f"🔄 Cambiar foto de {prod}:", type=["jpg", "jpeg", "png"], key=f"foto_edit_{prod}")
                 
                 if nueva_foto_individual is not None:
@@ -586,22 +583,21 @@ if es_admin:
                     st.session_state.menu_dinamico[prod]["foto"] = f"data:image/png;base64,{encoded_foto_edit}"
                     cambios_detectados = True
                 
-                # Fila inferior: Botón estructural de eliminación física
+                st.markdown("<div style='height:5px;'></div>", unsafe_allow_html=True)
+                
                 if st.button("🗑️ ELIMINAR PRODUCTO", key=f"del_{prod}", use_container_width=True):
                     del st.session_state.menu_dinamico[prod]
                     guardar_json(RUTA_JSON_MENU, st.session_state.menu_dinamico)
-                    st.warning(f"✔ Producto '{prod}' removido de la base de datos.")
+                    st.warning(f"✔ Producto '{prod}' removido.")
                     st.rerun()
             
-            # Verificación silenciosa de modificaciones numéricas para activar el guardado
             if precio_edit != info_prod["precio"] or stock_edit != info_prod["stock"]:
                 st.session_state.menu_dinamico[prod]["precio"] = precio_edit
                 st.session_state.menu_dinamico[prod]["stock"] = stock_edit
                 st.session_state.menu_dinamico[prod]["disponible"] = stock_edit > 0
                 cambios_detectados = True
                 
-        # Separador estético para evitar que los contenedores se peguen verticalmente
-        st.markdown("<div style='height:10px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-bottom:15px;'></div>", unsafe_allow_html=True)
 
     # 3. BOTÓN CONSOLIDADOR DE CAMBIOS GENERALES
     if cambios_detectados:
@@ -610,6 +606,7 @@ if es_admin:
             guardar_json(RUTA_JSON_MENU, st.session_state.menu_dinamico)
             st.success("✔ ¡Inventario y galería multimedia actualizados con éxito!")
             st.rerun()
+
 
 
 else:
