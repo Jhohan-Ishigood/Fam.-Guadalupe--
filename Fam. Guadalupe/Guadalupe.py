@@ -395,9 +395,16 @@ else:
         st.markdown("<h3 class='titulo-principal'>BIENVENIDOS AL CATÁLOGO DE PRODUCTOS DISPONIBLES</h3>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # [!] SEGUNDO: INYECCIÓN MAESTRA DEL LOGOTIPO (AHORA QUEDA ABAJO DEL TÍTULO)
+        # [!] SEGUNDO: INYECCIÓN MAESTRA DEL LOGOTIPO CON DESTELLO METÁLICO INCRUSTADO
         if URL_LOGO_PORTADA:
-            st.markdown(f'<div class="contenedor-logo-portada"><img src="{URL_LOGO_PORTADA}" class="logo-portada-circular"></div>', unsafe_allow_html=True)
+            st.markdown(f"""
+                <div class="contenedor-logo-portada">
+                    <div class="mascara-destello-circular">
+                        <img src="{URL_LOGO_PORTADA}" class="logo-portada-circular">
+                        <div class="linea-destello-brillante"></div>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
         else:
             st.markdown("""
                 <div class="contenedor-logo-portada">
