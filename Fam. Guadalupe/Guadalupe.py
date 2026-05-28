@@ -347,10 +347,9 @@ else:
         with st.expander("📐 VER N° DE CUENTA OFICIAL", expanded=False):
             st.markdown("""
                 <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; border-left: 4px solid #2980b9; margin-bottom: 10px;">
-                    <p style="color: #2980b9; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🏦 BANCO DE la NACION / BNP</p>
+                    <p style="color: #2980b9; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🏦 BANCO DE LA NACION / BNP</p>
                     <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número de Cuenta:</b> 570-98421345-0-88</p>
-                    <hr style="border-color: #333; margin: 10px 0;">
-                    <p style="color: #aaaaaa; margin: 0; font-size: 14px;"><b>Titular del Negocio:</b>segundo Melquiades Guadalupe Sanchez</p>
+                    <p style="color: #aaaaaa; margin: 0; font-size: 14px;"><b>Titular del Negocio:</b> Segundo Melquiades Guadalupe Sanchez</p>
                 </div>
             """, unsafe_allow_html=True)
 
