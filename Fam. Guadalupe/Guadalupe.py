@@ -286,45 +286,53 @@ def renderizar_informacion_pago(total_contexto=None):
                 <p style="color: #aaaaaa; margin: 0; font-size: 13px;">Use este número para coordinar directamente el despacho de su mercadería o resolver consultas.</p>
             </div>
         """, unsafe_allow_html=True)
+
 # ============================================================================
-# 5. BARRA LATERAL (SIDEBAR POS): GESTIÓN INTERNA Y AUTENTICACIÓN
+# 5. BARRA LATERAL (SIDEBAR POS): GESTIÓN INTERNA Y AUTENTICACIÓN BLINDADA
 # ============================================================================
+# Inicializamos la variable de sesión para recordar si ya eres administrador
+if "es_admin_autenticado" not in st.session_state:
+    st.session_state.es_admin_autenticado = False
+
 st.sidebar.markdown("<h2 style='text-align: center; color: #f39c12;'>Catálogo de Productos</h2>", unsafe_allow_html=True)
 st.sidebar.markdown("<p style='text-align: center; font-size: 13px; color: #aaa;'>Artículos de calidad a buen precio.</p>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
-st.sidebar.markdown("#### ⚙️ SOLO PARA ADMINISTRADORES")
-if st.sidebar.button("INGRESAR COMO ADMINISTRADOR🤵‍♂️", use_container_width=True, key="btn_toggle_admin_login"):
-    st.session_state.mostrar_login_admin = not st.session_state.mostrar_login_admin
+st.sidebar.markdown("#### ⚙️ GESTIÓN DEL SISTEMA")
 
-# Inicialización limpia de variables de control de acceso
-usuario_input = ""
-clave_input = ""
-es_admin = False
+# Control interactivo de estados en el Sidebar para Login / Logout
+if not st.session_state.es_admin_autenticado:
+    if st.sidebar.button("INGRESAR COMO ADMINISTRADOR 🤵‍♂️", use_container_width=True, key="btn_toggle_admin_login"):
+        st.session_state.mostrar_login_admin = not st.session_state.mostrar_login_admin
 
-# Renderizado condicional del bloque de autenticación administrativa
-if st.session_state.mostrar_login_admin:
-    with st.sidebar.container():
-        usuario_input = st.text_input("Nombre de Usuario:", key="user_login").strip()
-        clave_input = st.text_input("Contraseña:", type="password", key="pass_login").strip()
-
-# Validación de credenciales blindada (Usa Streamlit Secrets o respaldo local)
-USER_PROD = st.secrets.get("admin_user", "Los Guadalupe")
-PASS_PROD = st.secrets.get("admin_password", "18987915")
-
-es_admin = (usuario_input == USER_PROD and clave_input == PASS_PROD)
-
-# BLINDAJE DE LOGIN (Autoborrado de seguridad para ocultar datos de accesos en caliente)
-if es_admin:
+    if st.session_state.mostrar_login_admin:
+        with st.sidebar.container():
+            usuario_input = st.text_input("Nombre de Usuario:", key="user_login").strip()
+            clave_input = st.text_input("Contraseña:", type="password", key="pass_login").strip()
+            
+            USER_PROD = st.secrets.get("admin_user", "Los Guadalupe")
+            PASS_PROD = st.secrets.get("admin_password", "18987915")
+            
+            if st.button("🔓 ENTRAR AL SISTEMA", use_container_width=True, key="btn_ejecutar_login_pos"):
+                if usuario_input == USER_PROD and clave_input == PASS_PROD:
+                    st.session_state.es_admin_autenticado = True
+                    st.session_state.mostrar_login_admin = False
+                    st.rerun()
+                else:
+                    st.sidebar.error("❌ Credenciales incorrectas")
+else:
+    # Si ya está logueado, le damos un botón limpio para Salir de forma segura
     st.sidebar.success("✔ Modo Administrador Activo")
-    # Esconde el formulario de acceso una vez logueado con éxito
-    st.session_state.mostrar_login_admin = False
-elif usuario_input or clave_input:
-    st.sidebar.error("❌ Credenciales incorrectas")
+    if st.sidebar.button("🚪 CERRAR SESIÓN DE GESTIÓN", use_container_width=True, key="btn_cerrar_sesion_admin"):
+        st.session_state.es_admin_autenticado = False
+        st.rerun()
+
+# Forzamos a que la variable global 'es_admin' lea el estado persistente de la sesión
+es_admin = st.session_state.es_admin_autenticado
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("#### 🕒 HORARIO DE ATENCIÓN")
-st.sidebar.caption("Lunes a Domingo: 2:00 AM - 11:00 PM")
+st.sidebar.caption("Lunes a Domingo: 8:00 AM - 11:00 PM")
 
 # --- INDICADOR VISUAL "EN LÍNEA" AUTOMÁTICO CON RADAR (SISTEMA INTELIGENTE) ---
 hora_actual_int = ahora_peru.hour
@@ -373,18 +381,18 @@ st.sidebar.markdown(f"""
 
 st.sidebar.markdown("<br>", unsafe_allow_html=True)
 st.sidebar.markdown("#### 📍 NUESTRA UBICACIÓN")
-st.sidebar.caption("Uchumarca Bellavista-Frente la plazuela")
+st.sidebar.caption("Av. Principal El Gran Búfalo 742, Trujillo, Perú")
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("#### 📞 ¿NECESITAS AYUDA?")
 
-# Enlace de soporte por WhatsApp optimizado directo al chat de soporte
 st.sidebar.link_button(
     "💬 Chatear con Soporte",
     "https://wa.me",
     use_container_width=True,
     key="link_whatsapp_soporte"
 )
+
 # ============================================================================
 # 6. PANEL DE CONTROL DE ADMINISTRACIÓN - GESTOR DE SECCIONES (JSON)
 # ============================================================================
