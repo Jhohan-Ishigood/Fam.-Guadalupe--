@@ -249,7 +249,7 @@ def renderizar_informacion_pago(total_contexto=None):
     with st.expander("📞 VER TELÉFONO DE CONTACTO DIRECTO", expanded=False):
         st.markdown("""
             <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; border-left: 4px solid #27ae60;">
-                <p style="color: #27ae60; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🟢 WHATSAPP CORPORATIVO</p>
+                <p style="color: #27ae60; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🟢 WHATSAPP Y LLAMADAS </p>
                 <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número Celular:</b> +51 950 239 350</p>
                 <hr style="border-color: #333; margin: 10px 0;">
                 <p style="color: #aaaaaa; margin: 0; font-size: 13px;">Use este número para coordinar despacho o resolver consultas.</p>
