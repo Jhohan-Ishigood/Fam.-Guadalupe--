@@ -21,7 +21,19 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RUTA_CSS = os.path.join(BASE_DIR, "estilos.css")
 RUTA_JSON_MENU = os.path.join(BASE_DIR, "menu_config.json")
 RUTA_JSON_CATEGORIAS = os.path.join(BASE_DIR, "categorias_config.json")
-URL_BANNER_LOCAL = os.path.join(BASE_DIR, "Foto del establecimiento.png")
+# Carga de imagen local y conversión a Base64 para compatibilidad web en la nube
+def cargar_imagen_base64(ruta):
+    try:
+        with open(ruta, "rb") as archivo:
+            return base64.b64encode(archivo.read()).decode()
+    except Exception:
+        return ""
+
+ruta_foto_fisica = os.path.join(BASE_DIR, "Foto del establecimiento.png")
+foto_codificada = cargar_imagen_base64(ruta_foto_fisica)
+
+# Esta variable ahora contiene la imagen incrustada de forma segura
+URL_BANNER_LOCAL = f"data:image/png;base64,{foto_codificada}" if foto_codificada else ""
 
 # Inicialización global y segura de la variable de búsqueda para evitar NameError
 busqueda = ""
