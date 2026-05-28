@@ -153,18 +153,17 @@ st.markdown(f"""
         }}
     }}
     
-    /* CELULAR (≤ 768px) - ¡Máximo desplazamiento aprovechando el exceso de foto! */
+    /* CELULAR (≤ 768px) - ¡Formato de Ocultación Absoluta para evitar encimamientos! */
     @media (max-width: 768px) {{
-        [data-testid="stAppViewContainer"] {{
-            background-color: #0a0a0f !important;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80)), url("{URL_BANNER_LOCAL}") !important;
-            background-size: auto 100% !important; /* Ajusta el alto y deja libre el ancho masivo */
-            background-position: 0% center !important;
-            background-repeat: no-repeat !important;
-            background-attachment: scroll !important;
-            /* Animación fluida de vaivén completo de extremo a extremo */
-            animation: recorridoPanoramicoCelular 30s linear infinite alternate !important;
+        .mini-logo-flotante-master {{
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            width: 0px !important;
+            height: 0px !important;
         }}
+    }}
+
         @keyframes recorridoPanoramicoCelular {{
             0% {{ background-position: 0% center !important; }}
             100% {{ background-position: 100% center !important; }}
