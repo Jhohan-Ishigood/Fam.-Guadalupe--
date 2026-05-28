@@ -532,12 +532,9 @@ else:
         with st.expander("📐 VER N° DE CUENTA DEL BANCO DE LA NACION", expanded=False):
             st.markdown("""
                 <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; border-left: 4px solid #2980b9; margin-bottom: 10px;">
-                    <p style="color: #2980b9; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🏦 BANCO DE CÉDULA / BCP</p>
-                    <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número de Cuenta:</b> 570-98421345-0-88</p>
-                    <p style="color: #aaaaaa; margin: 0; font-size: 14px;"><b>Código Interbancario (CCI):</b> 00257019842134508891</p>
+                    <p style="color: #2980b9; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🏦 BANCO DE LA NACIION / BNP</p>
+                    <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número de Cuenta:</b> 23-2332-324-53</p>
                     <hr style="border-color: #333; margin: 10px 0;">
-                    <p style="color: #e67e22; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🏦 INTERBANK</p>
-                    <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número de Cuenta:</b> 200-3001245789</p>
                     <p style="color: #aaaaaa; margin: 0; font-size: 14px;"><b>Titular del Negocio:</b> Jhohan Guadalupe</p>
                 </div>
             """, unsafe_allow_html=True)
