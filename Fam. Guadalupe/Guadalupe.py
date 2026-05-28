@@ -16,6 +16,41 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# ============================================================================
+# 1.5 DETECTOR AUTOMÁTICO DE DISPOSITIVO (LAPTOP vs CELULAR)
+# ============================================================================
+# Inyección de JavaScript para detectar tamaño de pantalla y tipo de dispositivo
+st.markdown("""
+    <script>
+        // Detector de tipo de dispositivo basado en viewport width
+        const ancho_pantalla = window.innerWidth;
+        const es_celular = ancho_pantalla <= 480;
+        const es_tablet = ancho_pantalla > 480 && ancho_pantalla <= 1024;
+        const es_desktop = ancho_pantalla > 1024;
+        
+        // Guardar en localStorage para acceso posterior
+        localStorage.setItem('tipo_dispositivo', es_celular ? 'celular' : (es_tablet ? 'tablet' : 'desktop'));
+        localStorage.setItem('ancho_pantalla', ancho_pantalla);
+    </script>
+""", unsafe_allow_html=True)
+
+# Inicializar variable de sesión para tipo de dispositivo
+if "tipo_dispositivo" not in st.session_state:
+    st.session_state.tipo_dispositivo = "desktop"  # Default
+    
+# Inyectar CSS dinámico según el dispositivo
+st.markdown("""
+    <script>
+        function detectarDispositivo() {
+            const ancho = window.innerWidth;
+            if (ancho <= 480) return 'celular';
+            if (ancho <= 1024) return 'tablet';
+            return 'desktop';
+        }
+        window.tipoDispositivo = detectarDispositivo();
+    </script>
+""", unsafe_allow_html=True)
+
 # Determinación dinámica y automática de la ruta raíz en servidores de producción
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
