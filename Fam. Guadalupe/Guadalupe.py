@@ -12,7 +12,7 @@ import mimetypes
 # Configuración inicial del lienzo responsivo de la aplicación
 st.set_page_config(
     page_title="Catálogo de los productos a la venta", 
-    layout="wide", 
+    layout="centered", 
     initial_sidebar_state="collapsed"
 )
 
