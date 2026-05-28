@@ -16,7 +16,7 @@ html, body, .stApp,
     color: #ffffff !important;
 }
 
-/* 3. PARCHE MAESTRO ABSOLUTO: Forzamos transparencia en TODOS los sub-contenedores de la Bienvenida */
+/* 3. PARCHE MAESTRO: Forzamos transparencia en todos los sub-contenedores de la Bienvenida */
 .stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"],
 .stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"] div,
 .stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stMarkdownContainer"],
