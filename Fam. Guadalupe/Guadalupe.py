@@ -173,29 +173,40 @@ if URL_LOGO_PORTADA:
 # ============================================================================
 st.markdown(f"""
     <style>
-    /* 1. ELIMINACIÓN ABSOLUTA DEL MENÚ NATIVO DEL SERVIDOR (DERECHO) */
-    #MainMenu, .stAppDeployDropdown, [data-testid="stHeader"] > div:last-child, div[data-testid="stHeader"] button {{
+    /* 1. ELIMINACIÓN CORREGIDA: SOLO BORRA EL MENÚ TÉCNICO DERECHO */
+    #MainMenu, .stAppDeployDropdown, [data-testid="stHeader"] > div:last-child {{
         display: none !important;
     }}
+    
+    /* BLINDAJE ABSOLUTO: Forzamos a que el botón izquierdo de la barra lateral SIEMPRE sea visible */
+    [data-testid="stHeader"] [data-testid="stSidebarCollapseButton"],
     div[data-testid="stHeader"] button[kind="headerNoPadding"] {{
         display: inline-flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }}
 
     /* 2. MOTOR DEL FONDO PANORÁMICO ANIMADO EN BUCLE GLOBAL INTEGRAL */
     [data-testid="stAppViewContainer"] {{
         background-color: #0a0a0f !important;
         background-image: linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)), url("{URL_BANNER_LOCAL}") !important;
-        /* [!] CAMBIO CLAVE: Mantiene la altura pero libera el ancho para que la foto pueda deslizarse */
-        background-size: auto 100% !important; 
+        background-size: 140% auto !important; 
         background-position: 0% center !important;
         background-repeat: no-repeat !important;
-        background-attachment: fixed !important;
-        animation: desplazamientoPanoramicoLocal 20s ease-in-out infinite alternate !important;
+        background-attachment: scroll !important;
+        animation: recorridoPanoramicoEstablecimiento 25s ease-in-out infinite alternate !important;
     }}
-    @keyframes desplazamientoPanoramicoLocal {{
-        0% {{ background-position: 0% center !important; }}
-        100% {{ background-position: 30% center !important; }}
+    @keyframes recorridoPanoramicoEstablecimiento {{
+        0% {{ 
+            background-size: 140% auto !important;
+            background-position: 0% center !important; 
+        }}
+        100% {{ 
+            background-size: 140% auto !important;
+            background-position: 100% center !important; 
+        }}
     }}
+
 
     /* 3. TRANSPARENCIA RADICAL EN TODAS LAS CAPAS INTERMEDIAS */
     .stApp, [data-testid="stMainBlockContainer"], [data-testid="stVerticalBlock"], 
