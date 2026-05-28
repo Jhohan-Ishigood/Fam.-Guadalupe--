@@ -2,15 +2,20 @@
     1. BLINDAJE ANTI-MODO CLARO Y ARQUITECTURA VISUAL GLOBAL (EDICIÓN ORO FAM. GUADALUPE)
    ============================================================================ */
 
-/* Forzado absoluto de fondo oscuro azul noche profundo para anular el Modo Claro */
+/* Permitimos que el fondo sea transparente para que se vea el banner de Python */
 html, body, .stApp, 
 [data-testid="stAppViewContainer"], 
-[data-testid="stMainBlockContainer"], 
+[data-testid="stMainBlockContainer"] {
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+
+/* El fondo oscuro sólido se aplicará únicamente en los bloques verticales internos */
 [data-testid="stVerticalBlock"] {
     background-color: #0a0a0f !important;
     color: #ffffff !important;
-    
 }
+
 
 /* Configuración unificada de fuentes nítidas para toda la aplicación */
 .stApp, :app {
