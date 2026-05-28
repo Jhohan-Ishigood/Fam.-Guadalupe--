@@ -133,8 +133,8 @@ if st.session_state.mostrar_login_admin:
         clave_input = st.text_input("Contraseña:", type="password", key="pass_login").strip()
 
 # Validación de credenciales blindada (Usa Streamlit Secrets o respaldo local)
-USER_PROD = st.secrets.get("admin_user", "Grupo 5")
-PASS_PROD = st.secrets.get("admin_password", "jhohan-2026")
+USER_PROD = st.secrets.get("admin_user", "Los Guadalupe")
+PASS_PROD = st.secrets.get("admin_password", "18987915")
 
 es_admin = (usuario_input == USER_PROD and clave_input == PASS_PROD)
 
@@ -354,8 +354,8 @@ else:
             """, unsafe_allow_html=True)
 
         # --- PORTADA DESPLEGABLE 2: PROCESAMIENTO ELECTRÓNICO CON YAPE Y QR ---
-        with st.expander("📱 NUMERO Y QR DE YAPE", expanded=False):
-            ruta_qr_local = os.path.join(BASE_DIR, "mi_qr_yape de Jhohan.png")
+        with st.expander("📱 VER NÚMERO Y QR DE YAPE", expanded=False):
+            ruta_qr_local = os.path.join(BASE_DIR, "mi_qr_yape de MELQUIADES.png")
             if os.path.exists(ruta_qr_local):
                 with open(ruta_qr_local, "rb") as qr_file:
                     encoded_qr = base64.b64encode(qr_file.read()).decode()
@@ -535,7 +535,7 @@ else:
                 </div>
             """, unsafe_allow_html=True)
         # --- DESPLEGABLE 2: PROCESAMIENTO ELECTRÓNICO CON YAPE Y QR ---
-        with st.expander("📱 VER NUMERO Y QR DE YAPE", expanded=False):
+        with st.expander("📱 VER NÚMERO Y QR DE YAPE", expanded=False):
             st.markdown(f"**Monto exacto a transferir:** S/{st.session_state.total_acumulado:.2f}")
             
             # Carga segura del código QR de Yape desde el almacenamiento local
