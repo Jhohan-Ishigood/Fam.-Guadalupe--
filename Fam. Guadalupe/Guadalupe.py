@@ -136,8 +136,8 @@ if os.path.exists(RUTA_CSS):
 # Inyección maestra de estilos y elementos físicos requeridos (mini-logo, destello, animaciones, admin-grid)
 st.markdown(f"""
     <style>
-    /* Ajustes de visibilidad para barra lateral y menú (mantener visibles) */
-    /* No ocultamos #MainMenu ni el stHeader para preservar el menú de opciones */
+    /* Ajustes de visibilidad para barra lateral y menú */
+    /* En PC: barra lateral visible. En móvil: ocultar para evitar superposición */
     section[data-testid='stSidebar'], div[data-testid='stSidebar'] {{
         display:block !important;
         position:fixed !important;
@@ -147,6 +147,11 @@ st.markdown(f"""
         z-index:1000000 !important;
         background:transparent !important;
         pointer-events:auto !important;
+    }}
+    @media (max-width:768px) {{
+        section[data-testid='stSidebar'], div[data-testid='stSidebar'] {{
+            display:none !important;
+        }}
     }}
     /* Asegurar que el contenedor principal quede por debajo de la sidebar en z-order */
     [data-testid="stAppViewContainer"] {{ position:relative !important; z-index:1 !important; }}
@@ -163,15 +168,16 @@ st.markdown(f"""
     /* Mini-logo flotante: PC y móvil derecha. Animación rotateY coin-like */
     .mini-logo-flotante-master {{ z-index:999999 !important; pointer-events:none !important; position:fixed !important; perspective:1000px !important; }}
     @media (min-width:769px) {{ .mini-logo-flotante-master {{ top:80px !important; right:25px !important; left:auto !important; width:65px !important; height:65px !important; }} .mini-logo-imagen-circular {{ width:100% !important; height:100% !important; object-fit:cover !important; border-radius:50% !important; border:2px solid #d4af37 !important; box-shadow:0 0 15px rgba(212,175,55,0.6) !important; transform-style:preserve-3d !important; animation:rotarMiniLogo3D 4s linear infinite !important; }} }}
-    @media (max-width:768px) {{ .mini-logo-flotante-master {{ top:25px !important; right:15px !important; left:auto !important; width:45px !important; height:45px !important; }} .mini-logo-imagen-circular {{ width:100% !important; height:100% !important; object-fit:cover !important; border-radius:50% !important; border:2px solid #d4af37 !important; box-shadow:0 0 10px rgba(212,175,55,0.5) !important; animation:rotarMiniLogo3D 4s linear infinite !important; }} }}
+    @media (max-width:768px) {{ .mini-logo-flotante-master {{ top:70px !important; right:15px !important; left:auto !important; width:45px !important; height:45px !important; }} .mini-logo-imagen-circular {{ width:100% !important; height:100% !important; object-fit:cover !important; border-radius:50% !important; border:2px solid #d4af37 !important; box-shadow:0 0 10px rgba(212,175,55,0.5) !important; animation:rotarMiniLogo3D 4s linear infinite !important; }} }}
     @keyframes rotarMiniLogo3D {{ 0% {{ transform:rotateY(0deg); }} 100% {{ transform:rotateY(360deg); }} }}
 
-    /* Logo central con destello físico */
+    /* Logo central con destello físico - ANIMACIÓN VISIBLE */
     .contenedor-logo-destello-fijo {{ display:flex !important; justify-content:center !important; align-items:center !important; width:100% !important; margin:20px auto !important; }}
     .marco-escudo-brillante {{ position:relative !important; width:206px !important; height:206px !important; border-radius:50% !important; overflow:hidden !important; border:3px solid #d4af37 !important; box-shadow:0 0 30px rgba(212,175,55,0.5) !important; background-color:#111424 !important; transform:none !important; }}
     .foto-logo-real {{ width:100% !important; height:100% !important; object-fit:cover !important; display:block !important; }}
-    .destello-fisico-linea {{ position:absolute !important; top:0 !important; left:-120% !important; width:60% !important; height:100% !important; background:linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%) !important; transform:skewX(-25deg) !important; animation:cruzarDestello 4s ease-in-out infinite !important; pointer-events:none !important; z-index:2 !important; }}
-    @keyframes cruzarDestello {{ 0% {{ left:-120%; opacity:0; }} 10% {{ left:-40%; opacity:1; }} 50% {{ left:140%; opacity:0.8; }} 100% {{ left:140%; opacity:0; }} }}
+    .destello-fisico-linea {{ position:absolute !important; top:0 !important; left:-120% !important; width:60% !important; height:100% !important; background:linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0) 100%) !important; transform:skewX(-25deg) !important; animation:cruzarDestello 4s ease-in-out infinite !important; pointer-events:none !important; z-index:2 !important; }}
+    @keyframes cruzarDestello {{ 0% {{ left:-120%; opacity:0; }} 8% {{ left:-40%; opacity:1; }} 50% {{ left:140%; opacity:1; }} 100% {{ left:140%; opacity:0; }} }}
+
 
     /* Fade-in en pestañas */
     .bienvenida-transparente-master, .catalogo-transparente-master, .carrito-transparente-master {{ animation: aparicionSuave 0.4s cubic-bezier(0.25,0.46,0.45,0.94) both !important; }}
