@@ -621,10 +621,9 @@ div[data-testid="stMetricValue"] div {
     text-shadow: 0px 0px 8px rgba(46, 204, 113, 0.5) !important;
 }
 
-/* REFORZAMIENTO RESPONSIVO MÓVIL: Cuadrícula fluida adaptativa */
 @media (max-width: 768px) {
-    /* Rompe las columnas y las pone al 100% de ancho en celulares para evitar amontonamiento */
-    div[data-testid="stColumn"] {
+    /* [!] CORRECCIÓN MÁGICA: Solo colapsa las columnas al 100% dentro del catálogo del cliente móvil */
+    .catalogo-transparente-master div[data-testid="stColumn"] {
         min-width: 100% !important;
         width: 100% !important;
     }
