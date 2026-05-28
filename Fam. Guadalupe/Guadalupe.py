@@ -133,65 +133,71 @@ if os.path.exists(RUTA_CSS):
     except Exception:
         pass
 
-# ============================================================================
-# 6. INYECCIÓN MAESTRA DEL MINI-LOGO EN CAPA RAÍZ DEL NAVEGADOR (PC Y CELULAR)
-# ============================================================================
-if URL_LOGO_PORTADA:
-    st.markdown(f"""
-        <div id="logo-raiz-universal" style="
-            position: fixed !important;
-            top: 60px !important;
-            right: 25px !important;
-            width: 65px !important;
-            height: 65px !important;
-            z-index: 99999999 !important;
-            pointer-events: none !important;
-            perspective: 1000px !important;
-        ">
-            <img src="{URL_LOGO_PORTADA}" style="
-                width: 100% !important;
-                height: 100% !important;
-                object-fit: cover !important;
-                border-radius: 50% !important;
-                border: 2px solid #d4af37 !important;
-                background-color: #111424 !important;
-                box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.6) !important;
-                animation: rotarLogoRaiz3D 4s linear infinite !important;
-                transform-style: preserve-3d !important;
-            ">
-        </div>
+# Inyección maestra de estilos y elementos físicos requeridos (mini-logo, destello, animaciones, admin-grid)
+st.markdown(f"""
+    <style>
+    /* Ocultar elementos técnicos */
+    #MainMenu, .stAppDeployDropdown, [data-testid="stHeader"] > div:last-child {{ display:none !important; }}
 
-        <style>
-        @keyframes rotarLogoRaiz3D {{
-            0% {{ transform: rotateY(0deg); }}
-            100% {{ transform: rotateY(360deg); }}
-        }}
+    /* Fondo panorámico - colocar arriba para evitar mostrar logo central duplicado */
+    [data-testid="stAppViewContainer"] {{
+        background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url("{URL_BANNER_LOCAL}") !important;
+        background-size: cover !important;
+        background-position: top center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+    }}
 
-        /* FORMATO EXCLUSIVO PARA CELULAR: Lo encoge y lo clava en la esquina IZQUIERDA */
-        @media (max-width: 768px) {{
-            #logo-raiz-universal {{
-                top: 15px !important;
-                left: 15px !important;
-                right: auto !important;
-                width: 45px !important;
-                height: 45px !important;
-            }}
-            #logo-raiz-universal img {{
-                box-shadow: 0px 0px 10px rgba(212, 175, 55, 0.5) !important;
-            }}
-        }}
-        </style>
+    /* Mini-logo flotante: PC derecha, móvil izquierda. Animación rotateY coin-like */
+    .mini-logo-flotante-master {{ z-index:999999 !important; pointer-events:none !important; position:fixed !important; perspective:1000px !important; }}
+    @media (min-width:769px) {{ .mini-logo-flotante-master {{ top:60px !important; right:25px !important; width:65px !important; height:65px !important; }} .mini-logo-imagen-circular {{ width:100% !important; height:100% !important; object-fit:cover !important; border-radius:50% !important; border:2px solid #d4af37 !important; box-shadow:0 0 15px rgba(212,175,55,0.6) !important; transform-style:preserve-3d !important; animation:rotarMiniLogo3D 4s linear infinite !important; }} }}
+    @media (max-width:768px) {{ .mini-logo-flotante-master {{ top:15px !important; left:15px !important; right:auto !important; width:45px !important; height:45px !important; }} .mini-logo-imagen-circular {{ width:100% !important; height:100% !important; object-fit:cover !important; border-radius:50% !important; border:2px solid #d4af37 !important; box-shadow:0 0 10px rgba(212,175,55,0.5) !important; animation:rotarMiniLogo3D 4s linear infinite !important; }} }}
+    @keyframes rotarMiniLogo3D {{ 0% {{ transform:rotateY(0deg); }} 100% {{ transform:rotateY(360deg); }} }}
 
-        <!-- Script invisible de Fuerza Bruta que saca el logo del contenedor de Streamlit y lo clava en el Body del navegador -->
-        <script>
-        (function() {{
-            var el = document.getElementById("logo-raiz-universal");
-            if (el && document.body) {{
-                document.body.appendChild(el);
-            }}
-        }})();
-        </script>
-    """, unsafe_allow_html=True)
+    /* Logo central con destello físico */
+    .contenedor-logo-destello-fijo {{ display:flex !important; justify-content:center !important; align-items:center !important; width:100% !important; margin:20px auto !important; }}
+    .marco-escudo-brillante {{ position:relative !important; width:206px !important; height:206px !important; border-radius:50% !important; overflow:hidden !important; border:3px solid #d4af37 !important; box-shadow:0 0 30px rgba(212,175,55,0.5) !important; background-color:#111424 !important; transform:none !important; }}
+    .foto-logo-real {{ width:100% !important; height:100% !important; object-fit:cover !important; display:block !important; }}
+    .destello-fisico-linea {{ position:absolute !important; top:0 !important; left:-120% !important; width:60% !important; height:100% !important; background:linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%) !important; transform:skewX(-25deg) !important; animation:cruzarDestello 4s ease-in-out infinite !important; pointer-events:none !important; z-index:2 !important; }}
+    @keyframes cruzarDestello {{ 0% {{ left:-120%; opacity:0; }} 10% {{ left:-40%; opacity:1; }} 50% {{ left:140%; opacity:0.8; }} 100% {{ left:140%; opacity:0; }} }}
+
+    /* Fade-in en pestañas */
+    .bienvenida-transparente-master, .catalogo-transparente-master, .carrito-transparente-master {{ animation: aparicionSuave 0.4s cubic-bezier(0.25,0.46,0.45,0.94) both !important; }}
+    @keyframes aparicionSuave {{ 0% {{ transform:translateY(15px); opacity:0; }} 100% {{ transform:translateY(0); opacity:1; }} }}
+
+    /* Hover elevación + micro-zoom + hilo dorado */
+    div[data-testid="stColumn"] {{ transition:transform 0.28s cubic-bezier(0.25,0.8,0.25,1) !important; border-radius:12px !important; }}
+    div[data-testid="stColumn"]:hover, div[data-testid="stColumn"].tapped-mobile {{ transform:translateY(-5px) !important; }}
+    div[data-testid="stColumn"] img {{ transition:transform 0.35s ease !important; border-radius:12px 12px 0 0 !important; }}
+    div[data-testid="stColumn"]:hover img, div[data-testid="stColumn"].tapped-mobile img {{ transform:scale(1.05) !important; }}
+    div[data-testid="stColumn"]:hover .product-card-bottom, div[data-testid="stColumn"].tapped-mobile .product-card-bottom {{ border-left:4px solid #d4af37 !important; border-right:4px solid #d4af37 !important; box-shadow:0 6px 18px rgba(212,175,55,0.25) !important; }}
+
+    /* Botón con franja escáner */
+    .btn-luz-escaner {{ position:relative !important; overflow:hidden !important; display:inline-block !important; }}
+    .btn-luz-escaner::after {{ content:"" !important; position:absolute !important; top:0 !important; left:-120% !important; width:60% !important; height:100% !important; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent) !important; transform:skewX(-20deg) !important; animation:luzBoton 3s linear infinite !important; z-index:1 !important; }}
+    @keyframes luzBoton {{ 0% {{ left:-120%; }} 100% {{ left:220%; }} }}
+
+    /* Pulso neón en contadores */
+    div[data-testid="stNumberInput"] input:focus, div[data-testid="stNumberInput"] input:active {{ animation: pulsoNeon 0.28s ease !important; box-shadow:0 0 12px rgba(46,204,113,0.45) !important; }}
+    @keyframes pulsoNeon {{ 0% {{ transform:scale(1); }} 50% {{ transform:scale(1.08); }} 100% {{ transform:scale(1); }} }}
+
+    /* Admin grid */
+    .admin-grid-2col {{ display:flex !important; flex-wrap:wrap !important; gap:15px !important; width:100% !important; }}
+    .admin-tarjeta {{ flex:0 0 calc(50% - 8px) !important; min-width:calc(50% - 8px) !important; max-width:calc(50% - 8px) !important; }}
+    @media (max-width:768px) {{ .admin-tarjeta {{ flex:0 0 100% !important; min-width:100% !important; max-width:100% !important; }} }}
+
+    /* Nota captura */
+    .nota-captura-estrategica {{ background-color: rgba(212,175,55,0.1) !important; border:2px dashed #d4af37 !important; padding:15px !important; border-radius:10px !important; text-align:center !important; margin-bottom:25px !important; box-shadow:0 4px 15px rgba(212,175,55,0.12) !important; }}
+    .nota-captura-estrategica p {{ color:#ffffff !important; font-weight:700 !important; margin:0 !important; }}
+
+    </style>
+
+    <!-- elemento físico mini-logo -->
+    <div class="mini-logo-flotante-master">
+      <img src="{URL_LOGO_PORTADA}" class="mini-logo-imagen-circular" alt="Mini Logo">
+    </div>
+
+""", unsafe_allow_html=True)
 
 
 # ============================================================================
