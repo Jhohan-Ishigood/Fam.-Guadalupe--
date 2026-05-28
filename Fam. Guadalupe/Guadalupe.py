@@ -391,7 +391,13 @@ else:
         # --- PARCHE DE FUERZA BRUTA: Abrimos un contenedor HTML transparente ---
         st.markdown('<div class="bienvenida-transparente-master">', unsafe_allow_html=True)
 
-        # INYECCIÓN MAESTRA DEL LOGOTIPO EN LA PARTE SUPERIOR
+        # [!] PRIMERO: TÍTULOS PRINCIPALES (QUEDAN DEBAJO DEL AUTOR VERDE NATIIVO Y ARRIBA DEL LOGO)
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("<h3 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES</h3>", unsafe_allow_html=True)
+        st.markdown("<br><p style='text-align: center; font-size: 20px; margin-top: -30px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        # [!] SEGUNDO: INYECCIÓN MAESTRA DEL LOGOTIPO (AHORA QUEDA ABAJO DEL TÍTULO)
         if URL_LOGO_PORTADA:
             st.markdown(f'<div class="contenedor-logo-portada"><img src="{URL_LOGO_PORTADA}" class="logo-portada-circular"></div>', unsafe_allow_html=True)
         else:
@@ -402,6 +408,7 @@ else:
                     </div>
                 </div>
             """, unsafe_allow_html=True)
+
 
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("<h3 class='titulo-principal'>CATÁLOGO DE PRODUCTOS DISPONIBLES</h3>", unsafe_allow_html=True)
