@@ -120,12 +120,42 @@ fecha_actual = ahora_peru.strftime("%d/%m/%Y %H:%M:%S")
 # Las imágenes locales se quedan igual en Base64 porque no pesan casi nada
 URL_FOTO_TIENDA = cargar_recurso_base64(os.path.join(BASE_DIR, "establecimiento.png"), "imagen")
 URL_QR_YAPE = cargar_recurso_base64(os.path.join(BASE_DIR, "miqr1.png"), "imagen")
-URL_QR_YAPE = cargar_recurso_base64(os.path.join(BASE_DIR, "Logotipo.png"), "imagen")
+URL_LOGO_PORTADA = cargar_recurso_base64(os.path.join(BASE_DIR, "Logotipo.png"), "imagen")
 
 # Enlaces directos en la nube para que el servidor de Streamlit no se sature
 URL_VIDEO_PC = "https://streamable.com/hovyqm"
 URL_VIDEO_MOVIL = "https://streamable.com/6oo3z9"
 URL_VIDEO_LOGO = "https://streamable.com/4gffqo"
+
+
+def obtener_url_embebida(video_url: str) -> str:
+    """Devuelve una URL apta para embeber en iframe (soporta Streamable y YouTube).
+    Si es un mp4 directo devuelve la misma URL.
+    """
+    if not video_url:
+        return ""
+    parsed = urllib.parse.urlparse(video_url)
+    host = parsed.netloc.lower()
+    path = parsed.path.rstrip("/")
+    # Streamable (ej: https://streamable.com/abcd) -> embed: https://streamable.com/e/abcd
+    if "streamable.com" in host:
+        ident = path.split("/")[-1]
+        return f"https://streamable.com/e/{ident}"
+    # YouTube (acepta url de st.video o iframe)
+    if "youtube.com" in host or "youtu.be" in host:
+        return video_url
+    # Si parece un mp4 directo
+    if video_url.lower().endswith('.mp4'):
+        return video_url
+    # Por defecto devolvemos la URL original (intento de embed)
+    return video_url
+
+# URLs embebidas (para usar en iframes)
+EMBED_VIDEO_PC = obtener_url_embebida(URL_VIDEO_PC)
+EMBED_VIDEO_MOVIL = obtener_url_embebida(URL_VIDEO_MOVIL)
+EMBED_VIDEO_LOGO = obtener_url_embebida(URL_VIDEO_LOGO)
+
+
 
 if os.path.exists(RUTA_CSS):
     try:
@@ -138,27 +168,38 @@ if os.path.exists(RUTA_CSS):
 # ============================================================================
 # 5. INYECCIÓN DEL MOTOR DE FONDO DE VIDEO Y ELEMENTOS DE NAVEGACIÓN CAPA-Z
 # ============================================================================
-st.markdown(f"""
-    <!-- Bloque de Reproducción Multimedia en Bucle Infinito de Fondo -->
-    <div class="video-background-container pc-only">
-        <video autoplay loop muted playsinline class="video-fondo-maestro">
-            <source src="{URL_VIDEO_PC}" type="video/mp4">
-        </video>
-    </div>
+# Reproducción multimedia: preferir archivos locales (más fiables en Streamlit Cloud). Si no existen, usar embeds.
+video_pc_local = os.path.join(BASE_DIR, "videofondopc.mp4")
+video_movil_local = os.path.join(BASE_DIR, "videofondocelular.mp4")
+logo_video_local = os.path.join(BASE_DIR, "logovideo.mp4")
 
-    <div class="video-background-container movil-only">
-        <video autoplay loop muted playsinline class="video-fondo-maestro">
-            <source src="{URL_VIDEO_MOVIL}" type="video/mp4">
-        </video>
-    </div>
+if os.path.exists(video_pc_local):
+    try:
+        with open(video_pc_local, "rb") as vf:
+            st.video(vf.read(), format="video/mp4")
+    except Exception:
+        st.markdown(f"<div class=\"video-background-container pc-only\"> <iframe src=\"{EMBED_VIDEO_PC}\" class=\"video-fondo-maestro\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe> </div>", unsafe_allow_html=True)
+else:
+    st.markdown(f"<div class=\"video-background-container pc-only\"> <iframe src=\"{EMBED_VIDEO_PC}\" class=\"video-fondo-maestro\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe> </div>", unsafe_allow_html=True)
 
-    <!-- Sello de Identidad de Marca: Mini-Logo Flotante con Rotación Coin-3D -->
-    <div class="mini-logo-flotante-master">
-        <video autoplay loop muted playsinline class="mini-logo-imagen-circular">
-            <source src="{URL_VIDEO_LOGO}" type="video/mp4">
-        </video>
-    </div>
-""", unsafe_allow_html=True)
+if os.path.exists(video_movil_local):
+    try:
+        with open(video_movil_local, "rb") as vf:
+            st.video(vf.read(), format="video/mp4")
+    except Exception:
+        st.markdown(f"<div class=\"video-background-container movil-only\"> <iframe src=\"{EMBED_VIDEO_MOVIL}\" class=\"video-fondo-maestro\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe> </div>", unsafe_allow_html=True)
+else:
+    st.markdown(f"<div class=\"video-background-container movil-only\"> <iframe src=\"{EMBED_VIDEO_MOVIL}\" class=\"video-fondo-maestro\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe> </div>", unsafe_allow_html=True)
+
+# Mini-logo (video corto) - preferir local
+if os.path.exists(logo_video_local):
+    try:
+        with open(logo_video_local, "rb") as vf:
+            st.video(vf.read(), format="video/mp4")
+    except Exception:
+        st.markdown(f"<div class=\"mini-logo-flotante-master\"> <iframe src=\"{EMBED_VIDEO_LOGO}\" class=\"mini-logo-imagen-circular\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe> </div>", unsafe_allow_html=True)
+else:
+    st.markdown(f"<div class=\"mini-logo-flotante-master\"> <iframe src=\"{EMBED_VIDEO_LOGO}\" class=\"mini-logo-imagen-circular\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen></iframe> </div>", unsafe_allow_html=True)
 
 # ============================================================================
 # 6. FUNCIÓN CENTRALIZADA DE PASARELA DE COMPROBACIÓN DE PAGO (POS)
