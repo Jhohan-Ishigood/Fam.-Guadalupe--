@@ -399,7 +399,6 @@ else:
         if URL_LOGO_PORTADA:
             st.markdown(f"""
                 <style>
-                /* Contenedor principal que centra el escudo */
                 .contenedor-logo-destello-fijo {{
                     display: flex !important;
                     justify-content: center !important;
@@ -408,18 +407,14 @@ else:
                     margin-top: -15px !important;
                     margin-bottom: 20px !important;
                 }}
-
-                /* Máscara redonda obligatoria que recorta la luz fuera del círculo */
                 .mascara-redonda-logo {{
                     position: relative !important;
                     width: 206px !important;
                     height: 206px !important;
                     border-radius: 50% !important;
-                    overflow: hidden !important; /* Corta la luz sobrante */
+                    overflow: hidden !important;
                     box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important;
                 }}
-
-                /* Estilo de la imagen del escudo */
                 .imagen-escudo-circular {{
                     width: 100% !important;
                     height: 100% !important;
@@ -429,13 +424,11 @@ else:
                     background-color: #111424 !important;
                     display: block !important;
                 }}
-
-                /* LA CAPA DE LUZ: Franja blanca reflectante que cruzará el escudo */
                 .mascara-redonda-logo::after {{
                     content: "" !important;
                     position: absolute !important;
                     top: -50% !important;
-                    left: -150% !important; /* Comienza oculta a la izquierda */
+                    left: -150% !important;
                     width: 55px !important;
                     height: 200% !important;
                     background: linear-gradient(
@@ -444,21 +437,18 @@ else:
                         rgba(255, 255, 255, 0.2) 25%,
                         rgba(255, 255, 255, 0.85) 50%,
                         rgba(255, 255, 255, 0.2) 75%,
-                        rgba(255, 255, 255, 0) 100%
+                        rgba(255, 255, 255, 0) 100
                     ) !important;
-                    transform: rotate(25deg) !important; /* Inclinación de la luz */
+                    transform: rotate(25deg) !important;
                     z-index: 5 !important;
                     pointer-events: none !important;
                     animation: efectoLuzReflectante 4s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
                 }}
-
-                /* Definición del movimiento horizontal infinito de la animación */
                 @keyframes efectoLuzReflectante {{
                     0% {{
                         left: -150%;
                     }}
                     25%, 100% {{
-                        /* Cruza rápido en el primer cuarto de tiempo y espera oculta a la derecha */
                         left: 150%;
                     }}
                 }}
@@ -479,11 +469,6 @@ else:
                 </div>
             """, unsafe_allow_html=True)
 
-
-
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; font-size: 20px; margin-top: -10px; font-weight: bold; color: #d4af37;'>Explore el stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
-        st.markdown("<br>", unsafe_allow_html=True)
         
         # 1. BOTÓN PRINCIPAL DE ACCIÓN
         cambiar_a_catalogo = st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master")
