@@ -153,17 +153,18 @@ st.markdown(f"""
         }}
     }}
     
-    /* CELULAR (≤ 768px) - ¡Formato de Ocultación Absoluta para evitar encimamientos! */
+    /* CELULAR (≤ 768px) - ¡Máximo desplazamiento aprovechando el exceso de foto! */
     @media (max-width: 768px) {{
-        .mini-logo-flotante-master {{
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            width: 0px !important;
-            height: 0px !important;
+        [data-testid="stAppViewContainer"] {{
+            background-color: #0a0a0f !important;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80)), url("{URL_BANNER_LOCAL}") !important;
+            background-size: auto 100% !important; /* Ajusta el alto y deja libre el ancho masivo */
+            background-position: 0% center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: scroll !important;
+            /* Animación fluida de vaivén completo de extremo a extremo */
+            animation: recorridoPanoramicoCelular 30s linear infinite alternate !important;
         }}
-    }}
-
         @keyframes recorridoPanoramicoCelular {{
             0% {{ background-position: 0% center !important; }}
             100% {{ background-position: 100% center !important; }}
@@ -171,6 +172,8 @@ st.markdown(f"""
     }}
     
     /* ====== 2. MINI-LOGO FLOTANTE 3D EN ESQUINA SUPERIOR DERECHA ====== */
+    
+    /* COMPORTAMIENTO EN PC / LAPTOP (> 768px) */
     @media (min-width: 769px) {{
         .mini-logo-flotante-master {{
             position: fixed !important;
@@ -199,8 +202,17 @@ st.markdown(f"""
         }}
     }}
     
-    /* CELULAR - Reubicado arriba para que no tape las pestañas ni la lupa */
+    /* CELULAR (≤ 768px) - ¡Ocultación Absoluta para evitar que se meta al medio! */
     @media (max-width: 768px) {{
+        .mini-logo-flotante-master {{
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            width: 0px !important;
+            height: 0px !important;
+        }}
+    }}
+
         .mini-logo-flotante-master {{
             position: fixed !important;
             top: 15px !important; /* Sube a la barra vacía del título */
