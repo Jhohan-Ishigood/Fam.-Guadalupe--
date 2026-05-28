@@ -16,10 +16,14 @@ html, body, .stApp,
     color: #ffffff !important;
 }
 
-/* 3. PARCHE MAESTRO: Forzamos transparencia EXCLUSIVAMENTE en el bloque central de la Bienvenida */
-.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"] {
+/* 3. PARCHE MAESTRO ABSOLUTO: Forzamos transparencia en TODOS los sub-contenedores de la Bienvenida */
+.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"],
+.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stVerticalBlock"] div,
+.stApp:has(button[key="btn_empezar_pedido_master"]) [data-testid="stMarkdownContainer"],
+.stApp:has(button[key="btn_empezar_pedido_master"]) .element-container {
     background-color: transparent !important;
     background: transparent !important;
+    box-shadow: none !important;
 }
 
 
