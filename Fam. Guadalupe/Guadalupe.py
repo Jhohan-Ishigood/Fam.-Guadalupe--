@@ -118,9 +118,13 @@ fecha_actual = ahora_peru.strftime("%d/%m/%Y %H:%M:%S")
 ruta_foto_fisica = os.path.join(BASE_DIR, "establecimiento.png")
 URL_BANNER_LOCAL = cargar_imagen_base64(ruta_foto_fisica)
 
-ruta_logo_portada = os.path.join(BASE_DIR, "Logotipo.png")
-URL_LOGO_PORTADA = cargar_imagen_base64(ruta_logo_portada)
+# Definir la ruta física del video
+ruta_video_portada = os.path.join(BASE_DIR, "logovideo.mp4")
 
+# Mostrar el video en la interfaz de Streamlit si el archivo existe
+if os.path.exists(ruta_video_portada):
+    st.video(ruta_video_portada, autoplay=True, loop=True, muted=True)
+    
 ruta_qr_local = os.path.join(BASE_DIR, "miqr1.png")
 URL_QR_YAPE = cargar_imagen_base64(ruta_qr_local)
 
@@ -507,17 +511,11 @@ else:
         st.markdown("<p style='text-align: center; font-size: 20px; margin-top: -10px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios 🔥</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Logotipo con destello metálico forzado inline
-        if URL_LOGO_PORTADA:
-            st.markdown(f"""
-                <div class="contenedor-logo-destello-fijo">
-                    <div class="marco-escudo-brillante">
-                        <img src="{URL_LOGO_PORTADA}" class="foto-logo-real" alt="Logo FAM. GUADALUPE">
-                        <!-- Inyectamos el destello físico (usa keyframes global cruzarDestello) -->
-                        <div class="destello-fisico-linea"></div>
-                    </div>
-                </div>
-            """, unsafe_allow_html=True)
+        # logotipo con destello metálico forzado inline
+        # Agregamos el video directamente en la sección de bienvenida
+        ruta_video_portada = os.path.join(BASE_DIR, "logovideo.mp4")
+        if os.path.exists(ruta_video_portada):
+            st.video(ruta_video_portada, autoplay=True, loop=True, muted=True)
 
         st.markdown('<div class="btn-luz-escaner">', unsafe_allow_html=True)
         cambiar_a_catalogo = st.button("EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_empezar_pedido_master")
