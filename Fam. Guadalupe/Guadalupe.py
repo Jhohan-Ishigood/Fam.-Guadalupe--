@@ -171,106 +171,11 @@ st.markdown(f"""
         }}
     }}
     
-    /* ====== 2. MINI-LOGO FLOTANTE 3D EN ESQUINA SUPERIOR DERECHA ====== */
-    
-    /* COMPORTAMIENTO EN PC / LAPTOP (> 768px) */
-    @media (min-width: 769px) {{
-        .mini-logo-flotante-master {{
-            position: fixed !important;
-            top: 60px !important;
-            right: 25px !important;
-            width: 65px !important;
-            height: 65px !important;
-            z-index: 999999 !important;
-            pointer-events: none !important;
-            perspective: 1000px !important;
-        }}
-        .mini-logo-imagen-circular {{
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            border-radius: 50% !important;
-            border: 2px solid #d4af37 !important;
-            background-color: #111424 !important;
-            box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.6) !important;
-            animation: rotarMiniLogo3D 4s linear infinite !important;
-            transform-style: preserve-3d !important;
-        }}
-        @keyframes rotarMiniLogo3D {{
-            0% {{ transform: rotateY(0deg); }}
-            100% {{ transform: rotateY(360deg); }}
-        }}
-    }}
-    
-    /* CELULAR (≤ 768px) - ¡Blindaje de fuerza bruta absoluto para irse a la esquina! */
-    @media (max-width: 768px) {{
-        .mini-logo-flotante-master {{
-            position: fixed !important;
-            top: 15px !important; /* Lo subimos a la barra superior vacía de la app */
-            right: 15px !important;
-            
-            /* [!] PARCHE MAESTRO: Destruimos cualquier alineación, centrado o flexbox de la nube */
-            left: auto !important; 
-            margin: 0 !important;
-            padding: 0 !important;
-            display: inline-block !important;
-            float: right !important;
-            transform: none !important;
-            
-            width: 45px !important; /* Tamaño compacto premium para móvil */
-            height: 45px !important;
-            z-index: 999999 !important;
-            pointer-events: none !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }}
-        .mini-logo-imagen-circular {{
-            width: 45px !important; /* Forzamos el ancho exacto directo en la imagen */
-            height: 45px !important;
-            object-fit: cover !important;
-            border-radius: 50% !important;
-            border: 2px solid #d4af37 !important;
-            background-color: #111424 !important;
-            box-shadow: 0px 0px 10px rgba(212, 175, 55, 0.5) !important;
-            margin: 0 !important;
-            transform: none !important;
-            /* Mantiene el hermoso giro continuo de moneda en tu celular */
-            animation: rotarMiniLogoCelular3D 4s linear infinite !important;
-        }}
-        @keyframes rotarMiniLogoCelular3D {{
-            0% {{ transform: rotateY(0deg); }}
-            100% {{ transform: rotateY(360deg); }}
-        }}
+    /* ====== 2. MINI-LOGO FLOTANTE 3D EN ESQUINA SUPERIOR DERECHA (DESACTIVADO DEL FLUJO TRADICIONAL) ====== */
+    .mini-logo-flotante-master, .mini-logo-imagen-circular {{
+        display: none !important;
     }}
 
-
-        .mini-logo-flotante-master {{
-            position: fixed !important;
-            top: 15px !important; /* Sube a la barra vacía del título */
-            right: 15px !important;
-            left: auto !important;
-            transform: none !important;
-            width: 45px !important;
-            height: 45px !important;
-            z-index: 999999 !important;
-            pointer-events: none !important;
-        }}
-        .mini-logo-imagen-circular {{
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            border-radius: 50% !important;
-            border: 2px solid #d4af37 !important;
-            background-color: #111424 !important;
-            box-shadow: 0px 0px 10px rgba(212, 175, 55, 0.5) !important;
-            /* Mantiene el hermoso giro tipo moneda en el celular */
-            animation: rotarMiniLogoCelular3D 4s linear infinite !important;
-        }}
-        @keyframes rotarMiniLogoCelular3D {{
-            0% {{ transform: rotateY(0deg); }}
-            100% {{ transform: rotateY(360deg); }}
-        }}
-    }}
     
     /* ====== 3. TRANSPARENCIA RADICAL EN BLOQUES INTERMEDIOS ====== */
     .stApp, [data-testid="stMainBlockContainer"], [data-testid="stVerticalBlock"],
@@ -531,17 +436,64 @@ if os.path.exists(RUTA_CSS):
         pass
 
 # ============================================================================
-# 6. INYECCIÓN DEL MINI-LOGO FLOTANTE 3D
+# 6. INYECCIÓN MAESTRA DEL MINI-LOGO EN CAPA RAÍZ DEL NAVEGADOR (PC Y CELULAR)
 # ============================================================================
 if URL_LOGO_PORTADA:
     st.markdown(f"""
-        <div class="mini-logo-flotante-master">
-            <img src="{URL_LOGO_PORTADA}" class="mini-logo-imagen-circular" alt="Logo Flotante">
+        <div id="logo-raiz-universal" style="
+            position: fixed !important;
+            top: 60px !important;
+            right: 25px !important;
+            width: 65px !important;
+            height: 65px !important;
+            z-index: 99999999 !important;
+            pointer-events: none !important;
+            perspective: 1000px !important;
+        ">
+            <img src="{URL_LOGO_PORTADA}" style="
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+                border-radius: 50% !important;
+                border: 2px solid #d4af37 !important;
+                background-color: #111424 !important;
+                box-shadow: 0px 0px 15px rgba(212, 175, 55, 0.6) !important;
+                animation: rotarLogoRaiz3D 4s linear infinite !important;
+                transform-style: preserve-3d !important;
+            ">
         </div>
+
+        <style>
+        @keyframes rotarLogoRaiz3D {{
+            0% {{ transform: rotateY(0deg); }}
+            100% {{ transform: rotateY(360deg); }}
+        }}
+
+        /* FORMATO EXCLUSIVO PARA CELULAR: Lo encoge a 45px y lo sube para no estorbar */
+        @media (max-width: 768px) {{
+            #logo-raiz-universal {{
+                top: 15px !important;
+                right: 15px !important;
+                width: 45px !important;
+                height: 45px !important;
+            }}
+            #logo-raiz-universal img {{
+                box-shadow: 0px 0px 10px rgba(212, 175, 55, 0.5) !important;
+            }}
+        }}
+        </style>
+
+        <!-- Script invisible de Fuerza Bruta que saca el logo del contenedor de Streamlit y lo clava en el Body del navegador -->
+        <script>
+        (function() {{
+            var el = document.getElementById("logo-raiz-universal");
+            if (el && document.body) {{
+                document.body.appendChild(el);
+            }}
+        }})();
+        </script>
     """, unsafe_allow_html=True)
 
-# Sello del creador
-st.markdown("<div class='sello-creador'>Página desarrollada por: Jhohan Guadalupe</div>", unsafe_allow_html=True)
 
 # ============================================================================
 # 7. FUNCIÓN CENTRALIZADA DE PASARELA DE PAGO
