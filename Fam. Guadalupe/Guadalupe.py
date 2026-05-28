@@ -354,7 +354,7 @@ else:
             """, unsafe_allow_html=True)
 
         # --- PORTADA DESPLEGABLE 2: PROCESAMIENTO ELECTRÓNICO CON YAPE Y QR ---
-        with st.expander("📱 PAGAR CON YAPE O PLIN (CÓDIGO QR)", expanded=False):
+        with st.expander("📱 NUMERO Y QR DE YAPE", expanded=False):
             ruta_qr_local = os.path.join(BASE_DIR, "mi_qr_yape de Jhohan.png")
             if os.path.exists(ruta_qr_local):
                 with open(ruta_qr_local, "rb") as qr_file:
@@ -377,7 +377,7 @@ else:
                 <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; border-left: 4px solid #27ae60;">
                     <p style="color: #27ae60; font-weight: bold; margin: 0 0 5px 0; font-size: 16px;">🟢 WHATSAPP CORPORATIVO</p>
                     <p style="color: #ffffff; margin: 0 0 3px 0; font-size: 14px;"><b>Número Celular:</b> +51 950 239 350</p>
-                    <p style="color: #aaaaaa; margin: 0; font-size: 13px;">Use este número para consultas rápidas o coordinar transacciones directamente.</p>
+                    <p style="color: #aaaaaa; margin: 0; font-size: 13px;">Use este número para cualquier coonsulta o duda que tenga.</p>
                 </div>
             """, unsafe_allow_html=True)
             
