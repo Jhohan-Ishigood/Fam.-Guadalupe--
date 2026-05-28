@@ -621,19 +621,182 @@ div[data-testid="stMetricValue"] div {
     text-shadow: 0px 0px 8px rgba(46, 204, 113, 0.5) !important;
 }
 
+/* ============================================================================
+    MEDIA QUERIES RESPONSIVAS PARA DISPOSITIVOS MÓVILES Y TABLETAS
+   ============================================================================ */
+
+/* Tabletas y pantallas medianas */
 @media (max-width: 768px) {
-    /* [!] CORRECCIÓN MÁGICA: Solo colapsa las columnas al 100% dentro del catálogo del cliente móvil */
+    .block-container {
+        max-width: 100% !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+    
     .catalogo-transparente-master div[data-testid="stColumn"] {
         min-width: 100% !important;
         width: 100% !important;
     }
+    
     .product-title {
         font-size: 16px !important;
     }
+    
     .product-price {
         font-size: 18px !important;
     }
+    
     .titulo-principal {
         font-size: 28px !important;
+    }
+    
+    div[data-testid="stMainBlockContainer"] div.stButton > button {
+        font-size: 16px !important;
+        padding: 8px 16px !important;
+        width: 100% !important;
+    }
+    
+    .netflix-navbar-master div[data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+        gap: 4px !important;
+    }
+}
+
+/* Teléfonos pequeños - Optimización completa para móviles */
+@media (max-width: 480px) {
+    .block-container {
+        max-width: 100% !important;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+        margin: 0 !important;
+    }
+    
+    html, body, .stApp {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* Contenedores principales en una sola columna */
+    .catalogo-transparente-master,
+    .bienvenida-transparente-master,
+    .carrito-transparente-master {
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .catalogo-transparente-master div[data-testid="stColumn"] {
+        min-width: 100% !important;
+        width: 100% !important;
+        margin: 0 auto 15px auto !important;
+    }
+    
+    /* Título principal reducido */
+    .titulo-principal {
+        font-size: 20px !important;
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
+    }
+    
+    /* Productos */
+    .product-title {
+        font-size: 14px !important;
+        line-height: 1.2 !important;
+    }
+    
+    .product-price {
+        font-size: 16px !important;
+    }
+    
+    /* Botones optimizados para dedos */
+    div[data-testid="stMainBlockContainer"] div.stButton > button,
+    section[data-testid="stSidebar"] div.stButton > button {
+        font-size: 14px !important;
+        padding: 10px 12px !important;
+        width: 100% !important;
+        min-height: 44px !important;
+    }
+    
+    /* Inputs numéricos más grandes */
+    div[data-testid="stNumberInput"] input {
+        font-size: 18px !important;
+        padding: 10px !important;
+        min-height: 40px !important;
+    }
+    
+    /* Barra de búsqueda responsive */
+    div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input {
+        font-size: 13px !important;
+        padding: 8px 10px !important;
+        width: 100% !important;
+    }
+    
+    /* Acordeones optimizados */
+    div[data-testid="stExpander"] summary {
+        font-size: 13px !important;
+        padding: 10px 12px !important;
+    }
+    
+    /* Navbar horizontal flexible */
+    .netflix-navbar-master div[data-testid="stHorizontalBlock"] {
+        flex-wrap: wrap !important;
+        gap: 5px !important;
+        justify-content: center !important;
+    }
+    
+    div[data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) {
+        margin-top: 20px !important;
+        padding: 3px 0 !important;
+    }
+    
+    /* Mini logo flotante oculto en móviles */
+    .mini-logo-flotante-master {
+        display: none !important;
+    }
+    
+    /* Sidebar optimizado */
+    section[data-testid="stSidebar"] {
+        width: 100% !important;
+    }
+    
+    section[data-testid="stSidebar"] .element-container:has(p),
+    section[data-testid="stSidebar"] .element-container:has(h4) {
+        padding: 8px 10px !important;
+        margin-bottom: 4px !important;
+    }
+    
+    /* Pie de página móvil */
+    .social-footer {
+        max-width: 100% !important;
+        padding: 15px 8px !important;
+        margin: 20px 0 !important;
+        border-radius: 8px !important;
+    }
+    
+    .sello-creador {
+        font-size: 11px !important;
+        margin: 10px 0 5px 5px !important;
+        letter-spacing: 0.5px !important;
+    }
+    
+    /* Métricas ajustadas */
+    div[data-testid="stMetricValue"] {
+        font-size: 32px !important;
+        padding: 10px 15px !important;
+    }
+    
+    /* Imágenes responsive */
+    .catalogo-transparente-master div[data-testid="stColumn"] img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    
+    /* Alertas más compactas */
+    div.stAlert {
+        padding: 10px 12px !important;
+    }
+    
+    div.stAlert p, div.stAlert span {
+        font-size: 13px !important;
     }
 }
