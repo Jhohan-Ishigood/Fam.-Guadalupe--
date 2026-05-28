@@ -120,6 +120,7 @@ fecha_actual = ahora_peru.strftime("%d/%m/%Y %H:%M:%S")
 # Las imágenes locales se quedan igual en Base64 porque no pesan casi nada
 URL_FOTO_TIENDA = cargar_recurso_base64(os.path.join(BASE_DIR, "establecimiento.png"), "imagen")
 URL_QR_YAPE = cargar_recurso_base64(os.path.join(BASE_DIR, "miqr1.png"), "imagen")
+URL_QR_YAPE = cargar_recurso_base64(os.path.join(BASE_DIR, "Logotipo.png"), "imagen")
 
 # Enlaces directos en la nube para que el servidor de Streamlit no se sature
 URL_VIDEO_PC = "https://githubusercontent.com"
