@@ -171,21 +171,19 @@ if URL_LOGO_PORTADA:
 # ============================================================================
 # 4. INYECCIÓN NATIVA MAESTRA DE ESTILOS Y CONTROL DE MARCA (BLINDAJE TOTAL)
 # ============================================================================
-# Forzamos las transparencias y la inyección multimedia para independizarnos del CSS externo
 st.markdown(f"""
     <style>
     /* 1. ELIMINACIÓN ABSOLUTA DEL MENÚ NATIVO DEL SERVIDOR (DERECHO) */
     #MainMenu, .stAppDeployDropdown, [data-testid="stHeader"] > div:last-child, div[data-testid="stHeader"] button {{
         display: none !important;
     }}
-    
-    /* EXCEPCIÓN DE SEGURIDAD: Mantenemos vivo el botón administrativo izquierdo */
     div[data-testid="stHeader"] button[kind="headerNoPadding"] {{
         display: inline-flex !important;
     }}
 
-    /* 2. MOTOR DEL FONDO PANORÁMICO ANIMADO EN BUCLE GLOBAL INTEGRAL */
-    .stApp {{
+    /* 2. TRUCO DE FUERZA BRUTA: Aplicamos el fondo panorámico en el lienzo raíz absolute */
+    [data-testid="stAppViewContainer"] {{
+        background-color: #0a0a0f !important;
         background-image: linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.82)), url("{URL_BANNER_LOCAL}") !important;
         background-size: cover !important;
         background-position: 0% center !important;
@@ -198,17 +196,17 @@ st.markdown(f"""
         100% {{ background-position: 100% center !important; }}
     }}
 
-    /* 3. TRANSPARENCIA ABSOLUTA GLOBAL (CERO FRANJAS BLANCAS O OSCURAS) */
-    .stApp, [data-testid="stAppViewContainer"], [data-testid="stMainBlockContainer"],
-    [data-testid="stVerticalBlock"], [data-testid="stAppViewBlockContainer"],
-    [data-testid="elementGrid"], .element-container, div[role="radiogroup"],
-    .bienvenida-transparente-master, .catalogo-transparente-master, .carrito-transparente-master {{
+    /* 3. TRANSPARENCIA RADICAL EN TODAS LAS CAPAS INTERMEDIAS */
+    .stApp, [data-testid="stMainBlockContainer"], [data-testid="stVerticalBlock"], 
+    [data-testid="stAppViewBlockContainer"], [data-testid="elementGrid"], 
+    .element-container, div[role="radiogroup"], .bienvenida-transparente-master, 
+    .catalogo-transparente-master, .carrito-transparente-master {{
         background-color: transparent !important;
         background: transparent !important;
         box-shadow: none !important;
     }}
 
-    /* 4. CONFIGURACIÓN DEL SELLO DEL CREADOR DEL SISTEMA */
+    /* 4. CONFIGURACIÓN DEL SELLO DEL CREADOR */
     .sello-creador {{
         color: #2ecc71 !important;             
         font-size: 13.5px !important;
@@ -221,13 +219,12 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# Lector de respaldo para arrastrar las reglas complementarias del archivo CSS externo
 if os.path.exists(RUTA_CSS):
     with open(RUTA_CSS, "r", encoding="utf-8") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Inyección limpia del sello de creador adaptado al flujo estructural
 st.markdown("<div class='sello-creador'>Página desarrollada por: Jhohan Guadalupe</div>", unsafe_allow_html=True)
+
 
 
 # ============================================================================
@@ -549,7 +546,7 @@ else:
         st.markdown("<p style='text-align: center; font-size: 20px; margin-top: -10px; font-weight: bold; color: #d4af37;'>Bienvenidos al stock de productos disponibles y sus precios🔥</p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # [!] SEGUNDO: INYECCIÓN MAESTRA DEL LOGOTIPO CON DESTELLO METÁLICO INTEGRADO (FUERZA BRUTA)
+        # [!] SEGUNDO: INYECCIÓN DEL LOGOTIPO CON FRANJA DE LUZ FÍSICA INLINE
         if URL_LOGO_PORTADA:
             st.markdown(f"""
                 <style>
@@ -561,67 +558,60 @@ else:
                     margin-top: -15px !important;
                     margin-bottom: 20px !important;
                 }}
-                
-                /* [!] PARCHE MAESTRO: Mascara circular real que ahora inyecta la foto de fondo directamente */
                 .mascara-redonda-logo {{
                     position: relative !important;
                     width: 206px !important;
                     height: 206px !important;
                     border-radius: 50% !important;
-                    overflow: hidden !important; /* Corta la luz sobrante fuera del círculo */
+                    overflow: hidden !important; /* Corta la luz sobrante */
                     box-shadow: 0px 0px 25px rgba(212, 175, 55, 0.45) !important;
                     border: 3px solid #d4af37 !important;
-                    
-                    /* Colocamos la foto como fondo directo del contenedor para evitar el bloqueo de Streamlit */
-                    background-image: url("{URL_LOGO_PORTADA}") !important;
-                    background-size: cover !important;
-                    background-position: center !important;
-                    background-color: #111424 !important;
                 }}
-
-                /* LA CAPA DE LUZ: Franja blanca reflectante que ahora sí cruzará el escudo sin bloqueos */
-                .mascara-redonda-logo::after {{
-                    content: "" !important;
+                .imagen-escudo-circular {{
+                    width: 100% !important;
+                    height: 100% !important;
+                    object-fit: cover !important;
+                    border-radius: 50% !important;
+                    background-color: #111424 !important;
+                    display: block !important;
+                }}
+                /* CAMBIO: Creamos una clase para un DIV físico real para simular la luz reflectante */
+                .destello-fisico-linea {{
                     position: absolute !important;
                     top: -50% !important;
-                    left: -150% !important; /* Comienza oculta a la izquierda */
+                    left: -150% !important;
                     width: 55px !important;
                     height: 200% !important;
                     background: linear-gradient(
                         to right,
                         rgba(255, 255, 255, 0) 0%,
-                        rgba(255, 255, 255, 0.25) 30%,
+                        rgba(255, 255, 255, 0.3) 25%,
                         rgba(255, 255, 255, 0.9) 50%,
-                        rgba(255, 255, 255, 0.25) 70%,
+                        rgba(255, 255, 255, 0.3) 75%,
                         rgba(255, 255, 255, 0) 100%
                     ) !important;
-                    transform: rotate(25deg) !important; /* Inclinación de la luz */
-                    z-index: 5 !important;
+                    transform: rotate(25deg) !important;
+                    z-index: 99 !important;
                     pointer-events: none !important;
-                    
-                    /* Animación infinita: Cruza rápido el primer 25% y espera el ciclo de 4 segundos */
                     animation: efectoLuzReflectante 4s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
                 }}
-                
                 @keyframes efectoLuzReflectante {{
-                    0% {{
-                        left: -150%;
-                    }}
-                    25%, 100% {{
-                        left: 150%; /* Viaja por encima del logo hacia la derecha */
-                    }}
+                    0% {{ left: -150%; }}
+                    25%, 100% {{ left: 150%; }}
                 }}
                 </style>
-
                 <div class="contenedor-logo-destello-fijo">
-                    <!-- Eliminamos la etiqueta <img> nativa y dejamos que el contenedor dibuje la foto y el destello -->
-                    <div class="mascara-redonda-logo"></div>
+                    <div class="mascara-redonda-logo">
+                        <img src="{URL_LOGO_PORTADA}" class="imagen-escudo-circular">
+                        <!-- Añadimos la capa de luz física real que cruzará por encima de la foto -->
+                        <div class="destello-fisico-linea"></div>
+                    </div>
                 </div>
             """, unsafe_allow_html=True)
         else:
             st.markdown("""
                 <div class="contenedor-logo-destello-fijo">
-                    <div style="width:206px; height:206px; border-radius:50%; display:flex; align-items:center; justify-content:center; background-color:#111424; border:3px solid #d4af37;">
+                    <div class="imagen-escudo-circular" style="width:206px; height:206px; border-radius:50%; display:flex; align-items:center; justify-content:center; background-color:#111424; border:3px solid #d4af37;">
                         <span style="color:#d4af37; font-size:12px; font-weight:bold; text-align:center;">CARGANDO LOGO...</span>
                     </div>
                 </div>
