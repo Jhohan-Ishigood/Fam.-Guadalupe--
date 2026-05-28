@@ -121,7 +121,7 @@ URL_BANNER_LOCAL = cargar_imagen_base64(ruta_foto_fisica)
 ruta_logo_portada = os.path.join(BASE_DIR, "Logotipo.png")
 URL_LOGO_PORTADA = cargar_imagen_base64(ruta_logo_portada)
 
-ruta_qr_local = os.path.join(BASE_DIR, "miqrp.png")
+ruta_qr_local = os.path.join(BASE_DIR, "miqrm.png")
 URL_QR_YAPE = cargar_imagen_base64(ruta_qr_local)
 
 # Cargar CSS externo si existe
