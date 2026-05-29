@@ -8,7 +8,6 @@
    ============================================================================ */
 
 html, body, .stApp,
-[data-testid="stAppViewContainer"],
 [data-testid="stMainBlockContainer"],
 [data-testid="stVerticalBlock"] {
     background-color: transparent !important;
@@ -402,17 +401,17 @@ div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] {
 }
 
 /* Banco de la Nación → Azul */
-div[data-testid="stExpander"]:has(summary:contains("BANCO")) {
+div[data-testid="stExpander"].expander-banco {
     border-color: #2980b9 !important;
     box-shadow: 0 4px 15px rgba(41,128,185,0.35) !important;
 }
 /* Yape → Morado */
-div[data-testid="stExpander"]:has(summary:contains("YAPE")) {
+div[data-testid="stExpander"].expander-yape {
     border-color: #8e44ad !important;
     box-shadow: 0 4px 15px rgba(142,68,173,0.4) !important;
 }
 /* WhatsApp → Verde */
-div[data-testid="stExpander"]:has(summary:contains("CONTACTO")) {
+div[data-testid="stExpander"].expander-contacto {
     border-color: #27ae60 !important;
     box-shadow: 0 4px 15px rgba(39,174,96,0.35) !important;
 }
@@ -558,8 +557,8 @@ div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input {
 
 .mini-logo-flotante-master {
     position: fixed !important;
-    top: 20px !important;
-    right: 20px !important;
+    top: 60px !important;
+    right: 25px !important;
     left: auto !important;
     width: 65px !important;
     height: 65px !important;
@@ -629,16 +628,16 @@ div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input {
 
     /* Mini logo: esquina superior DERECHA en PC */
     .mini-logo-flotante-master {
-        top:   20px !important;
-        right: 20px !important;
+        top:   60px !important;
+        right: 25px !important;
         left:  auto !important;
         width:  65px !important;
         height: 65px !important;
     }
 }
 
-/* ── TABLET (481px – 1024px) ── */
-@media (min-width: 481px) and (max-width: 1024px) {
+/* ── TABLET (769px – 1024px) ── */
+@media (min-width: 769px) and (max-width: 1024px) {
     .pc-only    { display: block !important; }
     .movil-only { display: none  !important; }
 
@@ -651,8 +650,8 @@ div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input {
     .mini-logo-flotante-master { display: none !important; }
 }
 
-/* ── MÓVIL (≤ 480px) ── */
-@media (max-width: 480px) {
+/* ── MÓVIL (≤ 768px) ── */
+@media (max-width: 768px) {
     .pc-only    { display: none  !important; }
     .movil-only { display: block !important; }
 
@@ -676,16 +675,17 @@ div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input {
     /* Mini logo: esquina superior IZQUIERDA en celular — spec del documento */
     .mini-logo-flotante-master {
         display: block !important;
+        position: fixed !important;
         top:   15px !important;
         left:  15px !important;
         right: auto !important;
         width:  45px !important;
         height: 45px !important;
+        transform: none !important; /* reseteo absoluto borrando centrados */
     }
 
     .mini-logo-imagen-circular {
         animation: rotarMiniLogo3D 4s linear infinite !important;
-        /* Sin transform: none para mantener el giro activo */
     }
 
     .titulo-principal {
@@ -750,3 +750,19 @@ div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input {
         margin: 5px 0 !important;
     }
 }
+
+/* Forzar 2 columnas simétricas en PC y celular */
+[data-testid="stHorizontalBlock"].grilla-dos-columnas {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    gap: 16px !important;
+}
+
+[data-testid="stHorizontalBlock"].grilla-dos-columnas > [data-testid="column"] {
+    width: calc(50% - 8px) !important;
+    flex-basis: calc(50% - 8px) !important;
+    min-width: calc(50% - 8px) !important;
+}
+

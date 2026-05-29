@@ -27,6 +27,11 @@ st.set_page_config(
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# Cargar CSS externo
+with open(os.path.join(BASE_DIR, "estilos.css"), "r", encoding="utf-8") as f:
+    css_externo = f.read()
+st.markdown(f"<style>{css_externo}</style>", unsafe_allow_html=True)
+
 RUTA_MENU       = os.path.join(BASE_DIR, "menu_config.json")
 RUTA_CATEGORIAS = os.path.join(BASE_DIR, "categorias_config.json")
 
@@ -122,9 +127,23 @@ def generar_proforma_html(carrito, total, fecha):
   .footer {{ text-align: center; margin-top: 40px; color: #888; font-size: 12px; }}
   .advertencia {{ background: rgba(212,175,55,0.1); border: 1px solid #d4af37; border-radius: 8px;
                   padding: 12px 16px; margin-top: 25px; color: #d4af37; font-weight: bold; text-align: center; }}
+  @media print {{
+    .no-print {{ display: none !important; }}
+    body {{ background: #fff !important; color: #000 !important; padding: 20px !important; }}
+    th {{ background: #d4af37 !important; color: #000 !important; }}
+    tr td {{ border-bottom: 1px solid #ddd !important; color: #000 !important; }}
+    .total-row td {{ font-size: 22px; font-weight: 900; color: #27ae60 !important; padding: 16px 10px; border-top: 2px solid #d4af37 !important; }}
+    .advertencia {{ background: #fdfaf2 !important; border: 1px solid #d4af37 !important; color: #d4af37 !important; }}
+    .footer {{ color: #555 !important; }}
+  }}
 </style>
 </head>
 <body>
+<div class="no-print" style="text-align: center; margin-bottom: 30px;">
+  <button onclick="window.print()" style="background: #d4af37; color: #000; font-weight: 900; padding: 14px 28px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; box-shadow: 0 4px 15px rgba(212,175,55,0.4); font-family: sans-serif; transition: transform 0.2s;">
+    🖨️ IMPRIMIR / GUARDAR COMO PDF
+  </button>
+</div>
 <div class="logo">🏪 ALMACÉN FAMILIA GUADALUPE</div>
 <div class="subtitulo">PROFORMA DE PEDIDO — {fecha}</div>
 <table>
@@ -178,10 +197,10 @@ URL_FONDO = convertir_base64(os.path.join(BASE_DIR, "establecimiento.png"))
 URL_LOGO  = convertir_base64(os.path.join(BASE_DIR, "Logotipo.png"))
 URL_QR    = convertir_base64(os.path.join(BASE_DIR, "miqr1.png"))
 
-# URLs de video — reemplaza con tus propios videos en Cloudinary o similar
-URL_VIDEO_PC    = "https://res.cloudinary.com/demo/video/upload/sample.mp4"
-URL_VIDEO_MOVIL = "https://res.cloudinary.com/demo/video/upload/sample.mp4"
-URL_VIDEO_LOGO  = "https://res.cloudinary.com/demo/video/upload/sample.mp4"
+# URLs de video — usando static local si está disponible o Cloudinary de respaldo
+URL_VIDEO_PC    = "/app/static/videofondopc.mp4" if os.path.exists(os.path.join(BASE_DIR, "static", "videofondopc.mp4")) else "https://res.cloudinary.com/demo/video/upload/sample.mp4"
+URL_VIDEO_MOVIL = "/app/static/videofondocelular.mp4" if os.path.exists(os.path.join(BASE_DIR, "static", "videofondocelular.mp4")) else "https://res.cloudinary.com/demo/video/upload/sample.mp4"
+URL_VIDEO_LOGO  = "/app/static/logovideo.mp4" if os.path.exists(os.path.join(BASE_DIR, "static", "logovideo.mp4")) else "https://res.cloudinary.com/demo/video/upload/sample.mp4"
 
 # =========================================================
 # CSS MAESTRO — Solo variables Python aquí, resto en style.css externo
@@ -242,7 +261,7 @@ div[role="radiogroup"] {{
 # =========================================================
 
 # Decide qué mostrar en el logo flotante: video si existe URL, imagen si no
-logo_flotante_html = f'<img src="{URL_LOGO}" class="mini-logo-imagen-circular" alt="Logo">' \
+logo_flotante_html = f'<img src="{URL_LOGO}" class="mini-logo-imagen-circular" alt="Logo Guadalupe">' \
     if URL_LOGO else '<span style="color:#d4af37;font-size:28px;">🏪</span>'
 
 st.markdown(f'''
@@ -259,39 +278,50 @@ st.markdown(f'''
     </video>
 </div>
 
-<!-- MINI LOGO FLOTANTE — estilos inline para garantizar posición fija -->
-<style>
-@keyframes rotarMiniLogo3D {{
-    0%   {{ transform: rotateY(0deg); }}
-    100% {{ transform: rotateY(360deg); }}
-}}
-</style>
-
-<div style="
-    position: fixed !important;
-    top: 20px !important;
-    right: 20px !important;
-    left: auto !important;
-    width: 65px !important;
-    height: 65px !important;
-    z-index: 999999 !important;
-    pointer-events: none !important;
-    perspective: 1000px !important;
-">
-    <img src="{URL_LOGO}"
-         style="
-             width: 65px !important;
-             height: 65px !important;
-             object-fit: cover !important;
-             border-radius: 50% !important;
-             border: 2px solid #d4af37 !important;
-             box-shadow: 0 0 15px rgba(212,175,55,0.6) !important;
-             transform-style: preserve-3d !important;
-             animation: rotarMiniLogo3D 4s linear infinite !important;
-             display: block !important;
-         "
-         alt="Logo Guadalupe">
+<!-- MINI LOGO FLOTANTE RESPONSIVO -->
+<div class="mini-logo-flotante-master">
+    {logo_flotante_html}
 </div>
+
+<!-- DOM OBSERVER PARA ACORDEONES Y GRILLAS -->
+<script>
+const observer = new MutationObserver((mutations) => {{
+    // 1. Expanders
+    const summaries = document.querySelectorAll('div[data-testid="stExpander"] summary');
+    summaries.forEach(summary => {{
+        const text = summary.textContent.toUpperCase();
+        const expander = summary.closest('div[data-testid="stExpander"]');
+        if (expander) {{
+            if (text.includes("BANCO")) {{
+                expander.classList.add("expander-banco");
+            }} else if (text.includes("YAPE")) {{
+                expander.classList.add("expander-yape");
+            }} else if (text.includes("CONTACTO")) {{
+                expander.classList.add("expander-contacto");
+            }}
+        }}
+    }});
+
+    // 2. Grilla Catalog
+    const cards = document.querySelectorAll('.tarjeta-producto-individual');
+    cards.forEach(card => {{
+        const horizontalBlock = card.closest('[data-testid="stHorizontalBlock"]');
+        if (horizontalBlock) {{
+            horizontalBlock.classList.add('grilla-dos-columnas');
+        }}
+    }});
+
+    // 3. Admin Grilla Inventory
+    const adminUploaders = document.querySelectorAll('div[data-testid="stFileUploader"]');
+    adminUploaders.forEach(uploader => {{
+        const horizontalBlock = uploader.closest('[data-testid="stHorizontalBlock"]');
+        if (horizontalBlock) {{
+            horizontalBlock.classList.add('grilla-dos-columnas');
+        }}
+    }});
+}});
+observer.observe(document.body, {{ childList: true, subtree: true }});
+</script>
 
 ''', unsafe_allow_html=True)
 
@@ -361,7 +391,13 @@ if st.session_state.pantalla == "bienvenida":
 
     # ── LOGO CENTRAL CON DESTELLO METÁLICO ──
     # Usa video si está disponible, sino imagen con fallback emoji
-    if URL_LOGO:
+    if URL_VIDEO_LOGO:
+        contenido_logo = f'''
+        <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            <source src="{URL_VIDEO_LOGO}" type="video/mp4">
+        </video>
+        '''
+    elif URL_LOGO:
         contenido_logo = f'<img src="{URL_LOGO}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="Logo Guadalupe">'
     else:
         contenido_logo = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:80px;">🏪</div>'
@@ -513,12 +549,27 @@ elif st.session_state.pantalla == "catalogo":
             for j, (producto, info) in enumerate(par):
                 stock = int(info.get("stock", 0))
                 with columnas_par[j]:
+                    # Determinar si el medio es video o imagen
+                    foto_url = info.get('foto', '')
+                    is_video = foto_url.startswith("data:video/") or foto_url.endswith((".mp4", ".webm", ".ogg", ".mov"))
+                    
+                    if is_video:
+                        media_html = f'''
+                        <video class="video-producto" autoplay loop muted playsinline style="width:100%;height:200px;object-fit:cover;border-radius:12px 12px 0 0;">
+                            <source src="{foto_url}" type="video/mp4">
+                        </video>
+                        '''
+                    else:
+                        media_html = f'''
+                        <img src="{foto_url}"
+                             alt="{producto}"
+                             style="width:100%;height:200px;object-fit:cover;border-radius:12px 12px 0 0;">
+                        '''
+
                     # Cabecera de tarjeta (HTML puro)
                     st.markdown(f'''
                     <div class="tarjeta-producto-individual">
-                        <img src="{info.get('foto', '')}"
-                             alt="{producto}"
-                             style="width:100%;height:200px;object-fit:cover;border-radius:12px 12px 0 0;">
+                        {media_html}
                         <div class="product-card-bottom">
                             <div>
                                 <div class="product-title">{info.get('icono','📦')} {producto}</div>
@@ -672,7 +723,7 @@ elif st.session_state.pantalla == "carrito":
         col1, col2 = st.columns(2, gap="medium")
 
         with col1:
-            if st.button("💾 CONFIRMAR PEDIDO", use_container_width=True, key="btn_confirmar"):
+            if st.button("💾 CONFIRMAR PEDIDO", use_container_width=True, key="btn_confirmar", disabled=st.session_state.bloqueo_stock):
                 if not st.session_state.bloqueo_stock:
                     st.session_state.bloqueo_stock = True
                     for item in st.session_state.carrito:
@@ -753,19 +804,21 @@ elif st.session_state.pantalla == "admin":
                     if datos.get("foto") and datos["foto"].startswith("data:image"):
                         st.image(datos["foto"], width=160)
 
-                    # Subir nueva foto
+                    # Subir nueva foto o video
                     nueva_foto = st.file_uploader(
-                        "📷 Cambiar foto",
-                        type=["png", "jpg", "jpeg", "webp"],
+                        "📷 Cambiar foto o video",
+                        type=["png", "jpg", "jpeg", "webp", "mp4", "webm", "ogg", "mov"],
                         key=f"foto_upload_{nombre}"
                     )
                     if nueva_foto:
                         mime = nueva_foto.type
                         b64  = base64.b64encode(nueva_foto.read()).decode()
-                        st.session_state.menu_dinamico[nombre]["foto"] = f"data:{mime};base64,{b64}"
-                        guardar_json(RUTA_MENU, st.session_state.menu_dinamico)
-                        st.success("✔ Foto actualizada")
-                        st.rerun()
+                        nueva_media_url = f"data:{mime};base64,{b64}"
+                        if st.session_state.menu_dinamico[nombre].get("foto") != nueva_media_url:
+                            st.session_state.menu_dinamico[nombre]["foto"] = nueva_media_url
+                            guardar_json(RUTA_MENU, st.session_state.menu_dinamico)
+                            st.success("✔ Archivo multimedia actualizado")
+                            st.rerun()
 
                     # Editar precio
                     nuevo_precio = st.number_input(
@@ -813,7 +866,7 @@ elif st.session_state.pantalla == "admin":
 
         categorias_disponibles = st.session_state.lista_categorias[1:]  # Quita "Todos"
         np_cat    = st.selectbox("Categoría", categorias_disponibles, key="np_cat")
-        np_foto   = st.file_uploader("Foto del producto", type=["png","jpg","jpeg","webp"], key="np_foto")
+        np_foto   = st.file_uploader("Foto o video del producto", type=["png","jpg","jpeg","webp","mp4","webm","ogg","mov"], key="np_foto")
 
         if st.button("✅ AGREGAR PRODUCTO", use_container_width=True, key="btn_agregar_prod"):
             if np_nombre.strip():
