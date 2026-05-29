@@ -38,7 +38,7 @@ html, body, .stApp,
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: -2 !important; /* Capa Z profundamente oculta por debajo de las transparencias */
+    z-index: -1 !important; /* Capa Z oculta por debajo del software */
     overflow: hidden !important;
     pointer-events: none !important;
 }
@@ -181,6 +181,7 @@ section[data-testid="stSidebar"] button[kind="headerNoPadding"]:hover {
     background-color: #e74c3c !important;
     box-shadow: 0px 0px 8px rgba(231, 76, 60, 0.6) !important;
 }
+
 /* Tarjetas unificadas de información en Azul Noche con acento Oro Metálico */
 section[data-testid="stSidebar"] .element-container:has(p), 
 section[data-testid="stSidebar"] .element-container:has(h4) {
@@ -191,7 +192,6 @@ section[data-testid="stSidebar"] .element-container:has(h4) {
     margin-bottom: 6px !important;
     box-shadow: 0px 4px 15px rgba(212, 175, 55, 0.15) !important;
 }
-
 /* Títulos internos de la barra lateral en blanco puro destacado */
 section[data-testid="stSidebar"] h4, 
 section[data-testid="stSidebar"] b,
@@ -242,7 +242,6 @@ section[data-testid="stSidebar"] hr {
 .tarjeta-producto-individual {
     transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
     border-radius: 12px !important;
-    overflow: hidden !important;
 }
 
 /* Animación de elevación interactiva */
@@ -250,41 +249,18 @@ section[data-testid="stSidebar"] hr {
     transform: translateY(-5px) !important;
 }
 
-/* --- ANIMACIÓN DE APARICIÓN SUAVE (FADE-IN) AL CAMBIAR DE PESTAÑAS --- */
-.catalogo-transparente-master,
-.bienvenida-transparente-master,
-.carrito-transparente-master {
-    animation: aparicionSuaveDeslizada 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both !important;
-}
-
-@keyframes aparicionSuaveDeslizada {
-    0% {
-        transform: translateY(15px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-/* Control maestro de proporción para las imágenes del catálogo */
-.foto-tarjeta-catalogo {
-    width: 100% !important;
-    height: 200px !important;
-    object-fit: cover !important;
-    border-radius: 12px 12px 0px 0px !important;
+/* Efecto Micro-Zoom en la imagen de catálogo al seleccionarla */
+.tarjeta-producto-individual img {
     transition: transform 0.4s ease !important;
-    display: block !important;
+    border-radius: 12px 12px 0px 0px !important;
 }
-
-/* Efecto Micro-Zoom en la imagen de catálogo al posicionarse sobre la tarjeta */
-.tarjeta-producto-individual:hover .foto-tarjeta-catalogo {
+.tarjeta-producto-individual:hover img {
     transform: scale(1.05) !important;
 }
 
-/* Estructura base informativa de los productos con fondo opaco para alto contraste */
+/* Estructura base informativa de los productos */
 .product-card-bottom {
-    background-color: rgba(17, 20, 36, 0.92) !important; /* Capa protectora de lectura sobre el video */
+    background-color: #111424 !important;
     padding: 12px 15px !important;            
     border-radius: 0px 0px 12px 12px !important;
     border-left: 1px solid #222538 !important;
@@ -319,6 +295,23 @@ section[data-testid="stSidebar"] hr {
     color: #d4af37 !important;
     font-family: 'Impact', Charcoal, sans-serif !important;
     white-space: nowrap !important;           
+}
+/* --- ANIMACIÓN DE APARICIÓN SUAVE (FADE-IN) AL CAMBIAR DE PESTAÑAS --- */
+.catalogo-transparente-master,
+.bienvenida-transparente-master,
+.carrito-transparente-master {
+    animation: aparicionSuaveDeslizada 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both !important;
+}
+
+@keyframes aparicionSuaveDeslizada {
+    0% {
+        transform: translateY(15px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* ============================================================================
@@ -355,6 +348,7 @@ div[data-testid="stHorizontalBlock"]:has(button[key*="tabs_netflix_master"]) {
     padding: 5px 0 !important;
     gap: 8px !important;
 }
+
 /* Rediseño de las cajas de búsqueda enfocadas a Oro Guadalupe */
 div[data-testid="stTextInput"]:has(input[key*="search_bar_"]) input {
     background-color: rgba(17, 20, 36, 0.75) !important;
@@ -389,7 +383,6 @@ div[data-testid="stNumberInput"] input:active {
     box-shadow: 0px 0px 12px rgba(46, 204, 113, 0.4) !important;
     border-color: #2ecc71 !important;
 }
-
 /* ============================================================================
     11. ACORDEONES DE PAGO (EXPANDERS) CON BORDES DE LUZ INTELIGENTES
    ============================================================================ */
@@ -423,6 +416,7 @@ div[data-testid="stExpander"] summary:hover {
     color: #d4af37 !important;
     cursor: pointer !important;
 }
+
 /* Contenedor interno de datos cuando el menú se encuentra desplegado */
 div[data-testid="stExpander"] div[data-testid="stVerticalBlock"] {
     background-color: #0a0c16 !important;
@@ -630,6 +624,7 @@ div[data-testid="stMetricValue"] div {
    FORMATO EN MODO PC / LAPTOP (Desktop > 1024px) - 4 COLUMNAS DE PRODUCTOS
    ══════════════════════════════════════════════════════════════════════════ */
 @media (min-width: 1025px) {
+    /* Gestión del fondo de video PC */
     .pc-only { display: block !important; }
     .movil-only { display: none !important; }
 
@@ -639,7 +634,6 @@ div[data-testid="stMetricValue"] div {
         margin: 0 auto !important;
         padding-left: 30px !important;
         padding-right: 30px !important;
-        padding-top: 40px !important; /* Espaciado premium de respiración para bajar el buscador */
     }
 
     /* Grilla de productos: Activación del motor Flexbox */
@@ -651,19 +645,36 @@ div[data-testid="stMetricValue"] div {
         gap: 16px !important;
     }
 
-    /* CORRECCIÓN DE FOTOS APLASTADAS EN PC: Se remueve la deformación nativa de Streamlit */
-    .grid-productos-responsivo div[data-testid="column"] {
-        flex: none !important;
-        width: auto !important;
-        max-width: none !important;
-    }
-
-    /* Tarjetas individuales calibradas estrictamente al 25% (4 columnas perfectas por fila) */
+    /* Tarjetas individuales calibradas estrictamente al 25% (4 columnas por fila) */
     .tarjeta-producto-individual {
         flex: 0 0 calc(25% - 12px) !important;
         max-width: calc(25% - 12px) !important;
         min-width: calc(25% - 12px) !important;
         margin: 0 !important;
+    }
+
+    /* Calibración milimétrica adaptativa del mini-logo flotante en la esquina de la PC */
+    .mini-logo-flotante-master {
+        display: block !important;
+        position: fixed !important;
+        top: 20px !important;
+        right: 20px !important;
+        left: auto !important;
+        width: 65px !important;
+        height: 65px !important;
+        z-index: 999999 !important;
+        perspective: 1000px !important;
+        pointer-events: none !important;
+    }
+    .mini-logo-imagen-circular {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 50% !important;
+        border: 2px solid #d4af37 !important;
+        box-shadow: 0 0 15px rgba(212,175,55,0.6) !important;
+        transform-style: preserve-3d !important;
+        animation: rotarMiniLogo3D 4s linear infinite !important;
     }
 
     /* Formato de la nueva tarjeta de bienvenida central ejecutiva */
@@ -693,6 +704,7 @@ div[data-testid="stMetricValue"] div {
         box-shadow: 0 0 20px rgba(212,175,55,0.4) !important;
     }
 }
+@keyframes rotarMiniLogo3D { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
 /* ══════════════════════════════════════════════════════════════════════════
    FORMATO EN MODO TABLET (481px a 1024px) - ENCOMIENDA ADAPTATIVA MEDIA
    ══════════════════════════════════════════════════════════════════════════ */
@@ -714,19 +726,14 @@ div[data-testid="stMetricValue"] div {
         gap: 12px !important;
     }
 
-    /* Limpieza estructural en tabletas para evitar desalineación */
-    .grid-productos-responsivo div[data-testid="column"] {
-        flex: none !important;
-        width: auto !important;
-        max-width: none !important;
-    }
-
     .tarjeta-producto-individual {
         flex: 0 0 calc(50% - 6px) !important;
         max-width: calc(50% - 6px) !important;
         min-width: calc(50% - 6px) !important;
         margin-bottom: 10px !important;
     }
+    
+    .mini-logo-flotante-master { display: none !important; }
 
     .tarjeta-bienvenida-yape {
         max-width: 90% !important;
@@ -741,6 +748,7 @@ div[data-testid="stMetricValue"] div {
    FORMATO PRIORIZADO PARA CELULAR (≤ 480px) - GRID DE 2 COLUMNAS COMPACTAS
    ══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
+    /* Gestión del fondo de video vertical optimizado para móviles */
     .pc-only { display: none !important; }
     .movil-only { display: block !important; }
 
@@ -764,7 +772,7 @@ div[data-testid="stMetricValue"] div {
         text-align: center !important;
     }
     
-    /* Activación de la grilla Flexbox responsiva para smartphones */
+    /* Activación del contenedor Grid flexible responsivo */
     .grid-productos-responsivo {
         display: flex !important;
         flex-direction: row !important;
@@ -773,15 +781,8 @@ div[data-testid="stMetricValue"] div {
         gap: 8px !important; /* Espaciado compacto entre las fichas */
         padding: 0 !important;
     }
-
-    /* CORRECCIÓN FINAL FOTOS APLASTADAS: Removemos la deformación de Streamlit en teléfonos */
-    .grid-productos-responsivo div[data-testid="column"] {
-        flex: none !important;
-        width: auto !important;
-        max-width: none !important;
-    }
     
-    /* REGLA MAESTRA: Fuerza a cada producto a ocupar el 50% exacto de la fila (2 columnas estrictas) */
+    /* Regla maestra: Fuerza a cada producto a ocupar el 50% exacto de la fila (2 columnas) */
     .tarjeta-producto-individual {
         flex: 0 0 calc(50% - 4px) !important;
         max-width: calc(50% - 4px) !important;
@@ -790,9 +791,9 @@ div[data-testid="stMetricValue"] div {
     }
     
     /* Escalado adaptativo de las imágenes del catálogo en celular */
-    .foto-tarjeta-catalogo {
+    .tarjeta-producto-individual img {
         max-width: 100% !important;
-        height: 140px !important; /* Altura compactada para optimizar espacio en pantalla móvil */
+        height: 140px !important; /* Altura compactada para optimizar espacio en pantalla */
         border-radius: 10px 10px 0 0 !important;
     }
     
@@ -819,6 +820,28 @@ div[data-testid="stMetricValue"] div {
         padding: 6px 8px !important;
     }
 
+    /* Calibración milimétrica para pegar el mini-logo en la esquina superior del celular */
+    .mini-logo-flotante-master {
+        display: block !important;
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        left: auto !important;
+        width: 45px !important;
+        height: 45px !important;
+        z-index: 999999 !important;
+        pointer-events: none !important;
+    }
+    .mini-logo-imagen-circular {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 50% !important;
+        border: 2px solid #d4af37 !important;
+        box-shadow: 0 0 10px rgba(212,175,55,0.5) !important;
+        animation: rotarMiniLogo3D 4s linear infinite !important;
+    }
+
     /* Ajuste de la tarjeta de bienvenida adaptada al ancho completo del teléfono */
     .tarjeta-bienvenida-yape {
         width: 100% !important;
@@ -832,6 +855,7 @@ div[data-testid="stMetricValue"] div {
         width: 100% !important;
         height: 180px !important; /* Foto compactada de la fachada para celulares */
         object-fit: cover !important;
+        border-radius: 8px !important;
     }
     .video-logo-yape-base {
         width: 120px !important; /* Escudo más pequeño abajo para pantallas angostas */
@@ -840,7 +864,7 @@ div[data-testid="stMetricValue"] div {
         margin: 10px auto 0 auto !important;
         border-radius: 50% !important;
         border: 2px solid #d4af37 !important;
-        box-shadow: 0 0 12px rgba(212, 175, 55, 0.4) !important;
+        box-shadow: 0 0 12px rgba(212,175,55,0.4) !important;
     }
 
     /* Ergonomía táctil para botones e inputs en dispositivos móviles */
