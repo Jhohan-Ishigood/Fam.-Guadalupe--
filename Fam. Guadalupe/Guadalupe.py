@@ -69,7 +69,8 @@ def cargar_menu():
             "icono": "🌾",
             "stock": 120,
             "disponible": True,
-            "categoria": "Abarrotes",
+            "categoria_principal": "🌾 Abarrotes",
+            "categoria": "Arroz",
             "foto": FOTO_DEFAULT
         },
         "Parlante JBL Bluetooth": {
@@ -77,28 +78,60 @@ def cargar_menu():
             "icono": "🔊",
             "stock": 2,
             "disponible": True,
-            "categoria": "Tecnología",
+            "categoria_principal": "🔊 Tecnología",
+            "categoria": "Parlantes",
             "foto": FOTO_DEFAULT
         }
     }
+    menu = inventario
     if os.path.exists(RUTA_MENU):
         try:
             with open(RUTA_MENU, "r", encoding="utf-8") as archivo:
-                return json.load(archivo)
+                menu = json.load(archivo)
         except:
-            return inventario
-    return inventario
+            menu = inventario
+
+    # Migración de productos anteriores
+    for prod, info in menu.items():
+        if "categoria_principal" not in info:
+            old_cat = info.get("categoria", "🌾 Abarrotes")
+            info["categoria_principal"] = "🌾 Abarrotes"
+            info["categoria"] = "Todos"
+            if "Abarrotes" in old_cat or "abarrotes" in old_cat.lower():
+                info["categoria_principal"] = "🌾 Abarrotes"
+            elif "Tecnología" in old_cat or "tecnologia" in old_cat.lower():
+                info["categoria_principal"] = "🔊 Tecnología"
+            elif "Útiles" in old_cat or "utiles" in old_cat.lower():
+                info["categoria_principal"] = "✏️ Útiles escolares"
+            elif "Ferretería" in old_cat or "ferreteria" in old_cat.lower():
+                info["categoria_principal"] = "🛠️ Ferretería"
+    return menu
 
 
 def cargar_categorias():
-    categorias = ["Todos", "Abarrotes", "Tecnología"]
+    categorias_default = {
+        "🌾 Abarrotes": ["Todos", "Arroz", "Fideos", "Aceites"],
+        "🔊 Tecnología": ["Todos", "Parlantes", "Audífonos"],
+        "✏️ Útiles escolares": ["Todos", "Cuadernos", "Plumones", "Lapiceros"],
+        "🛠️ Ferretería": ["Todos", "Herramientas", "Pinturas"]
+    }
     if os.path.exists(RUTA_CATEGORIAS):
         try:
             with open(RUTA_CATEGORIAS, "r", encoding="utf-8") as archivo:
-                return json.load(archivo)
+                datos = json.load(archivo)
+                if isinstance(datos, dict):
+                    return datos
+                else:
+                    datos_nuevos = {}
+                    for cat in datos:
+                        if cat != "Todos":
+                            datos_nuevos[cat] = ["Todos"]
+                    if not datos_nuevos:
+                        return categorias_default
+                    return datos_nuevos
         except:
-            return categorias
-    return categorias
+            return categorias_default
+    return categorias_default
 
 
 def generar_proforma_html(carrito, total, fecha):
@@ -166,6 +199,8 @@ if "lista_categorias"       not in st.session_state:
     st.session_state.lista_categorias   = cargar_categorias()
 if "pantalla"               not in st.session_state:
     st.session_state.pantalla           = "bienvenida"
+if "categoria_principal_activa" not in st.session_state:
+    st.session_state.categoria_principal_activa = list(st.session_state.lista_categorias.keys())[0] if st.session_state.lista_categorias else ""
 if "categoria_activa"       not in st.session_state:
     st.session_state.categoria_activa   = "Todos"
 if "carrito"                not in st.session_state:
@@ -307,7 +342,7 @@ const observer = new MutationObserver((mutations) => {{
     cards.forEach(card => {{
         const horizontalBlock = card.closest('[data-testid="stHorizontalBlock"]');
         if (horizontalBlock) {{
-            horizontalBlock.classList.add('grilla-dos-columnas');
+            horizontalBlock.classList.add('grilla-cuatro-dos');
         }}
     }});
 
@@ -316,7 +351,16 @@ const observer = new MutationObserver((mutations) => {{
     adminUploaders.forEach(uploader => {{
         const horizontalBlock = uploader.closest('[data-testid="stHorizontalBlock"]');
         if (horizontalBlock) {{
-            horizontalBlock.classList.add('grilla-dos-columnas');
+            horizontalBlock.classList.add('grilla-cuatro-dos');
+        }}
+    }});
+
+    // 4. Grilla Categorías Principales
+    const catCards = document.querySelectorAll('.tarjeta-categoria-principal');
+    catCards.forEach(card => {{
+        const horizontalBlock = card.closest('[data-testid="stHorizontalBlock"]');
+        if (horizontalBlock) {{
+            horizontalBlock.classList.add('grilla-cuatro-dos');
         }}
     }});
 }});
@@ -338,7 +382,7 @@ with st.sidebar:
         st.rerun()
 
     if st.button("🛍️ Catálogo", use_container_width=True, key="nav_catalogo"):
-        st.session_state.pantalla = "catalogo"
+        st.session_state.pantalla = "seleccion_categorias"
         st.rerun()
 
     if st.session_state.carrito:
@@ -445,7 +489,7 @@ if st.session_state.pantalla == "bienvenida":
     # ── BOTÓN PRINCIPAL CON ESCÁNER DE LUZ ──
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🛍️ EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_navegar"):
-        st.session_state.pantalla = "catalogo"
+        st.session_state.pantalla = "seleccion_categorias"
         st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -490,10 +534,65 @@ if st.session_state.pantalla == "bienvenida":
 # ██████████████  PANTALLA: CATÁLOGO  ████████████████████
 # =========================================================
 
+# =========================================================
+# ██████  PANTALLA: SELECCIÓN DE CATEGORÍAS  ██████████████
+# =========================================================
+
+elif st.session_state.pantalla == "seleccion_categorias":
+
+    st.markdown('<div class="bienvenida-transparente-master">', unsafe_allow_html=True)
+    st.markdown("<h1 class='titulo-principal'>¿Qué está buscando?</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center;color:#aaa;font-size:16px;margin-bottom:30px;'>Selecciona una sección para explorar nuestros productos</p>", unsafe_allow_html=True)
+
+    categorias_principales = list(st.session_state.lista_categorias.keys())
+    
+    # Grilla de categorías principales: 4 columnas PC / 2 columnas móvil
+    for idx in range(0, len(categorias_principales), 4):
+        grupo = categorias_principales[idx:idx+4]
+        cols = st.columns(4, gap="large")
+        for j, cat in enumerate(grupo):
+            with cols[j]:
+                partes = cat.split(" ", 1)
+                icono = partes[0] if len(partes) > 1 else "📦"
+                nombre = partes[1] if len(partes) > 1 else cat
+                
+                st.markdown(f'''
+                <div class="tarjeta-categoria-principal">
+                    <div class="categoria-icono">{icono}</div>
+                    <div class="categoria-titulo">{nombre}</div>
+                </div>
+                ''', unsafe_allow_html=True)
+                
+                if st.button(f"Entrar a {nombre}", use_container_width=True, key=f"cat_btn_{cat}"):
+                    st.session_state.categoria_principal_activa = cat
+                    st.session_state.categoria_activa = "Todos"
+                    st.session_state.pantalla = "catalogo"
+                    st.rerun()
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    if st.button("⬅ Volver al inicio", use_container_width=True, key="btn_volver_bienvenida"):
+        st.session_state.pantalla = "bienvenida"
+        st.rerun()
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+# =========================================================
+# ██████████████  PANTALLA: CATÁLOGO  ████████████████████
+# =========================================================
+
 elif st.session_state.pantalla == "catalogo":
 
     st.markdown('<div class="catalogo-transparente-master">', unsafe_allow_html=True)
-    st.markdown("<h1 class='titulo-principal'>🛍️ CATÁLOGO</h1>", unsafe_allow_html=True)
+    
+    # Botón Volver a las categorías en la parte superior
+    col_back, col_title = st.columns([1, 4])
+    with col_back:
+        if st.button("⬅ Categorías", use_container_width=True, key="btn_volver_seleccion"):
+            st.session_state.pantalla = "seleccion_categorias"
+            st.rerun()
+    with col_title:
+        st.markdown(f"<h1 class='titulo-principal' style='text-align:left;margin-top:0px !important;'>🛍️ {st.session_state.categoria_principal_activa}</h1>", unsafe_allow_html=True)
 
     # ── BUSCADOR ──
     busqueda = st.text_input(
@@ -503,17 +602,21 @@ elif st.session_state.pantalla == "catalogo":
     )
 
     # ── PESTAÑAS NETFLIX ──
-    categorias = st.session_state.lista_categorias
-    cols_tabs = st.columns(len(categorias))
-    for i, cat in enumerate(categorias):
+    cat_principal = st.session_state.categoria_principal_activa
+    subcategorias = st.session_state.lista_categorias.get(cat_principal, ["Todos"])
+    if "Todos" not in subcategorias:
+        subcategorias = ["Todos"] + subcategorias
+        
+    cols_tabs = st.columns(len(subcategorias))
+    for i, subcat in enumerate(subcategorias):
         with cols_tabs[i]:
-            activo = "✅ " if cat == st.session_state.categoria_activa else ""
+            activo = "✅ " if subcat == st.session_state.categoria_activa else ""
             if st.button(
-                f"{activo}{cat}",
+                f"{activo}{subcat}",
                 use_container_width=True,
                 key=f"tabs_netflix_master_{i}"
             ):
-                st.session_state.categoria_activa = cat
+                st.session_state.categoria_activa = subcat
                 st.rerun()
 
     categoria_sel = st.session_state.categoria_activa
@@ -521,6 +624,8 @@ elif st.session_state.pantalla == "catalogo":
     # ── FILTRADO ──
     productos_filtrados = []
     for producto, info in st.session_state.menu_dinamico.items():
+        if info.get("categoria_principal", "🌾 Abarrotes") != cat_principal:
+            continue
         if busqueda.lower() not in producto.lower():
             continue
         if categoria_sel != "Todos" and info.get("categoria") != categoria_sel:
@@ -530,22 +635,18 @@ elif st.session_state.pantalla == "catalogo":
         productos_filtrados.append((producto, info))
 
     if not productos_filtrados:
-        st.warning("No se encontraron productos con ese filtro.")
+        st.warning("No se encontraron productos en esta sección.")
     else:
         # ── GRILLA DE PRODUCTOS — 4 cols PC / 2 cols móvil ──
-        # Se usan st.columns en pares para respetar widgets nativos dentro del HTML
         st.markdown('<div class="grid-productos-responsivo">', unsafe_allow_html=True)
 
-        # Agrupamos en filas de 2 para compatibilidad con widgets Streamlit
-        for idx in range(0, len(productos_filtrados), 2):
-            par = productos_filtrados[idx:idx+2]
-            col_izq, col_der = st.columns(2, gap="medium")
-            columnas_par = [col_izq, col_der]
+        for idx in range(0, len(productos_filtrados), 4):
+            grupo = productos_filtrados[idx:idx+4]
+            columnas_par = st.columns(4, gap="medium")
 
-            for j, (producto, info) in enumerate(par):
+            for j, (producto, info) in enumerate(grupo):
                 stock = int(info.get("stock", 0))
                 with columnas_par[j]:
-                    # Determinar si el medio es video o imagen
                     foto_url = info.get('foto', '')
                     is_video = foto_url.startswith("data:video/") or foto_url.endswith((".mp4", ".webm", ".ogg", ".mov"))
                     
@@ -554,7 +655,6 @@ elif st.session_state.pantalla == "catalogo":
                     else:
                         media_html = f'<img src="{foto_url}" alt="{producto}" style="width:100%;height:200px;object-fit:cover;border-radius:12px 12px 0 0;">'
 
-                    # Cabecera de tarjeta (HTML puro)
                     st.markdown(f'''
                     <div class="tarjeta-producto-individual">
                         {media_html}
@@ -833,10 +933,39 @@ elif st.session_state.pantalla == "admin":
                         key=f"disp_{nombre}"
                     )
 
+                    # Editar Categorías
+                    lista_cat_principales = list(st.session_state.lista_categorias.keys())
+                    cat_p_actual = datos.get("categoria_principal", lista_cat_principales[0] if lista_cat_principales else "")
+                    if cat_p_actual not in lista_cat_principales:
+                        lista_cat_principales.append(cat_p_actual)
+                        
+                    nuevo_cat_principal = st.selectbox(
+                        "Categoría Principal",
+                        lista_cat_principales,
+                        index=lista_cat_principales.index(cat_p_actual),
+                        key=f"cat_p_{nombre}"
+                    )
+                    
+                    subcats_disponibles = st.session_state.lista_categorias.get(nuevo_cat_principal, ["Todos"])
+                    if "Todos" not in subcats_disponibles:
+                        subcats_disponibles = ["Todos"] + subcats_disponibles
+                    cat_sub_actual = datos.get("categoria", "Todos")
+                    if cat_sub_actual not in subcats_disponibles:
+                        subcats_disponibles.append(cat_sub_actual)
+                        
+                    nuevo_cat_sub = st.selectbox(
+                        "Sub-Categoría",
+                        subcats_disponibles,
+                        index=subcats_disponibles.index(cat_sub_actual),
+                        key=f"cat_sub_{nombre}"
+                    )
+
                     if st.button("💾 Guardar cambios", use_container_width=True, key=f"guardar_{nombre}"):
-                        st.session_state.menu_dinamico[nombre]["precio"]     = nuevo_precio
-                        st.session_state.menu_dinamico[nombre]["stock"]      = nuevo_stock
-                        st.session_state.menu_dinamico[nombre]["disponible"] = disponible
+                        st.session_state.menu_dinamico[nombre]["precio"]              = nuevo_precio
+                        st.session_state.menu_dinamico[nombre]["stock"]               = nuevo_stock
+                        st.session_state.menu_dinamico[nombre]["disponible"]          = disponible
+                        st.session_state.menu_dinamico[nombre]["categoria_principal"] = nuevo_cat_principal
+                        st.session_state.menu_dinamico[nombre]["categoria"]           = nuevo_cat_sub
                         guardar_json(RUTA_MENU, st.session_state.menu_dinamico)
                         st.success(f"✔ {nombre} actualizado")
                         st.rerun()
@@ -852,8 +981,14 @@ elif st.session_state.pantalla == "admin":
         np_precio = st.number_input("Precio (S/)", min_value=0.0, step=0.5, key="np_precio")
         np_stock  = st.number_input("Stock inicial", min_value=0, step=1, key="np_stock")
 
-        categorias_disponibles = st.session_state.lista_categorias[1:]  # Quita "Todos"
-        np_cat    = st.selectbox("Categoría", categorias_disponibles, key="np_cat")
+        lista_cat_principales = list(st.session_state.lista_categorias.keys())
+        np_cat_principal = st.selectbox("Categoría Principal", lista_cat_principales, key="np_cat_principal")
+        
+        subcats_disponibles = st.session_state.lista_categorias.get(np_cat_principal, ["Todos"])
+        if "Todos" not in subcats_disponibles:
+            subcats_disponibles = ["Todos"] + subcats_disponibles
+        np_cat_sub = st.selectbox("Sub-Categoría", subcats_disponibles, key="np_cat_sub")
+        
         np_foto   = st.file_uploader("Foto o video del producto", type=["png","jpg","jpeg","webp","mp4","webm","ogg","mov"], key="np_foto")
 
         if st.button("✅ AGREGAR PRODUCTO", use_container_width=True, key="btn_agregar_prod"):
@@ -871,12 +1006,13 @@ elif st.session_state.pantalla == "admin":
                     foto_nueva = f"data:{mime};base64,{b64}"
 
                 st.session_state.menu_dinamico[np_nombre.strip()] = {
-                    "precio":     np_precio,
-                    "icono":      np_icono,
-                    "stock":      np_stock,
-                    "disponible": True,
-                    "categoria":  np_cat,
-                    "foto":       foto_nueva
+                    "precio":              np_precio,
+                    "icono":               np_icono,
+                    "stock":               np_stock,
+                    "disponible":          True,
+                    "categoria_principal": np_cat_principal,
+                    "categoria":           np_cat_sub,
+                    "foto":                foto_nueva
                 }
                 guardar_json(RUTA_MENU, st.session_state.menu_dinamico)
                 st.success(f"✔ Producto '{np_nombre}' agregado")
@@ -889,22 +1025,47 @@ elif st.session_state.pantalla == "admin":
     # ── GESTIÓN DE CATEGORÍAS ──
     st.markdown("### 🏷️ Gestionar Categorías")
 
-    with st.expander("Agregar o eliminar categorías"):
-        nueva_cat = st.text_input("Nueva categoría", key="nueva_cat_input")
-        if st.button("➕ Agregar categoría", use_container_width=True, key="btn_add_cat"):
-            if nueva_cat.strip() and nueva_cat not in st.session_state.lista_categorias:
-                st.session_state.lista_categorias.append(nueva_cat.strip())
+    with st.expander("Agregar o eliminar Categorías Principales"):
+        np_cat_princ_nombre = st.text_input("Nombre de Categoría Principal (ej: ✏️ Útiles escolares)", key="np_cat_princ_nombre")
+        if st.button("➕ Agregar Categoría Principal", use_container_width=True, key="btn_add_cat_princ"):
+            if np_cat_princ_nombre.strip() and np_cat_princ_nombre.strip() not in st.session_state.lista_categorias:
+                st.session_state.lista_categorias[np_cat_princ_nombre.strip()] = ["Todos"]
                 guardar_json(RUTA_CATEGORIAS, st.session_state.lista_categorias)
-                st.success(f"✔ Categoría '{nueva_cat}' agregada")
+                st.success(f"✔ Categoría principal '{np_cat_princ_nombre}' agregada")
+                st.rerun()
+        
+        cats_princ_eliminables = list(st.session_state.lista_categorias.keys())
+        cat_princ_eliminar = st.selectbox("Eliminar Categoría Principal", cats_princ_eliminables, key="cat_princ_eliminar_sel")
+        if st.button("🗑️ Eliminar Categoría Principal", use_container_width=True, key="btn_del_cat_princ"):
+            if cat_princ_eliminar:
+                del st.session_state.lista_categorias[cat_princ_eliminar]
+                guardar_json(RUTA_CATEGORIAS, st.session_state.lista_categorias)
+                st.success(f"✔ Categoría principal '{cat_princ_eliminar}' eliminada")
                 st.rerun()
 
-        cats_eliminables = [c for c in st.session_state.lista_categorias if c != "Todos"]
-        cat_eliminar = st.selectbox("Eliminar categoría", cats_eliminables, key="cat_eliminar_sel")
-        if st.button("🗑️ Eliminar categoría", use_container_width=True, key="btn_del_cat"):
-            st.session_state.lista_categorias.remove(cat_eliminar)
-            guardar_json(RUTA_CATEGORIAS, st.session_state.lista_categorias)
-            st.success(f"✔ Categoría '{cat_eliminar}' eliminada")
-            st.rerun()
+    with st.expander("Agregar o eliminar Sub-Categorías"):
+        cats_princ_existentes = list(st.session_state.lista_categorias.keys())
+        if cats_princ_existentes:
+            cat_princ_seleccionada = st.selectbox("Selecciona Categoría Principal", cats_princ_existentes, key="cat_princ_sel_sub")
+            nueva_subcat = st.text_input("Nueva Sub-Categoría (ej: Cuadernos)", key="nueva_subcat_input")
+            if st.button("➕ Agregar Sub-Categoría", use_container_width=True, key="btn_add_subcat"):
+                if nueva_subcat.strip():
+                    if nueva_subcat.strip() not in st.session_state.lista_categorias[cat_princ_seleccionada]:
+                        st.session_state.lista_categorias[cat_princ_seleccionada].append(nueva_subcat.strip())
+                        guardar_json(RUTA_CATEGORIAS, st.session_state.lista_categorias)
+                        st.success(f"✔ Sub-categoría '{nueva_subcat}' agregada a '{cat_princ_seleccionada}'")
+                        st.rerun()
+            
+            subcats_eliminables = [s for s in st.session_state.lista_categorias[cat_princ_seleccionada] if s != "Todos"]
+            subcat_eliminar = st.selectbox("Eliminar Sub-Categoría", subcats_eliminables, key="subcat_eliminar_sel")
+            if st.button("🗑️ Eliminar Sub-Categoría", use_container_width=True, key="btn_del_subcat"):
+                if subcat_eliminar:
+                    st.session_state.lista_categorias[cat_princ_seleccionada].remove(subcat_eliminar)
+                    guardar_json(RUTA_CATEGORIAS, st.session_state.lista_categorias)
+                    st.success(f"✔ Sub-categoría '{subcat_eliminar}' eliminada de '{cat_princ_seleccionada}'")
+                    st.rerun()
+        else:
+            st.info("Crea una categoría principal primero.")
 
     st.markdown("---")
 
