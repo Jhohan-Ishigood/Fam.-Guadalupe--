@@ -1,5 +1,7 @@
+# =========================================================
 # CATÁLOGO PREMIUM FAM. GUADALUPE v6.0 — RENDER MASTER EDITION
-# app.py
+# app.py (Parte 1 de 9)
+# =========================================================
 
 import streamlit as st
 from datetime import datetime, timedelta, timezone
@@ -45,12 +47,13 @@ def convertir_base64(ruta_archivo):
         return ""
     mime_type, _ = mimetypes.guess_type(ruta_archivo)
     if mime_type is None:
-        mime_type = "image/png"
+        if ruta_archivo.endswith(".mp4"):
+            mime_type = "video/mp4"
+        else:
+            mime_type = "image/png"
     with open(ruta_archivo, "rb") as archivo:
         encoded = base64.b64encode(archivo.read()).decode()
     return f"data:{mime_type};base64,{encoded}"
-
-
 def guardar_json(ruta, datos):
     with open(ruta, "w", encoding="utf-8") as archivo:
         json.dump(datos, archivo, indent=4, ensure_ascii=False)
@@ -59,7 +62,7 @@ def guardar_json(ruta, datos):
 def cargar_menu():
     FOTO_DEFAULT = (
         "data:image/svg+xml;utf8,"
-        "<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'>"
+        "<svg xmlns='http://w3.org' width='300' height='300'>"
         "<rect width='300' height='300' fill='%23222222'/>"
         "</svg>"
     )
@@ -99,8 +102,6 @@ def cargar_categorias():
         except:
             return categorias
     return categorias
-
-
 def generar_proforma_html(carrito, total, fecha):
     """Genera el HTML de la proforma para descarga como archivo."""
     filas = ""
@@ -176,27 +177,26 @@ ahora_peru  = datetime.now(zona_peru)
 fecha_actual = ahora_peru.strftime("%d/%m/%Y %H:%M:%S")
 
 # =========================================================
-# MULTIMEDIA
+# MULTIMEDIA LOCALES
 # =========================================================
 
-URL_FONDO = convertir_base64(os.path.join(BASE_DIR, "establecimiento.png"))
-URL_LOGO  = convertir_base64(os.path.join(BASE_DIR, "Logotipo.png"))
-URL_QR    = convertir_base64(os.path.join(BASE_DIR, "miqr1.png"))
+URL_FONDO      = convertir_base64(os.path.join(BASE_DIR, "establecimiento.png"))
+URL_LOGO       = convertir_base64(os.path.join(BASE_DIR, "Logotipo.png"))
+URL_QR         = convertir_base64(os.path.join(BASE_DIR, "miqr1.png"))
+URL_LOGO_VIDEO = convertir_base64(os.path.join(BASE_DIR, "logovideo.mp4"))
 
-# URLs de video — reemplaza con tus propios videos en Cloudinary o similar
-URL_VIDEO_PC    = "https://res.cloudinary.com/demo/video/upload/sample.mp4"
-URL_VIDEO_MOVIL = "https://res.cloudinary.com/demo/video/upload/sample.mp4"
-URL_VIDEO_LOGO  = "https://res.cloudinary.com/demo/video/upload/sample.mp4"
-
+# URLs de respaldo o almacenamiento en la nube para videos pesados de fondo
+URL_VIDEO_PC    = "https://cloudinary.com"
+URL_VIDEO_MOVIL = "https://cloudinary.com"
 # =========================================================
-# CSS MAESTRO — Solo variables Python aquí, resto en estilos.css externo
-# REGLA DE ORO: todas las llaves CSS van como {{ }} en f-strings
+# INYECCIÓN DE ARQUITECTURA VISUAL (FONDO PANORÁMICO VIVO)
+# REGLA DE ORO DE SINTAXIS: TODAS LAS LLAVES CSS VAN COMO {{ }}
 # =========================================================
 
 st.markdown(f'''
 <style>
 
-/* ── FONDO PANORÁMICO (necesita URL_FONDO de Python) ── */
+/* ── FONDO PANORÁMICO INTERACTIVO (CON RUTA BASE64) ── */
 [data-testid="stAppViewContainer"] {{
     background:
         linear-gradient(rgba(0,0,0,.78), rgba(0,0,0,.78)),
@@ -225,7 +225,7 @@ st.markdown(f'''
     to   {{ background-position: 100% center; }}
 }}
 
-/* ── TRANSPARENCIA RADICAL DE BLOQUES NATIVOS ── */
+/* ── TRANSPARENCIA RADICAL EN CAPAS NATIVAS DE STREAMLIT ── */
 .main,
 .block-container,
 [data-testid="stHeader"],
@@ -243,18 +243,18 @@ div[role="radiogroup"] {{
 ''', unsafe_allow_html=True)
 
 # =========================================================
-# VIDEO DE FONDO + MINI LOGO FLOTANTE FIJO (ARRIBA DERECHA)
+# MOTOR DE VIDEOS DE FONDO + MINI LOGO FLOTANTE UNIFICADO
 # =========================================================
 
-# Elige imagen o emoji si la URL está vacía
+# Sistema de Fallback Inteligente: si no hay URL_LOGO, inyecta el emoji de tienda
 if URL_LOGO:
-    contenido_logo = f'<img src="{URL_LOGO}" alt="Logo Guadalupe">'
+    contenido_mini_logo = f'<img src="{URL_LOGO}" alt="Logo Guadalupe">'
 else:
-    contenido_logo = '<span class="mini-logo-emoji">🏪</span>'
+    contenido_mini_logo = '<span class="mini-logo-emoji">🏪</span>'
 
 st.markdown(f'''
 
-<!-- VIDEO DE FONDO -->
+<!-- MOTOR DE VIDEOS EN SEGUNDO PLANO (CAPA DE FONDO ABSOLUTA) -->
 <div class="video-background-container pc-only">
     <video class="video-fondo-maestro" autoplay loop muted playsinline>
         <source src="{URL_VIDEO_PC}" type="video/mp4">
@@ -266,68 +266,58 @@ st.markdown(f'''
     </video>
 </div>
 
-<!-- ESTILOS CSS DEL LOGO -->
+<!-- MINI LOGO FLOTANTE DE MARCA — POSICIONAMIENTO COMPATIBLE -->
 <style>
-/* Forzar a Streamlit a no bloquear elementos fijos */
-.stApp {{
-    transform: none !important;
-}}
-
-@keyframes rotarMiniLogo3D {{
+@keyframes rotarLogoFlotante3D {{
     0%   {{ transform: rotateY(0deg); }}
     100% {{ transform: rotateY(360deg); }}
 }}
-
-/* Contenedor Fijo arriba a la derecha */
-.mini-logo-flotante-derecha {{
+.mini-logo-flotante-fijo {{
     position: fixed !important;
     top: 20px !important;
     right: 20px !important;
     left: auto !important;
-    bottom: auto !important;
     width: 65px !important;
     height: 65px !important;
-    z-index: 2147483647 !important; /* Capa máxima por encima de todo */
-    pointer-events: none !important; /* No interfiere con los clics */
+    z-index: 2147483647 !important; /* Capa superior absoluta por encima del blanco */
+    pointer-events: none !important;
     perspective: 1000px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
 }}
-
-/* Imagen con rotación 3D */
-.mini-logo-flotante-derecha img {{
+.mini-logo-flotante-fijo img {{
     width: 65px !important;
     height: 65px !important;
     object-fit: cover !important;
     border-radius: 50% !important;
     border: 2.5px solid #d4af37 !important;
-    box-shadow: 0 0 15px rgba(212,175,55,0.6) !important;
-    transform-style: preserve-3d !important;
-    animation: rotarMiniLogo3D 4s linear infinite !important;
+    box-shadow: 0 0 15px rgba(212,175,55,0.7) !important;
+    animation: rotarLogoFlotante3D 4s linear infinite !important;
     display: block !important;
+    transform-style: preserve-3d !important;
 }}
-
-/* Configuración alternativa si es un Emoji */
 .mini-logo-emoji {{
     font-size: 32px !important;
-    filter: drop-shadow(0 0 10px rgba(212,175,55,0.6)) !important;
-    transform-style: preserve-3d !important;
-    animation: rotarMiniLogo3D 4s linear infinite !important;
+    filter: drop-shadow(0 0 10px rgba(212,175,55,0.7)) !important;
+    animation: rotarLogoFlotante3D 4s linear infinite !important;
     display: block !important;
+    transform-style: preserve-3d !important;
 }}
 
-/* Ajustes automáticos para pantallas de celulares */
-@media (max-width: 480px) {{
-    .mini-logo-flotante-derecha {{
-        top: 12px !important;
-        right: 12px !important;
-        width: 44px !important;
-        height: 44px !important;
+/* Solución Esquina Libre Adaptativa para Teléfonos Móviles */
+@media (max-width: 768px) {{
+    .mini-logo-flotante-fijo {{
+        top: 15px !important;
+        left: 15px !important;
+        right: auto !important;
+        width: 45px !important;
+        height: 45px !important;
+        transform: none !important;
     }}
-    .mini-logo-flotante-derecha img {{
-        width: 44px !important;
-        height: 44px !important;
+    .mini-logo-flotante-fijo img {{
+        width: 45px !important;
+        height: 45px !important;
     }}
     .mini-logo-emoji {{
         font-size: 24px !important;
@@ -335,16 +325,13 @@ st.markdown(f'''
 }}
 </style>
 
-<!-- Elemento HTML inyectado -->
-<div class="mini-logo-flotante-derecha">
-    {contenido_logo}
+<div class="mini-logo-flotante-fijo">
+    {contenido_mini_logo}
 </div>
 
 ''', unsafe_allow_html=True)
-
-
 # =========================================================
-# SIDEBAR — NAVEGACIÓN Y ADMIN ACCESS
+# BARRA LATERAL (SIDEBAR POS) — NAVEGACIÓN Y ACCESO ADMIN
 # =========================================================
 
 with st.sidebar:
@@ -370,7 +357,7 @@ with st.sidebar:
     if not st.session_state.es_admin_autenticado:
         clave = st.text_input("Contraseña", type="password", key="sidebar_pass", label_visibility="collapsed")
         if st.button("Ingresar", use_container_width=True, key="btn_login_admin"):
-            if clave == "guadalupe2024":   # ← CAMBIA ESTA CLAVE
+            if clave == "guadalupe2024":   # ← CLAVE DE ACCESO INTEGRAL
                 st.session_state.es_admin_autenticado = True
                 st.session_state.pantalla = "admin"
                 st.rerun()
@@ -388,7 +375,7 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown(f"<p style='color:#888;font-size:11px;text-align:center;'>📅 {fecha_actual}</p>", unsafe_allow_html=True)
-    st.link_button("💬 Soporte WhatsApp", "https://wa.me/51950239350", use_container_width=True)
+    st.link_button("💬 Soporte WhatsApp", "https://wa.me", use_container_width=True)
 
 # =========================================================
 # ██████████████  PANTALLA: BIENVENIDA  ██████████████████
@@ -406,8 +393,16 @@ if st.session_state.pantalla == "bienvenida":
         unsafe_allow_html=True
     )
 
-    # ── LOGO CENTRAL CON DESTELLO METÁLICO ──
-    if URL_LOGO:
+    # ── PRUEBA DEL ESCUDO CENTRAL EN FORMATO VIDEO (MP4 LOCAL) ──
+    # Se reemplaza la etiqueta <img> fija por un motor de video HTML5 en bucle infinito
+    if URL_LOGO_VIDEO:
+        contenido_logo = f'''
+        <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            <source src="{URL_LOGO_VIDEO}" type="video/mp4">
+        </video>
+        '''
+    elif URL_LOGO:
+        # Respaldo original en imagen PNG por si falla el archivo de video
         contenido_logo = f'<img src="{URL_LOGO}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="Logo Guadalupe">'
     else:
         contenido_logo = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:80px;">🏪</div>'
@@ -455,7 +450,6 @@ if st.session_state.pantalla == "bienvenida":
     }}
     </style>
     ''', unsafe_allow_html=True)
-
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🛍️ EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_navegar"):
         st.session_state.pantalla = "catalogo"
@@ -494,7 +488,7 @@ if st.session_state.pantalla == "bienvenida":
 
         > Escríbenos por WhatsApp para coordinar tu pedido y entrega.
         """)
-        st.link_button("💬 Abrir WhatsApp", "https://wa.me/51950239350", use_container_width=True)
+        st.link_button("💬 Abrir WhatsApp", "https://wa.me", use_container_width=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -544,12 +538,9 @@ elif st.session_state.pantalla == "catalogo":
     if not productos_filtrados:
         st.warning("No se encontraron productos con ese filtro.")
     else:
-        # ── GRILLA DE PRODUCTOS ──
-        # En PC: 4 columnas  |  En móvil (CSS lo controla): 2 columnas
-        # Streamlit usa 4 columnas; el CSS las colapsa a 2 en pantallas pequeñas.
+        # ── GRILLA DE PRODUCTOS RESPONSIVA ──
         st.markdown('<div class="grid-productos-responsivo">', unsafe_allow_html=True)
-
-        COLS_PC = 4  # columnas en escritorio
+        COLS_PC = 4  # Distribución lógica inicial por lotes en Python
         for idx in range(0, len(productos_filtrados), COLS_PC):
             grupo = productos_filtrados[idx:idx + COLS_PC]
             columnas = st.columns(COLS_PC, gap="medium")
@@ -557,16 +548,17 @@ elif st.session_state.pantalla == "catalogo":
             for j, (producto, info) in enumerate(grupo):
                 stock = int(info.get("stock", 0))
                 with columnas[j]:
+                    # CORRECCIÓN DE FOTOS APLASTADAS: Se eliminan las medidas rígidas en línea (style)
+                    # para permitir que las reglas adaptativas del archivo CSS controlen la proporción.
                     st.markdown(f'''
                     <div class="tarjeta-producto-individual">
-                        <img src="{info.get('foto', '')}"
-                             alt="{producto}"
-                             style="width:100%;height:200px;object-fit:cover;border-radius:12px 12px 0 0;">
+                        <img src="{info.get('foto', '')}" alt="{producto}" class="foto-tarjeta-catalogo">
                         <div class="product-card-bottom">
                             <div>
                                 <div class="product-title">{info.get('icono','📦')} {producto}</div>
                     ''', unsafe_allow_html=True)
 
+                    # ── PSICOLOGÍA DE ESCASEZ EN STOCK CRÍTICO ──
                     if stock <= 3:
                         st.markdown(
                             f'<div class="mini-stock-alerta">🔥 ¡SOLO QUEDAN {stock}!</div>',
@@ -585,6 +577,7 @@ elif st.session_state.pantalla == "catalogo":
                     </div>
                     ''', unsafe_allow_html=True)
 
+                    # Entrada interactiva reactiva (Pulso neón en CSS)
                     st.number_input(
                         f"Cantidad — {producto}",
                         min_value=0,
@@ -598,6 +591,7 @@ elif st.session_state.pantalla == "catalogo":
 
     st.markdown("<br>", unsafe_allow_html=True)
 
+    # ── BOTÓN DE SIMULACIÓN Y ARMADO DEL CARRITO ──
     if st.button("🛒 SIMULAR MONTO FINAL", use_container_width=True, key="btn_simular"):
         st.session_state.carrito = []
         st.session_state.total   = 0.0
@@ -622,7 +616,6 @@ elif st.session_state.pantalla == "catalogo":
             st.warning("Agrega al menos un producto antes de continuar.")
 
     st.markdown('</div>', unsafe_allow_html=True)
-
 # =========================================================
 # ██████████████  PANTALLA: CARRITO  █████████████████████
 # =========================================================
@@ -681,6 +674,7 @@ elif st.session_state.pantalla == "carrito":
         </div>
         ''', unsafe_allow_html=True)
 
+        # ── DESCARGA AUTOMATIZADA DE PROFORMA ──
         proforma_html = generar_proforma_html(
             st.session_state.carrito,
             st.session_state.total,
@@ -697,17 +691,19 @@ elif st.session_state.pantalla == "carrito":
 
         st.markdown("<br>", unsafe_allow_html=True)
 
+        # Parseo algorítmico estricto para WhatsApp sin romper codificación
         lineas_wa = "%0A".join([
             urllib.parse.quote(f"{i['producto']} x{i['cantidad']} — S/{i['subtotal']:.2f}")
             for i in st.session_state.carrito
         ])
         total_wa = urllib.parse.quote(f"💰 TOTAL: S/{st.session_state.total:.2f}")
         encabezado_wa = urllib.parse.quote("Hola Familia Guadalupe 👋, quiero coordinar mi pedido:\n\n")
-        url_whatsapp = f"https://wa.me/51950239350?text={encabezado_wa}{lineas_wa}%0A%0A{total_wa}"
+        url_whatsapp = f"https://wa.me{encabezado_wa}{lineas_wa}%0A%0A{total_wa}"
 
         col1, col2 = st.columns(2, gap="medium")
 
         with col1:
+            # ── SISTEMA DE SEGURIDAD ANTI-STOCK FANTASMA ──
             if st.button("💾 CONFIRMAR PEDIDO", use_container_width=True, key="btn_confirmar"):
                 if not st.session_state.bloqueo_stock:
                     st.session_state.bloqueo_stock = True
@@ -770,7 +766,6 @@ elif st.session_state.pantalla == "admin":
     c4.metric("🔥 Stock Crítico", productos_criticos)
 
     st.markdown("---")
-
     st.markdown("### 🗂️ Inventario — Edición en Caliente")
 
     productos_lista = list(menu.items())
@@ -791,6 +786,7 @@ elif st.session_state.pantalla == "admin":
                         type=["png", "jpg", "jpeg", "webp"],
                         key=f"foto_upload_{nombre}"
                     )
+
                     if nueva_foto:
                         mime = nueva_foto.type
                         b64  = base64.b64encode(nueva_foto.read()).decode()
@@ -847,7 +843,7 @@ elif st.session_state.pantalla == "admin":
             if np_nombre.strip():
                 FOTO_DEFAULT = (
                     "data:image/svg+xml;utf8,"
-                    "<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'>"
+                    "<svg xmlns='http://w3.org' width='300' height='300'>"
                     "<rect width='300' height='300' fill='%23222222'/>"
                     "</svg>"
                 )
@@ -908,7 +904,7 @@ elif st.session_state.pantalla == "admin":
             st.rerun()
 
 # =========================================================
-# PIE DE PÁGINA
+# PIE DE PÁGINA CORPORATIVO DEL SISTEMA
 # =========================================================
 
 st.markdown('''
@@ -918,7 +914,7 @@ st.markdown('''
     </p>
     <p style="color:#aaa;font-size:13px;margin:5px 0;">
         📍 Tu tienda de confianza &nbsp;|&nbsp;
-        <a href="https://wa.me/51950239350" style="color:#2ecc71;">💬 +51 950 239 350</a>
+        <a href="https://wa.me" style="color:#2ecc71;">💬 +51 950 239 350</a>
     </p>
 </div>
 <p class="sello-creador">⚡ Plataforma Desarrollada — Edición Render Master v6.0</p>
