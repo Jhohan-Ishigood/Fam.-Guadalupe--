@@ -672,13 +672,13 @@ div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input {
         text-align: center !important;
     }
 
-    /* Mini logo: esquina superior IZQUIERDA en celular — spec del documento */
+    /* Mini logo: esquina superior DERECHA en celular */
     .mini-logo-flotante-master {
         display: block !important;
         position: fixed !important;
         top:   15px !important;
-        left:  15px !important;
-        right: auto !important;
+        right: 15px !important;
+        left:  auto !important;
         width:  45px !important;
         height: 45px !important;
         transform: none !important; /* reseteo absoluto borrando centrados */

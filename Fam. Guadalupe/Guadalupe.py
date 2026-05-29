@@ -392,11 +392,7 @@ if st.session_state.pantalla == "bienvenida":
     # ── LOGO CENTRAL CON DESTELLO METÁLICO ──
     # Usa video si está disponible, sino imagen con fallback emoji
     if URL_VIDEO_LOGO:
-        contenido_logo = f'''
-        <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
-            <source src="{URL_VIDEO_LOGO}" type="video/mp4">
-        </video>
-        '''
+        contenido_logo = f'<video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><source src="{URL_VIDEO_LOGO}" type="video/mp4"></video>'
     elif URL_LOGO:
         contenido_logo = f'<img src="{URL_LOGO}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="Logo Guadalupe">'
     else:
@@ -554,17 +550,9 @@ elif st.session_state.pantalla == "catalogo":
                     is_video = foto_url.startswith("data:video/") or foto_url.endswith((".mp4", ".webm", ".ogg", ".mov"))
                     
                     if is_video:
-                        media_html = f'''
-                        <video class="video-producto" autoplay loop muted playsinline style="width:100%;height:200px;object-fit:cover;border-radius:12px 12px 0 0;">
-                            <source src="{foto_url}" type="video/mp4">
-                        </video>
-                        '''
+                        media_html = f'<video class="video-producto" autoplay loop muted playsinline style="width:100%;height:200px;object-fit:cover;border-radius:12px 12px 0 0;"><source src="{foto_url}" type="video/mp4"></video>'
                     else:
-                        media_html = f'''
-                        <img src="{foto_url}"
-                             alt="{producto}"
-                             style="width:100%;height:200px;object-fit:cover;border-radius:12px 12px 0 0;">
-                        '''
+                        media_html = f'<img src="{foto_url}" alt="{producto}" style="width:100%;height:200px;object-fit:cover;border-radius:12px 12px 0 0;">'
 
                     # Cabecera de tarjeta (HTML puro)
                     st.markdown(f'''
