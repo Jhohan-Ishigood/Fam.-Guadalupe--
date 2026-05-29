@@ -455,42 +455,47 @@ if st.session_state.pantalla == "bienvenida":
         st.session_state.pantalla = "catalogo"
         st.rerun()
 
-    st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
-    with st.expander("🏦 BANCO DE LA NACIÓN"):
-        st.markdown("""
-        #### DATOS BANCARIOS
-        **Número de cuenta:** 04-762-855629
+with st.sidebar:
+    pass # Este bloque mantiene tu sidebar intacto, no lo alteres
 
-        **Titular:** Segundo Melquiades Guadalupe Sanchez
+with st.expander("🏦 BANCO DE LA NACIÓN"):
+    st.markdown("""
+    #### DATOS BANCARIOS
+    **Número de cuenta:** 04-762-855629
 
-        > Realiza tu depósito y envíanos el comprobante por WhatsApp.
-        """)
+    **Titular:** Segundo Melquiades Guadalupe Sanchez
 
-    with st.expander("🟣 YAPE — +51 950 239 350"):
-        if URL_QR:
-            col_qr1, col_qr2, col_qr3 = st.columns([1, 2, 1])
-            with col_qr2:
-                st.image(URL_QR, width=220)
-        st.markdown("""
-        #### YAPE
-        **Número:** +51 950 239 350
+    > Realiza tu depósito y envíanos el comprobante por WhatsApp.
+    """)
 
-        **Titular:** Segundo Guadalupe
+with st.expander("🟣 YAPE — +51 950 239 350"):
+    if URL_QR:
+        col_qr1, col_qr2, col_qr3 = st.columns([1, 2, 1])
+        with col_qr2:
+            st.image(URL_QR, width=220)
+    st.markdown("""
+    #### YAPE
+    **Número:** +51 950 239 350
 
-        > Escanea el QR o yapea al número directamente.
-        """)
+    **Titular:** Segundo Guadalupe
 
-    with st.expander("🟢 CONTACTO DIRECTO — WHATSAPP"):
-        st.markdown("""
-        #### WHATSAPP
-        **Número:** +51 950 239 350
+    > Escanea el QR o yapea al número directamente.
+    """)
 
-        > Escríbenos por WhatsApp para coordinar tu pedido y entrega.
-        """)
-        st.link_button("💬 Abrir WhatsApp", "https://wa.me", use_container_width=True)
+with st.expander("🟢 CONTACTO DIRECTO — WHATSAPP"):
+    st.markdown("""
+    #### WHATSAPP
+    **Número:** +51 950 239 350
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    > Escríbenos por WhatsApp para coordinar tu pedido y entrega.
+    """)
+    st.link_button("💬 Abrir WhatsApp", "https://wa.me", use_container_width=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
 
 # =========================================================
 # ██████████████  PANTALLA: CATÁLOGO  ████████████████████
