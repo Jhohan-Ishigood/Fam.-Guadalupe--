@@ -182,9 +182,9 @@ def generar_proforma_html(carrito, total, fecha):
 <table>
   <thead><tr><th>Producto</th><th style="text-align:center;">Cant.</th><th style="text-align:right;">Subtotal</th></tr></thead>
   <tbody>{filas}</tbody>
-  <tfoot><tr class="total-row"><td colspan="2">💰 TOTAL A PAGAR</td><td style="text-align:right;">S/{total:.2f}</td></tr></tfoot>
+  <tfoot><tr class="total-row"><td colspan="2">SU TOTAL A PAGAR SERIA:</td><td style="text-align:right;">S/{total:.2f}</td></tr></tfoot>
 </table>
-<div class="advertencia">⚠️ Recomendación: Tómale una captura a esta proforma antes de realizar tu transferencia.</div>
+<div class="advertencia">Recomendación: Tómale una captura a esta para recordar su lista de compras.</div>
 <div class="footer">Almacén Familia Guadalupe · +51 950 239 350 · Generado el {fecha}</div>
 </body>
 </html>"""
