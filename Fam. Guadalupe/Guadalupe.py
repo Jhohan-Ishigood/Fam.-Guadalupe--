@@ -10,6 +10,10 @@ import mimetypes
 import urllib.parse
 import time
 
+# Cargar CSS externo
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "estilos.css"), "r", encoding="utf-8") as f:
+    css_externo = f.read()
+
 # =========================================================
 # CONFIGURACIÓN GLOBAL
 # =========================================================
@@ -24,6 +28,7 @@ st.set_page_config(
         "About": None
     }
 )
+st.markdown(f"<style>{css_externo}</style>", unsafe_allow_html=True)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -184,7 +189,7 @@ URL_VIDEO_MOVIL = "https://res.cloudinary.com/demo/video/upload/sample.mp4"
 URL_VIDEO_LOGO  = "https://res.cloudinary.com/demo/video/upload/sample.mp4"
 
 # =========================================================
-# CSS MAESTRO — Solo variables Python aquí, resto en style.css externo
+# CSS MAESTRO — Solo variables Python aquí, resto en estilos.css externo
 # REGLA DE ORO: todas las llaves CSS van como {{ }} en f-strings
 # =========================================================
 
@@ -238,12 +243,10 @@ div[role="radiogroup"] {{
 ''', unsafe_allow_html=True)
 
 # =========================================================
-# VIDEO DE FONDO + MINI LOGO FLOTANTE
+# VIDEO DE FONDO + MINI LOGO FLOTANTE FIJO (arriba derecha)
 # =========================================================
 
-# Decide qué mostrar en el logo flotante: video si existe URL, imagen si no
-logo_flotante_html = f'<img src="{URL_LOGO}" class="mini-logo-imagen-circular" alt="Logo">' \
-    if URL_LOGO else '<span style="color:#d4af37;font-size:28px;">🏪</span>'
+logo_src = URL_LOGO if URL_LOGO else ""
 
 st.markdown(f'''
 
@@ -259,38 +262,49 @@ st.markdown(f'''
     </video>
 </div>
 
-<!-- MINI LOGO FLOTANTE — estilos inline para garantizar posición fija -->
+<!-- MINI LOGO FLOTANTE — fijo arriba a la derecha con rotación 3D -->
 <style>
-@keyframes rotarMiniLogo3D {{
+@keyframes rotarLogoFlotante {{
     0%   {{ transform: rotateY(0deg); }}
     100% {{ transform: rotateY(360deg); }}
 }}
+.mini-logo-flotante-fijo {{
+    position: fixed !important;
+    top: 18px !important;
+    right: 18px !important;
+    width: 62px !important;
+    height: 62px !important;
+    z-index: 2147483647 !important;
+    pointer-events: none !important;
+    perspective: 800px !important;
+}}
+.mini-logo-flotante-fijo img {{
+    width: 62px !important;
+    height: 62px !important;
+    object-fit: cover !important;
+    border-radius: 50% !important;
+    border: 2.5px solid #d4af37 !important;
+    box-shadow: 0 0 14px rgba(212,175,55,0.7), 0 0 30px rgba(212,175,55,0.3) !important;
+    animation: rotarLogoFlotante 4s linear infinite !important;
+    display: block !important;
+    transform-style: preserve-3d !important;
+}}
+@media (max-width: 480px) {{
+    .mini-logo-flotante-fijo {{
+        top: 12px !important;
+        right: 12px !important;
+        width: 44px !important;
+        height: 44px !important;
+    }}
+    .mini-logo-flotante-fijo img {{
+        width: 44px !important;
+        height: 44px !important;
+    }}
+}}
 </style>
 
-<div style="
-    position: fixed !important;
-    top: 20px !important;
-    right: 20px !important;
-    left: auto !important;
-    width: 65px !important;
-    height: 65px !important;
-    z-index: 999999 !important;
-    pointer-events: none !important;
-    perspective: 1000px !important;
-">
-    <img src="{URL_LOGO}"
-         style="
-             width: 65px !important;
-             height: 65px !important;
-             object-fit: cover !important;
-             border-radius: 50% !important;
-             border: 2px solid #d4af37 !important;
-             box-shadow: 0 0 15px rgba(212,175,55,0.6) !important;
-             transform-style: preserve-3d !important;
-             animation: rotarMiniLogo3D 4s linear infinite !important;
-             display: block !important;
-         "
-         alt="Logo Guadalupe">
+<div class="mini-logo-flotante-fijo">
+    <img src="{logo_src}" alt="Logo Guadalupe">
 </div>
 
 ''', unsafe_allow_html=True)
@@ -350,7 +364,6 @@ if st.session_state.pantalla == "bienvenida":
 
     st.markdown('<div class="bienvenida-transparente-master">', unsafe_allow_html=True)
 
-    # Títulos principales
     st.markdown("<h1 class='titulo-principal'>FAMILIA GUADALUPE</h1>", unsafe_allow_html=True)
     st.markdown(
         "<p style='text-align:center;color:#d4af37;font-size:22px;font-weight:bold;"
@@ -360,7 +373,6 @@ if st.session_state.pantalla == "bienvenida":
     )
 
     # ── LOGO CENTRAL CON DESTELLO METÁLICO ──
-    # Usa video si está disponible, sino imagen con fallback emoji
     if URL_LOGO:
         contenido_logo = f'<img src="{URL_LOGO}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="Logo Guadalupe">'
     else:
@@ -410,7 +422,6 @@ if st.session_state.pantalla == "bienvenida":
     </style>
     ''', unsafe_allow_html=True)
 
-    # ── BOTÓN PRINCIPAL CON ESCÁNER DE LUZ ──
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🛍️ EMPEZAR A NAVEGAR EN LOS PRODUCTOS DISPONIBLES", use_container_width=True, key="btn_navegar"):
         st.session_state.pantalla = "catalogo"
@@ -418,7 +429,6 @@ if st.session_state.pantalla == "bienvenida":
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── ACORDEONES DE PAGO ──
     with st.expander("🏦 BANCO DE LA NACIÓN"):
         st.markdown("""
         #### DATOS BANCARIOS
@@ -500,20 +510,19 @@ elif st.session_state.pantalla == "catalogo":
     if not productos_filtrados:
         st.warning("No se encontraron productos con ese filtro.")
     else:
-        # ── GRILLA DE PRODUCTOS — 4 cols PC / 2 cols móvil ──
-        # Se usan st.columns en pares para respetar widgets nativos dentro del HTML
+        # ── GRILLA DE PRODUCTOS ──
+        # En PC: 4 columnas  |  En móvil (CSS lo controla): 2 columnas
+        # Streamlit usa 4 columnas; el CSS las colapsa a 2 en pantallas pequeñas.
         st.markdown('<div class="grid-productos-responsivo">', unsafe_allow_html=True)
 
-        # Agrupamos en filas de 2 para compatibilidad con widgets Streamlit
-        for idx in range(0, len(productos_filtrados), 2):
-            par = productos_filtrados[idx:idx+2]
-            col_izq, col_der = st.columns(2, gap="medium")
-            columnas_par = [col_izq, col_der]
+        COLS_PC = 4  # columnas en escritorio
+        for idx in range(0, len(productos_filtrados), COLS_PC):
+            grupo = productos_filtrados[idx:idx + COLS_PC]
+            columnas = st.columns(COLS_PC, gap="medium")
 
-            for j, (producto, info) in enumerate(par):
+            for j, (producto, info) in enumerate(grupo):
                 stock = int(info.get("stock", 0))
-                with columnas_par[j]:
-                    # Cabecera de tarjeta (HTML puro)
+                with columnas[j]:
                     st.markdown(f'''
                     <div class="tarjeta-producto-individual">
                         <img src="{info.get('foto', '')}"
@@ -542,7 +551,6 @@ elif st.session_state.pantalla == "catalogo":
                     </div>
                     ''', unsafe_allow_html=True)
 
-                    # Widget nativo fuera del bloque HTML
                     st.number_input(
                         f"Cantidad — {producto}",
                         min_value=0,
@@ -596,7 +604,6 @@ elif st.session_state.pantalla == "carrito":
             st.session_state.pantalla = "catalogo"
             st.rerun()
     else:
-        # ── ITEMS DEL CARRITO ──
         for item in st.session_state.carrito:
             st.markdown(f'''
             <div style="
@@ -621,11 +628,9 @@ elif st.session_state.pantalla == "carrito":
             </div>
             ''', unsafe_allow_html=True)
 
-        # ── TOTAL NEÓN ──
         st.markdown("<br>", unsafe_allow_html=True)
         st.metric(label="💰 TOTAL A PAGAR", value=f"S/{st.session_state.total:.2f}")
 
-        # ── NOTA ESTRATÉGICA DORADA ──
         st.markdown('''
         <div style="
             background: rgba(212,175,55,0.12);
@@ -642,7 +647,6 @@ elif st.session_state.pantalla == "carrito":
         </div>
         ''', unsafe_allow_html=True)
 
-        # ── PROFORMA DESCARGABLE ──
         proforma_html = generar_proforma_html(
             st.session_state.carrito,
             st.session_state.total,
@@ -659,7 +663,6 @@ elif st.session_state.pantalla == "carrito":
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # ── MENSAJE WHATSAPP AUTOMÁTICO ──
         lineas_wa = "%0A".join([
             urllib.parse.quote(f"{i['producto']} x{i['cantidad']} — S/{i['subtotal']:.2f}")
             for i in st.session_state.carrito
@@ -668,7 +671,6 @@ elif st.session_state.pantalla == "carrito":
         encabezado_wa = urllib.parse.quote("Hola Familia Guadalupe 👋, quiero coordinar mi pedido:\n\n")
         url_whatsapp = f"https://wa.me/51950239350?text={encabezado_wa}{lineas_wa}%0A%0A{total_wa}"
 
-        # ── BOTONES DE ACCIÓN ──
         col1, col2 = st.columns(2, gap="medium")
 
         with col1:
@@ -722,7 +724,6 @@ elif st.session_state.pantalla == "admin":
 
     menu = st.session_state.menu_dinamico
 
-    # ── MÉTRICAS DE CAPITAL ──
     total_productos   = len(menu)
     total_stock       = sum(p.get("stock", 0) for p in menu.values())
     capital_estimado  = sum(p.get("precio", 0) * p.get("stock", 0) for p in menu.values())
@@ -736,7 +737,6 @@ elif st.session_state.pantalla == "admin":
 
     st.markdown("---")
 
-    # ── GESTIÓN DE INVENTARIO ──
     st.markdown("### 🗂️ Inventario — Edición en Caliente")
 
     productos_lista = list(menu.items())
@@ -749,11 +749,9 @@ elif st.session_state.pantalla == "admin":
             with columnas_admin[j]:
                 with st.expander(f"{datos.get('icono','📦')} {nombre}", expanded=False):
 
-                    # Foto actual
                     if datos.get("foto") and datos["foto"].startswith("data:image"):
                         st.image(datos["foto"], width=160)
 
-                    # Subir nueva foto
                     nueva_foto = st.file_uploader(
                         "📷 Cambiar foto",
                         type=["png", "jpg", "jpeg", "webp"],
@@ -767,7 +765,6 @@ elif st.session_state.pantalla == "admin":
                         st.success("✔ Foto actualizada")
                         st.rerun()
 
-                    # Editar precio
                     nuevo_precio = st.number_input(
                         "💲 Precio (S/)",
                         min_value=0.0,
@@ -776,7 +773,6 @@ elif st.session_state.pantalla == "admin":
                         key=f"precio_{nombre}"
                     )
 
-                    # Editar stock
                     nuevo_stock = st.number_input(
                         "📦 Stock",
                         min_value=0,
@@ -785,7 +781,6 @@ elif st.session_state.pantalla == "admin":
                         key=f"stock_{nombre}"
                     )
 
-                    # Disponibilidad
                     disponible = st.toggle(
                         "✅ Disponible",
                         value=bool(datos.get("disponible", True)),
@@ -802,7 +797,6 @@ elif st.session_state.pantalla == "admin":
 
     st.markdown("---")
 
-    # ── AGREGAR NUEVO PRODUCTO ──
     st.markdown("### ➕ Agregar Nuevo Producto")
 
     with st.expander("Formulario nuevo producto"):
@@ -811,7 +805,7 @@ elif st.session_state.pantalla == "admin":
         np_precio = st.number_input("Precio (S/)", min_value=0.0, step=0.5, key="np_precio")
         np_stock  = st.number_input("Stock inicial", min_value=0, step=1, key="np_stock")
 
-        categorias_disponibles = st.session_state.lista_categorias[1:]  # Quita "Todos"
+        categorias_disponibles = st.session_state.lista_categorias[1:]
         np_cat    = st.selectbox("Categoría", categorias_disponibles, key="np_cat")
         np_foto   = st.file_uploader("Foto del producto", type=["png","jpg","jpeg","webp"], key="np_foto")
 
@@ -845,7 +839,6 @@ elif st.session_state.pantalla == "admin":
 
     st.markdown("---")
 
-    # ── GESTIÓN DE CATEGORÍAS ──
     st.markdown("### 🏷️ Gestionar Categorías")
 
     with st.expander("Agregar o eliminar categorías"):
@@ -867,7 +860,6 @@ elif st.session_state.pantalla == "admin":
 
     st.markdown("---")
 
-    # ── ELIMINAR PRODUCTO ──
     st.markdown("### 🗑️ Eliminar Producto")
     with st.expander("Selecciona el producto a eliminar"):
         prod_eliminar = st.selectbox(
