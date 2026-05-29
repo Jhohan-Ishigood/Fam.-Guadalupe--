@@ -1,319 +1,601 @@
-/* ============================================================================ 
-   1. BLINDAJE GLOBAL OSCURO Y TRANSPARENCIA RADICAL
-============================================================================== */
-html, body, .stApp, 
-[data-testid="stAppViewContainer"], 
+/* ============================================================================
+   SISTEMA VISUAL PREMIUM STREAMLIT — EDICIÓN ORO SUPREMA v4.0
+   Arquitectura optimizada, responsive y profesional
+============================================================================ */
+
+/* ============================================================================
+   1. MOTOR GLOBAL DE RENDIMIENTO Y SUAVIZADO
+============================================================================ */
+
+*,
+*::before,
+*::after{
+    box-sizing:border-box !important;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    overflow-x:hidden !important;
+}
+
+/* ============================================================================
+   2. BLINDAJE GLOBAL Y TRANSPARENCIA ABSOLUTA
+============================================================================ */
+
+html,
+body,
+.stApp,
+[data-testid="stAppViewContainer"],
 [data-testid="stMainBlockContainer"],
-[data-testid="stVerticalBlock"] {
-    background-color: transparent !important;
-    background: transparent !important;
-    color: #ffffff !important;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+[data-testid="stVerticalBlock"]{
+    background:transparent !important;
+    background-color:transparent !important;
+    color:#ffffff !important;
 }
 
-/* Contenedor principal ancho completo */
-.block-container {
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    padding: 0 15px !important;
-    width: 100% !important;
+.stApp{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif !important;
 }
 
-/* ============================================================================ 
-   2. FONDO PANORÁMICO CON ANIMACIÓN PULSANTE APLICADA DESDE PYTHON 
-============================================================================== */
+/* ============================================================================
+   3. CONTENEDOR MAESTRO
+============================================================================ */
 
-/* ============================================================================ 
-   3. MINI LOGO FLOTANTE 3D CON ANIMACIÓN EN PC Y MÓVIL
-============================================================================== */
-.mini-logo-flotante-master {
-    position: fixed !important;
-    top: 60px !important;
-    right: 25px !important;
-    width: 65px !important;
-    height: 65px !important;
-    z-index: 999999 !important;
-    perspective: 1000px !important;
-    pointer-events: none !important;
-    animation: rotarMiniLogo3D 4s linear infinite;
+.block-container{
+    max-width:100% !important;
+    width:100% !important;
+    margin:0 auto !important;
+    padding-top:0 !important;
+    padding-left:0 !important;
+    padding-right:0 !important;
 }
-@media (max-width: 768px) {
-    .mini-logo-flotante-master {
-        top: 15px !important;
-        left: 15px !important;
-        right: auto !important;
-        width: 45px !important;
-        height: 45px !important;
-        animation: rotarMiniLogo3D 4s linear infinite;
-        transform:none !important;
+
+/* ============================================================================
+   4. VIDEO DE FONDO PREMIUM
+============================================================================ */
+
+.video-background-container{
+    position:fixed !important;
+    inset:0 !important;
+    width:100vw !important;
+    height:100vh !important;
+    z-index:-1 !important;
+    overflow:hidden !important;
+    pointer-events:none !important;
+}
+
+.video-fondo-maestro{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover !important;
+    transform:scale(1.02);
+    will-change:transform;
+    backface-visibility:hidden;
+    filter:brightness(0.35) contrast(1.05) !important;
+}
+
+/* ============================================================================
+   5. ELIMINACIÓN DE FRANJAS NEGRAS
+============================================================================ */
+
+.bienvenida-transparente-master,
+.catalogo-transparente-master,
+.carrito-transparente-master,
+[data-testid="stAppViewBlockContainer"],
+[data-testid="elementGrid"],
+.element-container,
+div[role="radiogroup"]{
+    background:transparent !important;
+    background-color:transparent !important;
+    box-shadow:none !important;
+}
+
+/* ============================================================================
+   6. TÍTULO PRINCIPAL PREMIUM
+============================================================================ */
+
+.titulo-principal{
+    text-align:center;
+    color:#d4af37 !important;
+    font-family:'Arial Black',Gadget,sans-serif;
+    font-size:38px;
+    margin-top:0 !important;
+    margin-bottom:10px !important;
+    padding-top:0 !important;
+
+    text-shadow:
+        0 0 4px rgba(212,175,55,0.4),
+        0 0 10px rgba(212,175,55,0.6),
+        0 0 20px rgba(212,175,55,0.3);
+
+    animation:pulsoBrilloOro 3s ease-in-out infinite alternate !important;
+}
+
+@keyframes pulsoBrilloOro{
+    0%{
+        text-shadow:
+            0 0 4px rgba(212,175,55,0.4),
+            0 0 10px rgba(212,175,55,0.5),
+            0 0 15px rgba(212,175,55,0.2);
     }
-}
-@keyframes rotarMiniLogo3D {
-    0% { transform: rotateY(0deg); }
-    100% { transform: rotateY(360deg); }
-}
 
-/* ============================================================================ 
-   4. BOTÓN PRINCIPAL CON LUZ CORREDIZA
-============================================================================== */
-.btn-luz-escaner > button {
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, #d4af37 0%, #aa8416 100%);
-    color: #0a0a0f;
-    font-weight: 900;
-    font-family: 'Arial Black', Gadget, sans-serif;
-    border: 1px solid #f1c40f;
-    text-transform: uppercase;
-    box-shadow: 0 4px 12px rgba(212,175,55,0.35);
-}
-.btn-luz-escaner > button::before {
-    content: "";
-    position: absolute;
-    top: 0; left: -100%;
-    width: 200%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent);
-    animation: luzCorrediza 3s linear infinite;
-    pointer-events: none;
-}
-@keyframes luzCorrediza {
-    0% { left: -100%; }
-    100% { left: 100%; }
-}
-
-/* ============================================================================ 
-   5. EFECTOS EN TÍTULOS PRINCIPALES (BRILLO DORADO Y ANIMACIÓN PULSANTE) 
-============================================================================== */
-.titulo-principal {
-    text-align: center;
-    color: #d4af37 !important;
-    font-family: 'Arial Black', Gadget, sans-serif;
-    font-size: 38px;
-    margin-top: 0 !important;
-    margin-bottom: 10px !important;
-    text-shadow: 0 0 4px rgba(212,175,55,0.4), 0 0 10px rgba(212,175,55,0.6), 0 0 20px rgba(212,175,55,0.3);
-    animation: pulsoBrilloOro 3s ease-in-out infinite alternate;
-}
-@keyframes pulsoBrilloOro {
-    0% {
-        text-shadow: 0 0 4px rgba(212, 175, 55, 0.4),
-                     0 0 10px rgba(212, 175, 55, 0.5),
-                     0 0 15px rgba(212, 175, 55, 0.2);
-        filter: brightness(1);
-    }
-    100% {
-        text-shadow: 0 0 6px rgba(212, 175, 55, 0.6),
-                     0 0 15px rgba(212, 175, 55, 0.8),
-                     0 0 25px rgba(212, 175, 55, 0.4);
-        filter: brightness(1.15);
+    100%{
+        text-shadow:
+            0 0 6px rgba(212,175,55,0.6),
+            0 0 15px rgba(212,175,55,0.8),
+            0 0 25px rgba(212,175,55,0.4);
     }
 }
 
-/* ============================================================================ 
-   6. GRILLA RESPONSIVA DE PRODUCTOS
-============================================================================== */
-.grid-productos-responsivo {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    width: 100% !important;
-    gap: 16px !important;
-}
-@media (min-width: 1025px) {
-    .tarjeta-producto-individual {
-        flex: 0 0 calc(25% - 12px) !important;
-        max-width: calc(25% - 12px) !important;
-        margin: 0 !important;
-    }
-}
-@media (max-width: 1024px) and (min-width: 481px) {
-    .tarjeta-producto-individual {
-        flex: 0 0 calc(50% - 8px) !important;
-        max-width: calc(50% - 8px) !important;
-        margin-bottom: 10px !important;
-    }
-}
-@media (max-width: 480px) {
-    .tarjeta-producto-individual {
-        flex: 0 0 calc(50% - 6px) !important;
-        max-width: calc(50% - 6px) !important;
-        margin-bottom: 8px !important;
-    }
+/* ============================================================================
+   7. OCULTAR ELEMENTOS NATIVOS STREAMLIT
+============================================================================ */
+
+#MainMenu,
+.stAppDeployDropdown,
+footer,
+header{
+    visibility:hidden !important;
 }
 
-/* ============================================================================ 
-   7. TARJETAS DE PRODUCTO CON EFECTOS (ZOOM, ELEVACIÓN, BORDE DORADO)
-============================================================================== */
-.tarjeta-producto-individual {
-    border-radius: 12px;
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    overflow: hidden;
-}
-.tarjeta-producto-individual:hover {
-    transform: translateY(-5px);
-}
-.tarjeta-producto-individual img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-radius: 12px 12px 0 0;
-    transition: transform 0.4s ease;
-}
-.tarjeta-producto-individual:hover img {
-    transform: scale(1.05);
-}
-.product-card-bottom {
-    background-color: #111424;
-    padding: 12px 15px;
-    border-radius: 0 0 12px 12px;
-    border: 1px solid #222538;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-.tarjeta-producto-individual:hover .product-card-bottom {
-    border-color: #d4af37;
-    box-shadow: 0 4px 15px rgba(212,175,55,0.3);
-}
-.product-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-    line-height: 1.3;
-}
-.product-price {
-    font-size: 22px;
-    font-weight: 900;
-    color: #d4af37;
-    font-family: 'Impact', Charcoal, sans-serif;
-    white-space: nowrap;
+/* ============================================================================
+   8. BOTÓN MENÚ PREMIUM
+============================================================================ */
+
+button[kind="headerNoPadding"]{
+    background-color:#111424 !important;
+    border:1px solid #d4af37 !important;
+    border-radius:8px !important;
+    padding:6px 14px !important;
+    margin-left:10px !important;
+    margin-top:5px !important;
+    transition:0.3s ease !important;
 }
 
-/* ============================================================================ 
-   8. ALERTAS DE STOCK CRÍTICO (NEÓN PARPADEANTE)
-============================================================================== */
-.mini-stock-alerta {
-    color: #e74c3c;
-    font-size: 12px;
-    font-weight: 700;
-    margin-top: 5px;
-    margin-bottom: -5px;
-    margin-left: 5px;
-    text-transform: uppercase;
-    animation: parpadeoStockCritico 1.8s ease-in-out infinite alternate;
-}
-@keyframes parpadeoStockCritico {
-    0% {
-        opacity: 0.4;
-        text-shadow: none;
-    }
-    100% {
-        opacity: 1;
-        text-shadow: 0 0 8px rgba(231, 76, 60, 0.6);
-    }
-}
-.mini-stock-normal {
-    color: #888;
-    font-size: 12px;
-    font-weight: 500;
-    margin-top: 5px;
-    margin-bottom: -5px;
-    margin-left: 5px;
+button[kind="headerNoPadding"]:hover{
+    transform:scale(1.04);
+    box-shadow:0 0 12px rgba(212,175,55,0.5);
 }
 
-/* ============================================================================ 
-   9. APARICIÓN SUAVE EN PESTAÑAS Y CAMBIOS DE SECCIÓN
-============================================================================== */
+button[kind="headerNoPadding"] svg{
+    display:none !important;
+}
+
+button[kind="headerNoPadding"]::after{
+    content:" Menú de Opciones";
+    color:#d4af37;
+    font-weight:bold;
+    font-size:14px;
+}
+
+/* ============================================================================
+   9. SIDEBAR PREMIUM
+============================================================================ */
+
+section[data-testid="stSidebar"]{
+    background-color:#0b0c12 !important;
+}
+
+section[data-testid="stSidebar"] .element-container:has(p),
+section[data-testid="stSidebar"] .element-container:has(h4){
+    background-color:#111424 !important;
+    padding:12px 15px !important;
+    border-radius:12px !important;
+    border-left:4px solid #d4af37 !important;
+    margin-bottom:8px !important;
+
+    box-shadow:0 4px 15px rgba(212,175,55,0.15) !important;
+}
+
+/* ============================================================================
+   10. TARJETAS PREMIUM PRODUCTOS
+============================================================================ */
+
+.tarjeta-producto-individual{
+    transition:
+        transform 0.3s cubic-bezier(0.25,0.8,0.25,1),
+        filter 0.3s ease !important;
+
+    border-radius:14px !important;
+    overflow:hidden !important;
+}
+
+.tarjeta-producto-individual:hover{
+    transform:translateY(-8px) scale(1.01) !important;
+    filter:brightness(1.05);
+}
+
+.tarjeta-producto-individual img{
+    display:block !important;
+    width:100% !important;
+    transition:transform 0.4s ease !important;
+    border-radius:14px 14px 0 0 !important;
+}
+
+.tarjeta-producto-individual:hover img{
+    transform:scale(1.05) !important;
+}
+
+.product-card-bottom{
+    background:rgba(17,20,36,0.92) !important;
+    padding:12px 15px !important;
+    border-radius:0 0 14px 14px !important;
+
+    border-left:1px solid #222538 !important;
+    border-right:1px solid #222538 !important;
+    border-bottom:1px solid #222538 !important;
+
+    display:flex !important;
+    justify-content:space-between !important;
+    align-items:center !important;
+
+    box-shadow:0 4px 10px rgba(0,0,0,0.5) !important;
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease !important;
+
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+}
+
+.tarjeta-producto-individual:hover .product-card-bottom{
+    border-color:#d4af37 !important;
+    box-shadow:0 4px 15px rgba(212,175,55,0.3) !important;
+}
+
+.product-title{
+    font-size:18px !important;
+    font-weight:bold !important;
+    color:#ffffff !important;
+    line-height:1.3 !important;
+}
+
+.product-price{
+    font-size:22px !important;
+    font-weight:900 !important;
+    color:#d4af37 !important;
+    font-family:'Impact',Charcoal,sans-serif !important;
+    white-space:nowrap !important;
+}
+
+/* ============================================================================
+   11. ANIMACIÓN DE APARICIÓN
+============================================================================ */
+
 .catalogo-transparente-master,
 .bienvenida-transparente-master,
-.carrito-transparente-master {
-    animation: aparicionSuaveDeslizada 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-@keyframes aparicionSuaveDeslizada {
-    0% { transform: translateY(15px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
+.carrito-transparente-master{
+    animation:aparicionSuaveDeslizada 0.4s cubic-bezier(0.25,0.46,0.45,0.94) both !important;
 }
 
-/* ============================================================================ 
-   10. BOTONES ESTILIZADOS PREMIUM (DEGRADADOS DORADOS)
-============================================================================== */
-button[data-testid="stButton"] {
-    background: linear-gradient(135deg, #d4af37 0%, #aa8416 100%);
-    color: #0a0a0f;
-    font-weight: 900;
-    font-family: 'Arial Black', Gadget, sans-serif;
-    border: 1px solid #f1c40f;
-    text-transform: uppercase;
-    box-shadow: 0 4px 12px rgba(212,175,55,0.35);
-    transition: filter 0.2s ease;
-}
-button[data-testid="stButton"]:hover {
-    filter: brightness(1.2);
-    color: #0a0a0f;
+@keyframes aparicionSuaveDeslizada{
+    0%{
+        transform:translateY(15px);
+        opacity:0;
+    }
+
+    100%{
+        transform:translateY(0);
+        opacity:1;
+    }
 }
 
-/* ============================================================================ 
-   11. METRICAS CON EFECTO NEÓN
-============================================================================== */
-div[data-testid="stMetricValue"] {
-    border: 2px solid #2ecc71;
-    background-color: #0f0f0f;
-    padding: 12px 25px;
-    border-radius: 8px;
-    display: inline-block;
-    box-shadow: 0 4px 15px rgba(46,204,113,0.25);
-    font-size: 46px;
-    font-weight: 900;
-    color: #2ecc71;
-    font-family: 'Impact', Charcoal, sans-serif;
-    text-shadow: 0 0 15px rgba(46,204,113,0.6);
+/* ============================================================================
+   12. NAVBAR ESTILO NETFLIX
+============================================================================ */
+
+.netflix-navbar-master{
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+    padding:0 !important;
+    margin-top:5px !important;
+    margin-bottom:5px !important;
+    width:100% !important;
 }
 
-/* ============================================================================ 
-   12. PIE DE PÁGINA CON ÍCONOS SOCIALES
-============================================================================== */
-.social-footer {
-    text-align: center;
-    background-color: rgba(11,12,18,0.9);
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #222538;
-    max-width: 600px;
-    margin: 40px auto 0 auto;
-}
-.social-icon, .social-footer a {
-    color: #d4af37;
-    font-weight: 800;
-    text-decoration: none;
+/* ============================================================================
+   13. INPUTS PREMIUM
+============================================================================ */
+
+div[data-testid="stTextInput"] input,
+div[data-testid="stNumberInput"] input{
+    background-color:#111424 !important;
+    color:#ffffff !important;
+
+    border:2px solid #222538 !important;
+    border-radius:8px !important;
+
+    padding:10px 14px !important;
+
+    font-size:16px !important;
+    font-weight:700 !important;
+
+    transition:0.2s ease !important;
 }
 
-/* ============================================================================ 
-   13. RESPONSIVE – PC, TABLET, CELULAR
-============================================================================== */
-@media (max-width: 768px) {
-    /* Ajustes para móvil */
-    .product-card-bottom {
-        padding: 6px 8px !important;
+div[data-testid="stTextInput"] input:focus,
+div[data-testid="stNumberInput"] input:focus{
+    border-color:#d4af37 !important;
+
+    box-shadow:
+        0 0 10px rgba(212,175,55,0.3) !important;
+
+    transform:scale(1.01);
+}
+
+/* ============================================================================
+   14. BOTONES PREMIUM
+============================================================================ */
+
+div.stButton > button{
+    position:relative;
+    overflow:hidden;
+
+    background:linear-gradient(
+        135deg,
+        #d4af37 0%,
+        #aa8416 100%
+    ) !important;
+
+    color:#0a0a0f !important;
+
+    font-weight:900 !important;
+    font-family:'Arial Black',Gadget,sans-serif !important;
+
+    border:1px solid #f1c40f !important;
+
+    text-transform:uppercase !important;
+
+    box-shadow:
+        0 4px 12px rgba(212,175,55,0.35) !important;
+
+    transition:0.25s ease !important;
+}
+
+div.stButton > button:hover{
+    transform:translateY(-2px) scale(1.02);
+    filter:brightness(1.15);
+}
+
+div.stButton > button::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-120%;
+    width:100%;
+    height:100%;
+
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.25),
+        transparent
+    );
+
+    transition:0.6s;
+}
+
+div.stButton > button:hover::before{
+    left:120%;
+}
+
+/* ============================================================================
+   15. ALERTAS PREMIUM
+============================================================================ */
+
+div.stAlert{
+    background-color:#0b111e !important;
+    border:1px solid #1a2436 !important;
+    border-left:5px solid #d4af37 !important;
+    border-radius:10px !important;
+
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.6) !important;
+}
+
+/* ============================================================================
+   16. TOTALIZADOR NEÓN
+============================================================================ */
+
+div[data-testid="stMetricValue"]{
+    border:2px solid #2ecc71 !important;
+    background-color:#0f0f0f !important;
+
+    padding:12px 25px !important;
+    border-radius:8px !important;
+
+    display:inline-block !important;
+
+    box-shadow:
+        0 4px 15px rgba(46,204,113,0.25) !important;
+
+    font-size:46px !important;
+    font-weight:900 !important;
+
+    color:#2ecc71 !important;
+
+    font-family:'Impact',Charcoal,sans-serif !important;
+
+    text-shadow:
+        0 0 15px rgba(46,204,113,0.6) !important;
+}
+
+/* ============================================================================
+   17. FOOTER PREMIUM
+============================================================================ */
+
+.social-footer{
+    text-align:center !important;
+
+    background-color:
+        rgba(11,12,18,0.9) !important;
+
+    padding:20px !important;
+
+    border-radius:10px !important;
+
+    border:1px solid #222538 !important;
+
+    margin:40px auto 0 auto !important;
+
+    max-width:600px !important;
+
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+}
+
+.social-icon,
+.social-footer a{
+    color:#d4af37 !important;
+    font-weight:800 !important;
+    text-decoration:none !important;
+}
+
+/* ============================================================================
+   18. RESPONSIVE DESKTOP
+============================================================================ */
+
+@media (min-width:1025px){
+
+    .pc-only{
+        display:block !important;
     }
-    .titulo-principal {
-        font-size: 26px !important;
+
+    .movil-only{
+        display:none !important;
     }
-    .product-title {
-        font-size: 12px !important;
-        min-height: 28px !important;
+
+    .block-container{
+        max-width:1400px !important;
+        margin:0 auto !important;
+        padding-left:30px !important;
+        padding-right:30px !important;
     }
-    .product-price {
-        font-size: 15px !important;
+
+    .grid-productos-responsivo{
+        display:flex !important;
+        flex-wrap:wrap !important;
+        gap:16px !important;
     }
-    /* Mini-logo a esquina superior izquierda */
-    .mini-logo-flotante-master {
-        width: 45px !important;
-        height: 45px !important;
-        top: 15px !important;
-        left: 15px !important;
-        right: auto !important;
-        transform: none !important;
+
+    .tarjeta-producto-individual{
+        flex:0 0 calc(25% - 12px) !important;
+        max-width:calc(25% - 12px) !important;
+    }
+}
+
+/* ============================================================================
+   19. RESPONSIVE TABLET
+============================================================================ */
+
+@media (min-width:481px) and (max-width:1024px){
+
+    .grid-productos-responsivo{
+        display:flex !important;
+        flex-wrap:wrap !important;
+        gap:12px !important;
+    }
+
+    .tarjeta-producto-individual{
+        flex:0 0 calc(50% - 6px) !important;
+        max-width:calc(50% - 6px) !important;
+    }
+}
+
+/* ============================================================================
+   20. RESPONSIVE CELULAR
+============================================================================ */
+
+@media (max-width:480px){
+
+    html,
+    body,
+    .stApp{
+        width:100% !important;
+        overflow-x:hidden !important;
+        margin:0 !important;
+        padding:0 !important;
+    }
+
+    .pc-only{
+        display:none !important;
+    }
+
+    .movil-only{
+        display:block !important;
+    }
+
+    .block-container{
+        width:100% !important;
+        max-width:100% !important;
+        padding:0 8px !important;
+    }
+
+    .grid-productos-responsivo{
+        display:flex !important;
+        flex-wrap:wrap !important;
+        gap:8px !important;
+    }
+
+    .tarjeta-producto-individual{
+        flex:0 0 calc(50% - 4px) !important;
+        max-width:calc(50% - 4px) !important;
+    }
+
+    .tarjeta-producto-individual img{
+        height:140px !important;
+        object-fit:cover !important;
+    }
+
+    .titulo-principal{
+        font-size:26px !important;
+        line-height:1.2 !important;
+    }
+
+    .product-title{
+        font-size:12px !important;
+        min-height:28px !important;
+    }
+
+    .product-price{
+        font-size:15px !important;
+    }
+
+    .product-card-bottom{
+        padding:6px 8px !important;
+    }
+
+    div.stButton > button{
+        font-size:12px !important;
+        padding:10px 8px !important;
+        min-height:40px !important;
+    }
+
+    div[data-testid="stNumberInput"] input{
+        font-size:14px !important;
+        min-height:34px !important;
+    }
+
+    .video-fondo-maestro{
+        filter:brightness(0.28) !important;
+    }
+
+    div[data-testid="stMetricValue"]{
+        font-size:24px !important;
+        padding:5px 8px !important;
+    }
+
+    .social-footer{
+        padding:10px 5px !important;
+        margin-top:15px !important;
     }
 }
