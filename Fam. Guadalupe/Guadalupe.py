@@ -259,9 +259,38 @@ st.markdown(f'''
     </video>
 </div>
 
-<!-- MINI LOGO FLOTANTE -->
-<div class="mini-logo-flotante-master">
-    {logo_flotante_html}
+<!-- MINI LOGO FLOTANTE — estilos inline para garantizar posición fija -->
+<style>
+@keyframes rotarMiniLogo3D {{
+    0%   {{ transform: rotateY(0deg); }}
+    100% {{ transform: rotateY(360deg); }}
+}}
+</style>
+
+<div style="
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    left: auto !important;
+    width: 65px !important;
+    height: 65px !important;
+    z-index: 999999 !important;
+    pointer-events: none !important;
+    perspective: 1000px !important;
+">
+    <img src="{URL_LOGO}"
+         style="
+             width: 65px !important;
+             height: 65px !important;
+             object-fit: cover !important;
+             border-radius: 50% !important;
+             border: 2px solid #d4af37 !important;
+             box-shadow: 0 0 15px rgba(212,175,55,0.6) !important;
+             transform-style: preserve-3d !important;
+             animation: rotarMiniLogo3D 4s linear infinite !important;
+             display: block !important;
+         "
+         alt="Logo Guadalupe">
 </div>
 
 ''', unsafe_allow_html=True)
