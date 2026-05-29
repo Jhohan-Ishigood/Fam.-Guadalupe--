@@ -9,9 +9,6 @@ import base64
 import mimetypes
 import urllib.parse
 import time
-# Cargar CSS externo
-with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "estilos.css"), "r", encoding="utf-8") as f:
-    css_externo = f.read()
 
 # =========================================================
 # CONFIGURACIÓN GLOBAL
@@ -27,7 +24,6 @@ st.set_page_config(
         "About": None
     }
 )
-st.markdown(f"<style>{css_externo}</style>", unsafe_allow_html=True)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
