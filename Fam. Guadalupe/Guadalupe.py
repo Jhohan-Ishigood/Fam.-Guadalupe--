@@ -777,7 +777,7 @@ elif st.session_state.pantalla == "carrito":
             font-weight: 700;
             font-size: 15px;
         ">
-            Recomendación:Tómale una <b>captura a la lista que selecciono para que no se le olvide</b>.
+            Recomendación:Tómele una <b>captura a la lista que seleccionó para que no se le olvide</b>.
         </div>
         ''', unsafe_allow_html=True)
 
