@@ -777,7 +777,7 @@ elif st.session_state.pantalla == "carrito":
             font-weight: 700;
             font-size: 15px;
         ">
-            ⚠️ Recomendación: Tómale una <b>captura a esta proforma</b> antes de realizar tu transferencia.
+            Recomendación:Tómale una <b>captura a la lista que selecciono para que no se le olvide</b>.
         </div>
         ''', unsafe_allow_html=True)
 
@@ -1097,5 +1097,5 @@ st.markdown('''
         <a href="https://wa.me/51950239350" style="color:#2ecc71;">💬 +51 950 239 350</a>
     </p>
 </div>
-<p class="sello-creador">⚡ Plataforma Desarrollada — Edición Render Master v6.0</p>
+<p class="sello-creador">⚡ Plataforma Desarrollada — Jhohan Guadalupe</p>
 ''', unsafe_allow_html=True)
