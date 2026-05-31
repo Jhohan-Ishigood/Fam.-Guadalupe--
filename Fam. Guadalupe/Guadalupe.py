@@ -26,14 +26,16 @@ st.set_page_config(
 )
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.environ.get("GUADALUPE_DATA_DIR", BASE_DIR)
+os.makedirs(DATA_DIR, exist_ok=True)
 
 # Cargar CSS externo
 with open(os.path.join(BASE_DIR, "estilos.css"), "r", encoding="utf-8") as f:
     css_externo = f.read()
 st.markdown(f"<style>{css_externo}</style>", unsafe_allow_html=True)
 
-RUTA_MENU       = os.path.join(BASE_DIR, "menu_config.json")
-RUTA_CATEGORIAS = os.path.join(BASE_DIR, "categorias_config.json")
+RUTA_MENU       = os.path.join(DATA_DIR, "menu_config.json")
+RUTA_CATEGORIAS = os.path.join(DATA_DIR, "categorias_config.json")
 
 # =========================================================
 # FUNCIONES UTILITARIAS
@@ -93,6 +95,10 @@ def cargar_menu():
 
     # Migración de productos anteriores
     for prod, info in menu.items():
+        if "unidad_venta" not in info:
+            info["unidad_venta"] = "unidad"
+        if "paso_cantidad" not in info:
+            info["paso_cantidad"] = 1.0
         if "categoria_principal" not in info:
             old_cat = info.get("categoria", "🌾 Abarrotes")
             info["categoria_principal"] = "🌾 Abarrotes"
@@ -134,6 +140,146 @@ def cargar_categorias():
     return categorias_default
 
 
+UNIDADES_VENTA = {
+    "Unidad": ("unidad", 1.0),
+    "Kilo": ("kg", 0.25),
+    "Cuarto de kilo": ("1/4 kg", 0.25),
+    "Medio kilo": ("1/2 kg", 0.5),
+    "Litro": ("litro", 0.5),
+    "Metro": ("metro", 0.1),
+    "Pulgada": ("pulgada", 1.0),
+    "Paquete": ("paquete", 1.0),
+    "Caja": ("caja", 1.0),
+    "Docena": ("docena", 1.0),
+    "Personalizado": ("personalizado", 1.0),
+}
+
+
+def formatear_cantidad(cantidad):
+    cantidad_float = float(cantidad)
+    if cantidad_float.is_integer():
+        return str(int(cantidad_float))
+    return f"{cantidad_float:.2f}".rstrip("0").rstrip(".")
+
+
+def obtener_unidad_producto(info):
+    unidad = info.get("unidad_venta", "unidad")
+    return unidad if unidad else "unidad"
+
+
+def obtener_paso_producto(info):
+    try:
+        paso = float(info.get("paso_cantidad", 1.0))
+    except (TypeError, ValueError):
+        paso = 1.0
+    return paso if paso > 0 else 1.0
+
+
+def actualizar_carrito_desde_selecciones():
+    carrito = []
+    total = 0.0
+    selecciones = st.session_state.get("selecciones_pedido", {})
+    for producto, cantidad in list(selecciones.items()):
+        if producto not in st.session_state.menu_dinamico:
+            selecciones.pop(producto, None)
+            continue
+        try:
+            cantidad = float(cantidad)
+        except (TypeError, ValueError):
+            cantidad = 0
+        if cantidad <= 0:
+            selecciones.pop(producto, None)
+            continue
+
+        info = st.session_state.menu_dinamico[producto]
+        stock = float(info.get("stock", 0))
+        cantidad = min(cantidad, stock)
+        if cantidad <= 0:
+            selecciones.pop(producto, None)
+            continue
+
+        selecciones[producto] = cantidad
+        subtotal = cantidad * float(info.get("precio", 0))
+        carrito.append({
+            "producto": producto,
+            "cantidad": cantidad,
+            "unidad": obtener_unidad_producto(info),
+            "subtotal": subtotal
+        })
+        total += subtotal
+    st.session_state.carrito = carrito
+    st.session_state.total = total
+
+
+def registrar_cambio_cantidad(producto, key_qty):
+    cantidad_anterior = float(st.session_state.selecciones_pedido.get(producto, 0))
+    cantidad_nueva = float(st.session_state.get(key_qty, 0) or 0)
+    if cantidad_nueva > 0:
+        st.session_state.selecciones_pedido[producto] = cantidad_nueva
+    else:
+        st.session_state.selecciones_pedido.pop(producto, None)
+    if cantidad_nueva > cantidad_anterior:
+        st.session_state.producto_animado = producto
+        st.session_state.momento_animacion = time.time()
+    actualizar_carrito_desde_selecciones()
+
+
+def render_datos_pago(titulo="DATOS DE PAGO", compacto=False):
+    qr_html = ""
+    if URL_QR:
+        qr_html = f'<img class="qr-yape-premium" src="{URL_QR}" alt="QR Yape">'
+    clase = "datos-pago-bloque compacto" if compacto else "datos-pago-bloque"
+    st.markdown(f'''
+    <section class="{clase}">
+        <h2>{titulo}</h2>
+        <div class="datos-pago-grid">
+            <article class="dato-pago-card pago-banco">
+                <span>Banco de la Nación</span>
+                <strong>04-762-855629</strong>
+                <small>Segundo Melquiades Guadalupe Sanchez</small>
+            </article>
+            <article class="dato-pago-card pago-yape">
+                <span>Yape</span>
+                {qr_html}
+                <strong>+51 950 239 350</strong>
+                <small>Segundo Guadalupe</small>
+            </article>
+            <article class="dato-pago-card pago-whatsapp">
+                <span>WhatsApp</span>
+                <strong>+51 950 239 350</strong>
+                <small>Envía tu captura o comprobante para coordinar.</small>
+            </article>
+        </div>
+    </section>
+    ''', unsafe_allow_html=True)
+
+
+def render_panel_pedido_movil():
+    if not st.session_state.get("carrito"):
+        return
+    items_html = ""
+    for item in st.session_state.carrito:
+        items_html += f'''
+        <div class="bottom-sheet-item">
+            <span>{item["producto"]}</span>
+            <b>{formatear_cantidad(item["cantidad"])} {item.get("unidad", "unidad")} · S/{item["subtotal"]:.2f}</b>
+        </div>
+        '''
+    st.markdown(f'''
+    <div class="pedido-bottom-sheet">
+        <input id="pedido-sheet-toggle" class="pedido-sheet-toggle" type="checkbox">
+        <label for="pedido-sheet-toggle" class="pedido-sheet-handle">
+            <span class="pedido-sheet-barra"></span>
+            <strong>🛒 {len(st.session_state.carrito)} productos · S/{st.session_state.total:.2f}</strong>
+            <small>Desliza hacia arriba</small>
+        </label>
+        <div class="pedido-sheet-contenido">
+            {items_html}
+        </div>
+    </div>
+    ''', unsafe_allow_html=True)
+
+
 def generar_proforma_html(carrito, total, fecha):
     """Genera el HTML de la proforma para descarga como archivo."""
     filas = ""
@@ -141,7 +287,7 @@ def generar_proforma_html(carrito, total, fecha):
         filas += f"""
         <tr>
             <td style="padding:10px;border-bottom:1px solid #333;">{item['producto']}</td>
-            <td style="padding:10px;border-bottom:1px solid #333;text-align:center;">{item['cantidad']}</td>
+            <td style="padding:10px;border-bottom:1px solid #333;text-align:center;">{formatear_cantidad(item['cantidad'])} {item.get('unidad', 'unidad')}</td>
             <td style="padding:10px;border-bottom:1px solid #333;text-align:right;">S/{item['subtotal']:.2f}</td>
         </tr>"""
     return f"""<!DOCTYPE html>
@@ -205,8 +351,14 @@ if "categoria_activa"       not in st.session_state:
     st.session_state.categoria_activa   = "Todos"
 if "carrito"                not in st.session_state:
     st.session_state.carrito            = []
+if "selecciones_pedido"     not in st.session_state:
+    st.session_state.selecciones_pedido = {}
 if "total"                  not in st.session_state:
     st.session_state.total              = 0.0
+if "producto_animado"       not in st.session_state:
+    st.session_state.producto_animado   = ""
+if "momento_animacion"      not in st.session_state:
+    st.session_state.momento_animacion  = 0.0
 if "pedido_confirmado"      not in st.session_state:
     st.session_state.pedido_confirmado  = False
 if "bloqueo_stock"          not in st.session_state:
@@ -247,14 +399,7 @@ st.markdown(f'''
 
 /* ── FONDO PANORÁMICO (necesita URL_FONDO de Python) ── */
 [data-testid="stAppViewContainer"] {{
-    background:
-        linear-gradient(rgba(0,0,0,.78), rgba(0,0,0,.78)),
-        url("{URL_FONDO}");
-    background-size: 130% auto;
-    background-position: 0% center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    animation: fondoMaster 25s ease-in-out infinite alternate;
+    background: #050509 !important;
 }}
 
 @keyframes fondoMaster {{
@@ -264,8 +409,7 @@ st.markdown(f'''
 
 @media (max-width: 768px) {{
     [data-testid="stAppViewContainer"] {{
-        background-size: auto 100% !important;
-        animation: fondoMobile 30s linear infinite alternate !important;
+        background: #050509 !important;
     }}
 }}
 
@@ -303,15 +447,16 @@ st.markdown(f'''
 
 <!-- VIDEO DE FONDO -->
 <div class="video-background-container pc-only">
-    <video class="video-fondo-maestro" autoplay loop muted playsinline>
+    <video class="video-fondo-maestro" autoplay loop muted playsinline preload="metadata" poster="{URL_FONDO}" data-video-id="fondo_pc">
         <source src="{URL_VIDEO_PC}" type="video/mp4">
     </video>
 </div>
 <div class="video-background-container movil-only">
-    <video class="video-fondo-maestro" autoplay loop muted playsinline>
+    <video class="video-fondo-maestro" autoplay loop muted playsinline preload="metadata" poster="{URL_FONDO}" data-video-id="fondo_movil">
         <source src="{URL_VIDEO_MOVIL}" type="video/mp4">
     </video>
 </div>
+<div class="video-overlay-legibilidad"></div>
 
 <!-- MINI LOGO FLOTANTE RESPONSIVO -->
 <div class="mini-logo-flotante-master">
@@ -342,7 +487,7 @@ const observer = new MutationObserver((mutations) => {{
     cards.forEach(card => {{
         const horizontalBlock = card.closest('[data-testid="stHorizontalBlock"]');
         if (horizontalBlock) {{
-            horizontalBlock.classList.add('grilla-cuatro-dos');
+            horizontalBlock.classList.add('grilla-productos');
         }}
     }});
 
@@ -351,7 +496,7 @@ const observer = new MutationObserver((mutations) => {{
     adminUploaders.forEach(uploader => {{
         const horizontalBlock = uploader.closest('[data-testid="stHorizontalBlock"]');
         if (horizontalBlock) {{
-            horizontalBlock.classList.add('grilla-cuatro-dos');
+            horizontalBlock.classList.add('grilla-productos');
         }}
     }});
 
@@ -360,11 +505,32 @@ const observer = new MutationObserver((mutations) => {{
     catCards.forEach(card => {{
         const horizontalBlock = card.closest('[data-testid="stHorizontalBlock"]');
         if (horizontalBlock) {{
-            horizontalBlock.classList.add('grilla-cuatro-dos');
+            horizontalBlock.classList.add('grilla-categorias');
         }}
     }});
 }});
 observer.observe(document.body, {{ childList: true, subtree: true }});
+
+// Mantiene el video de fondo cerca del punto donde iba tras cada rerender de Streamlit.
+function estabilizarVideosDeFondo() {{
+    document.querySelectorAll('video[data-video-id]').forEach(video => {{
+        const key = 'guadalupe_video_time_' + video.dataset.videoId;
+        const saved = Number(sessionStorage.getItem(key) || 0);
+        if (saved && Number.isFinite(saved)) {{
+            const restore = () => {{
+                try {{
+                    if (video.duration && saved < video.duration) video.currentTime = saved;
+                }} catch (e) {{}}
+            }};
+            video.addEventListener('loadedmetadata', restore, {{ once: true }});
+            if (video.readyState >= 1) restore();
+        }}
+        video.addEventListener('timeupdate', () => {{
+            try {{ sessionStorage.setItem(key, String(video.currentTime)); }} catch (e) {{}}
+        }});
+    }});
+}}
+estabilizarVideosDeFondo();
 </script>
 
 ''', unsafe_allow_html=True)
@@ -436,7 +602,7 @@ if st.session_state.pantalla == "bienvenida":
     # ── LOGO CENTRAL CON DESTELLO METÁLICO ──
     # Usa video si está disponible, sino imagen con fallback emoji
     if URL_VIDEO_LOGO:
-        contenido_logo = f'<video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><source src="{URL_VIDEO_LOGO}" type="video/mp4"></video>'
+        contenido_logo = f'<video autoplay loop muted playsinline preload="metadata" poster="{URL_LOGO}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><source src="{URL_VIDEO_LOGO}" type="video/mp4"></video>'
     elif URL_LOGO:
         contenido_logo = f'<img src="{URL_LOGO}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="Logo Guadalupe">'
     else:
@@ -495,6 +661,13 @@ if st.session_state.pantalla == "bienvenida":
     st.markdown("<br>", unsafe_allow_html=True)
 
     # ── ACORDEONES DE PAGO ──
+    st.markdown('''
+    <div class="titulo-datos-pago">
+        <h2>DATOS DE PAGO</h2>
+        <p>Elige el método que prefieras para coordinar tu pedido.</p>
+    </div>
+    ''', unsafe_allow_html=True)
+
     with st.expander("🏦 BANCO DE LA NACIÓN"):
         st.markdown("""
         #### DATOS BANCARIOS
@@ -507,17 +680,22 @@ if st.session_state.pantalla == "bienvenida":
 
     with st.expander("🟣 YAPE — +51 950 239 350"):
         if URL_QR:
-            col_qr1, col_qr2, col_qr3 = st.columns([1, 2, 1])
-            with col_qr2:
-                st.image(URL_QR, width=220)
-        st.markdown("""
-        #### YAPE
-        **Número:** +51 950 239 350
+            st.markdown(f'''
+            <div class="yape-qr-box">
+                <img src="{URL_QR}" alt="QR Yape">
+                <strong>Yape +51 950 239 350</strong>
+                <span>Titular: Segundo Guadalupe</span>
+            </div>
+            ''', unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            #### YAPE
+            **Número:** +51 950 239 350
 
-        **Titular:** Segundo Guadalupe
+            **Titular:** Segundo Guadalupe
 
-        > Escanea el QR o yapea al número directamente.
-        """)
+            > Escanea el QR o yapea al número directamente.
+            """)
 
     with st.expander("🟢 CONTACTO DIRECTO — WHATSAPP"):
         st.markdown("""
@@ -546,10 +724,10 @@ elif st.session_state.pantalla == "seleccion_categorias":
 
     categorias_principales = list(st.session_state.lista_categorias.keys())
     
-    # Grilla de categorías principales: 4 columnas PC / 2 columnas móvil
-    for idx in range(0, len(categorias_principales), 4):
-        grupo = categorias_principales[idx:idx+4]
-        cols = st.columns(4, gap="large")
+    # Grilla de categorías principales: 6 columnas PC / 3 columnas móvil
+    for idx in range(0, len(categorias_principales), 6):
+        grupo = categorias_principales[idx:idx+6]
+        cols = st.columns(6, gap="medium")
         for j, cat in enumerate(grupo):
             with cols[j]:
                 partes = cat.split(" ", 1)
@@ -645,10 +823,15 @@ elif st.session_state.pantalla == "catalogo":
             columnas_par = st.columns(4, gap="medium")
 
             for j, (producto, info) in enumerate(grupo):
-                stock = int(info.get("stock", 0))
+                stock = float(info.get("stock", 0))
                 with columnas_par[j]:
                     foto_url = info.get('foto', '')
                     is_video = foto_url.startswith("data:video/") or foto_url.endswith((".mp4", ".webm", ".ogg", ".mov"))
+                    unidad = obtener_unidad_producto(info)
+                    paso = obtener_paso_producto(info)
+                    key_qty = f"qty_{producto}"
+                    cantidad_guardada = float(st.session_state.selecciones_pedido.get(producto, 0))
+                    animar = " producto-recien-agregado" if producto == st.session_state.get("producto_animado") else ""
                     
                     if is_video:
                         media_html = f'<video class="video-producto" autoplay loop muted playsinline style="width:100%;height:200px;object-fit:cover;border-radius:12px 12px 0 0;"><source src="{foto_url}" type="video/mp4"></video>'
@@ -656,8 +839,9 @@ elif st.session_state.pantalla == "catalogo":
                         media_html = f'<img src="{foto_url}" alt="{producto}" style="width:100%;height:200px;object-fit:cover;border-radius:12px 12px 0 0;">'
 
                     st.markdown(f'''
-                    <div class="tarjeta-producto-individual">
+                    <div class="tarjeta-producto-individual{animar}">
                         {media_html}
+                        <div class="badge-producto-agregado">✓ Agregado</div>
                         <div class="product-card-bottom">
                             <div>
                                 <div class="product-title">{info.get('icono','📦')} {producto}</div>
@@ -676,18 +860,22 @@ elif st.session_state.pantalla == "catalogo":
 
                     st.markdown(f'''
                             </div>
-                            <div class="product-price">S/{info.get('precio', 0):.2f}</div>
+                            <div class="product-price">S/{info.get('precio', 0):.2f}<small>/{unidad}</small></div>
                         </div>
                     </div>
                     ''', unsafe_allow_html=True)
 
                     # Widget nativo fuera del bloque HTML
                     st.number_input(
-                        f"Cantidad — {producto}",
-                        min_value=0,
+                        f"Cantidad — {producto} ({unidad})",
+                        min_value=0.0,
                         max_value=stock,
-                        value=0,
+                        value=float(st.session_state.get(key_qty, cantidad_guardada)),
+                        step=paso,
+                        format="%.2f" if paso < 1 else "%.0f",
                         key=f"qty_{producto}",
+                        on_change=registrar_cambio_cantidad,
+                        args=(producto, key_qty),
                         label_visibility="collapsed"
                     )
 
@@ -696,20 +884,7 @@ elif st.session_state.pantalla == "catalogo":
     st.markdown("<br>", unsafe_allow_html=True)
 
     if st.button("🛒 SIMULAR MONTO FINAL", use_container_width=True, key="btn_simular"):
-        st.session_state.carrito = []
-        st.session_state.total   = 0.0
-
-        for producto, info in st.session_state.menu_dinamico.items():
-            key_qty = f"qty_{producto}"
-            cantidad = st.session_state.get(key_qty, 0)
-            if cantidad and cantidad > 0:
-                subtotal = cantidad * info["precio"]
-                st.session_state.carrito.append({
-                    "producto": producto,
-                    "cantidad": cantidad,
-                    "subtotal": subtotal
-                })
-                st.session_state.total += subtotal
+        actualizar_carrito_desde_selecciones()
 
         if st.session_state.total > 0:
             st.session_state.bloqueo_stock = False
@@ -752,7 +927,7 @@ elif st.session_state.pantalla == "carrito":
             ">
                 <span style="font-size:16px;font-weight:700;">
                     {item["producto"]}
-                    <span style="color:#aaa;font-weight:400;"> x{item["cantidad"]}</span>
+                    <span style="color:#aaa;font-weight:400;"> x{formatear_cantidad(item["cantidad"])} {item.get("unidad", "unidad")}</span>
                 </span>
                 <span style="color:#2ecc71;font-size:20px;font-weight:900;">
                     S/{item["subtotal"]:.2f}
@@ -763,6 +938,8 @@ elif st.session_state.pantalla == "carrito":
         # ── TOTAL NEÓN ──
         st.markdown("<br>", unsafe_allow_html=True)
         st.metric(label="💰 TOTAL A PAGAR", value=f"S/{st.session_state.total:.2f}")
+
+        render_datos_pago("DATOS DE PAGO PARA TU PEDIDO", compacto=True)
 
         # ── NOTA ESTRATÉGICA DORADA ──
         st.markdown('''
@@ -800,7 +977,7 @@ elif st.session_state.pantalla == "carrito":
 
         # ── MENSAJE WHATSAPP AUTOMÁTICO ──
         lineas_wa = "%0A".join([
-            urllib.parse.quote(f"{i['producto']} x{i['cantidad']} — S/{i['subtotal']:.2f}")
+            urllib.parse.quote(f"{i['producto']} x{formatear_cantidad(i['cantidad'])} {i.get('unidad', 'unidad')} — S/{i['subtotal']:.2f}")
             for i in st.session_state.carrito
         ])
         total_wa = urllib.parse.quote(f"💰 TOTAL: S/{st.session_state.total:.2f}")
@@ -816,8 +993,8 @@ elif st.session_state.pantalla == "carrito":
                     st.session_state.bloqueo_stock = True
                     for item in st.session_state.carrito:
                         prod     = item["producto"]
-                        cantidad = item["cantidad"]
-                        stock_actual = st.session_state.menu_dinamico[prod]["stock"]
+                        cantidad = float(item["cantidad"])
+                        stock_actual = float(st.session_state.menu_dinamico[prod]["stock"])
                         nuevo_stock  = max(0, stock_actual - cantidad)
                         st.session_state.menu_dinamico[prod]["stock"]      = nuevo_stock
                         st.session_state.menu_dinamico[prod]["disponible"] = nuevo_stock > 0
@@ -840,6 +1017,7 @@ elif st.session_state.pantalla == "carrito":
 
         if st.button("🔄 NUEVA ORDEN", use_container_width=True, key="btn_nueva_orden"):
             st.session_state.carrito       = []
+            st.session_state.selecciones_pedido = {}
             st.session_state.total         = 0.0
             st.session_state.pantalla      = "bienvenida"
             st.session_state.bloqueo_stock = False
@@ -926,6 +1104,33 @@ elif st.session_state.pantalla == "admin":
                         key=f"stock_{nombre}"
                     )
 
+                    unidad_actual = datos.get("unidad_venta", "unidad")
+                    etiquetas_unidad = list(UNIDADES_VENTA.keys())
+                    etiqueta_actual = next(
+                        (label for label, valores in UNIDADES_VENTA.items() if valores[0] == unidad_actual),
+                        "Personalizado"
+                    )
+                    nueva_unidad_label = st.selectbox(
+                        "Unidad de venta",
+                        etiquetas_unidad,
+                        index=etiquetas_unidad.index(etiqueta_actual),
+                        key=f"unidad_{nombre}"
+                    )
+                    unidad_base, paso_base = UNIDADES_VENTA[nueva_unidad_label]
+                    if nueva_unidad_label == "Personalizado":
+                        unidad_base = st.text_input(
+                            "Nombre de unidad personalizada",
+                            value=unidad_actual if unidad_actual != "personalizado" else "",
+                            key=f"unidad_personalizada_{nombre}"
+                        ).strip() or "unidad"
+                    nuevo_paso = st.number_input(
+                        "Paso de cantidad",
+                        min_value=0.01,
+                        value=float(datos.get("paso_cantidad", paso_base)),
+                        step=0.01,
+                        key=f"paso_{nombre}"
+                    )
+
                     # Disponibilidad
                     disponible = st.toggle(
                         "✅ Disponible",
@@ -964,6 +1169,8 @@ elif st.session_state.pantalla == "admin":
                         st.session_state.menu_dinamico[nombre]["precio"]              = nuevo_precio
                         st.session_state.menu_dinamico[nombre]["stock"]               = nuevo_stock
                         st.session_state.menu_dinamico[nombre]["disponible"]          = disponible
+                        st.session_state.menu_dinamico[nombre]["unidad_venta"]        = unidad_base
+                        st.session_state.menu_dinamico[nombre]["paso_cantidad"]       = nuevo_paso
                         st.session_state.menu_dinamico[nombre]["categoria_principal"] = nuevo_cat_principal
                         st.session_state.menu_dinamico[nombre]["categoria"]           = nuevo_cat_sub
                         guardar_json(RUTA_MENU, st.session_state.menu_dinamico)
@@ -980,6 +1187,11 @@ elif st.session_state.pantalla == "admin":
         np_icono  = st.text_input("Icono (emoji)", value="📦", key="np_icono")
         np_precio = st.number_input("Precio (S/)", min_value=0.0, step=0.5, key="np_precio")
         np_stock  = st.number_input("Stock inicial", min_value=0, step=1, key="np_stock")
+        np_unidad_label = st.selectbox("Unidad de venta", list(UNIDADES_VENTA.keys()), key="np_unidad")
+        np_unidad_base, np_paso_base = UNIDADES_VENTA[np_unidad_label]
+        if np_unidad_label == "Personalizado":
+            np_unidad_base = st.text_input("Nombre de unidad personalizada", key="np_unidad_personalizada").strip() or "unidad"
+        np_paso = st.number_input("Paso de cantidad", min_value=0.01, value=float(np_paso_base), step=0.01, key="np_paso")
 
         lista_cat_principales = list(st.session_state.lista_categorias.keys())
         np_cat_principal = st.selectbox("Categoría Principal", lista_cat_principales, key="np_cat_principal")
@@ -1010,6 +1222,8 @@ elif st.session_state.pantalla == "admin":
                     "icono":               np_icono,
                     "stock":               np_stock,
                     "disponible":          True,
+                    "unidad_venta":        np_unidad_base,
+                    "paso_cantidad":       np_paso,
                     "categoria_principal": np_cat_principal,
                     "categoria":           np_cat_sub,
                     "foto":                foto_nueva
@@ -1082,6 +1296,10 @@ elif st.session_state.pantalla == "admin":
             guardar_json(RUTA_MENU, st.session_state.menu_dinamico)
             st.success(f"✔ Producto '{prod_eliminar}' eliminado")
             st.rerun()
+
+if st.session_state.pantalla in ["seleccion_categorias", "catalogo"]:
+    actualizar_carrito_desde_selecciones()
+    render_panel_pedido_movil()
 
 # =========================================================
 # PIE DE PÁGINA
