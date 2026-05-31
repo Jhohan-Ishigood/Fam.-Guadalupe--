@@ -13,6 +13,12 @@ html, body, .stApp,
     background-color: transparent !important;
     background: transparent !important;
     color: #ffffff !important;
+    color-scheme: dark !important;
+}
+
+html,
+body {
+    background: #050509 !important;
 }
 
 .stApp {
@@ -38,9 +44,10 @@ html, body, .stApp,
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: -1 !important;
+    z-index: 0 !important;
     overflow: hidden !important;
     pointer-events: none !important;
+    background: #050509 url("establecimiento.png") center center / cover no-repeat !important;
 }
 
 .video-fondo-maestro {
@@ -48,6 +55,8 @@ html, body, .stApp,
     height: 100% !important;
     object-fit: cover !important;
     filter: brightness(0.35) contrast(1.05) !important;
+    opacity: 1 !important;
+    background: #050509 !important;
 }
 
 /* ============================================================================
@@ -467,6 +476,72 @@ section[data-testid="stSidebar"] div.stButton > button:hover {
     color: #0a0a0f !important;
 }
 
+/* Personalidad por función: los botones dejan de verse todos iguales */
+button.btn-guadalupe-inicio {
+    background: linear-gradient(135deg, #f7d766 0%, #d4af37 42%, #8f6710 100%) !important;
+    border: 1px solid #fff0a6 !important;
+    color: #080706 !important;
+    box-shadow: 0 0 24px rgba(212,175,55,0.58), inset 0 1px 0 rgba(255,255,255,0.42) !important;
+    letter-spacing: 0.2px !important;
+}
+
+button.btn-guadalupe-categoria {
+    background: linear-gradient(135deg, #17213a 0%, #101424 56%, #090b12 100%) !important;
+    border: 1px solid rgba(212,175,55,0.78) !important;
+    border-bottom: 3px solid #d4af37 !important;
+    color: #f7d766 !important;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.38), 0 0 14px rgba(212,175,55,0.28) !important;
+}
+
+button.btn-guadalupe-subcategoria {
+    background: linear-gradient(135deg, rgba(16,20,36,0.95), rgba(41,34,11,0.95)) !important;
+    border: 1px solid rgba(247,215,102,0.72) !important;
+    color: #ffe890 !important;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 0 13px rgba(212,175,55,0.22) !important;
+}
+
+button.btn-guadalupe-volver {
+    background: linear-gradient(135deg, #26324c 0%, #111827 100%) !important;
+    border: 1px solid rgba(130,170,255,0.72) !important;
+    color: #dbe8ff !important;
+    box-shadow: 0 0 14px rgba(93,137,255,0.22) !important;
+}
+
+button.btn-guadalupe-carrito {
+    background: linear-gradient(135deg, #0d6b42 0%, #23c46d 55%, #0f4f33 100%) !important;
+    border: 1px solid rgba(132,255,185,0.82) !important;
+    color: #03130a !important;
+    box-shadow: 0 0 20px rgba(46,204,113,0.40) !important;
+}
+
+button.btn-guadalupe-confirmar {
+    background: linear-gradient(135deg, #19d47c 0%, #087a4b 100%) !important;
+    border: 1px solid #87ffc1 !important;
+    color: #02110a !important;
+    box-shadow: 0 0 24px rgba(46,204,113,0.50) !important;
+}
+
+button.btn-guadalupe-whatsapp {
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%) !important;
+    border: 1px solid rgba(175,255,210,0.9) !important;
+    color: #03120b !important;
+    box-shadow: 0 0 22px rgba(37,211,102,0.45) !important;
+}
+
+button.btn-guadalupe-admin {
+    background: linear-gradient(135deg, #3b2a6f 0%, #8e44ad 100%) !important;
+    border: 1px solid rgba(225,166,255,0.78) !important;
+    color: #fff6ff !important;
+    box-shadow: 0 0 18px rgba(142,68,173,0.38) !important;
+}
+
+button.btn-guadalupe-peligro {
+    background: linear-gradient(135deg, #8e1f17 0%, #e74c3c 100%) !important;
+    border: 1px solid rgba(255,178,168,0.82) !important;
+    color: #fff6f4 !important;
+    box-shadow: 0 0 18px rgba(231,76,60,0.38) !important;
+}
+
 /* ============================================================================
    15. TOTALIZADOR NEÓN VERDE (METRIC VALUE)
    ============================================================================ */
@@ -820,11 +895,42 @@ div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input {
 .video-overlay-legibilidad {
     position: fixed !important;
     inset: 0 !important;
-    z-index: -1 !important;
+    z-index: 1 !important;
     pointer-events: none !important;
     background:
         radial-gradient(circle at 50% 15%, rgba(212,175,55,0.12), transparent 28%),
         linear-gradient(180deg, rgba(0,0,0,0.60), rgba(0,0,0,0.78)) !important;
+}
+
+[data-testid="stAppViewContainer"] > .main,
+[data-testid="stMain"],
+[data-testid="stMainBlockContainer"],
+.block-container,
+section[data-testid="stSidebar"] {
+    position: relative !important;
+    z-index: 5 !important;
+}
+
+section[data-testid="stSidebar"] {
+    z-index: 999997 !important;
+}
+
+@media (prefers-color-scheme: light) {
+    html,
+    body,
+    .stApp,
+    [data-testid="stAppViewContainer"],
+    [data-testid="stMain"],
+    [data-testid="stMainBlockContainer"] {
+        color-scheme: dark !important;
+        color: #ffffff !important;
+    }
+
+    input,
+    textarea,
+    select {
+        color-scheme: dark !important;
+    }
 }
 
 .video-producto {
@@ -1034,29 +1140,109 @@ div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input {
 .pago-yape { border-color: rgba(142,68,173,0.85) !important; }
 .pago-whatsapp { border-color: rgba(39,174,96,0.80) !important; }
 
+.pago-detalle-premium {
+    width: min(460px, 94vw) !important;
+    margin: 10px auto 14px auto !important;
+    padding: 18px !important;
+    border-radius: 12px !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 7px !important;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.48) !important;
+    backdrop-filter: blur(12px) !important;
+}
+
+.pago-detalle-premium span {
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.4px !important;
+    text-transform: uppercase !important;
+}
+
+.pago-detalle-premium strong {
+    color: #ffffff !important;
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    line-height: 1.1 !important;
+}
+
+.pago-detalle-premium small,
+.pago-detalle-premium p {
+    color: #e7e7e7 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+}
+
+.pago-banco-detalle {
+    background: linear-gradient(145deg, rgba(10,35,72,0.94), rgba(7,12,24,0.94)) !important;
+    border: 1px solid rgba(52,152,219,0.88) !important;
+    box-shadow: 0 0 24px rgba(52,152,219,0.36), 0 12px 28px rgba(0,0,0,0.48) !important;
+}
+
+.pago-banco-detalle span,
+.pago-banco-detalle strong {
+    color: #69c7ff !important;
+    text-shadow: 0 0 12px rgba(52,152,219,0.48) !important;
+}
+
+.pago-yape-detalle {
+    background: linear-gradient(145deg, rgba(46,16,70,0.94), rgba(13,10,24,0.94)) !important;
+    border: 1px solid rgba(174,84,226,0.90) !important;
+    box-shadow: 0 0 24px rgba(142,68,173,0.42), 0 12px 28px rgba(0,0,0,0.48) !important;
+}
+
+.pago-yape-detalle span,
+.pago-yape-detalle strong {
+    color: #e0a6ff !important;
+    text-shadow: 0 0 12px rgba(174,84,226,0.48) !important;
+}
+
+.pago-whatsapp-detalle {
+    background: linear-gradient(145deg, rgba(8,72,43,0.94), rgba(7,18,14,0.94)) !important;
+    border: 1px solid rgba(46,204,113,0.88) !important;
+    box-shadow: 0 0 24px rgba(46,204,113,0.36), 0 12px 28px rgba(0,0,0,0.48) !important;
+}
+
+.pago-whatsapp-detalle span,
+.pago-whatsapp-detalle strong {
+    color: #6dffad !important;
+    text-shadow: 0 0 12px rgba(46,204,113,0.48) !important;
+}
+
 /* Grillas reforzadas contra el apilado móvil de Streamlit */
 [data-testid="stHorizontalBlock"].grilla-productos,
-[data-testid="stHorizontalBlock"].grilla-categorias {
+[data-testid="stHorizontalBlock"].grilla-categorias,
+div[data-testid="stHorizontalBlock"]:has(.tarjeta-producto-individual),
+div[data-testid="stHorizontalBlock"]:has(.tarjeta-categoria-principal) {
     display: grid !important;
     width: 100% !important;
     align-items: stretch !important;
+    grid-auto-flow: row !important;
 }
 
-[data-testid="stHorizontalBlock"].grilla-productos {
+[data-testid="stHorizontalBlock"].grilla-productos,
+div[data-testid="stHorizontalBlock"]:has(.tarjeta-producto-individual) {
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
     gap: 14px !important;
 }
 
-[data-testid="stHorizontalBlock"].grilla-categorias {
+[data-testid="stHorizontalBlock"].grilla-categorias,
+div[data-testid="stHorizontalBlock"]:has(.tarjeta-categoria-principal) {
     grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
     gap: 12px !important;
 }
 
 [data-testid="stHorizontalBlock"].grilla-productos > [data-testid="column"],
-[data-testid="stHorizontalBlock"].grilla-categorias > [data-testid="column"] {
+[data-testid="stHorizontalBlock"].grilla-categorias > [data-testid="column"],
+div[data-testid="stHorizontalBlock"]:has(.tarjeta-producto-individual) > [data-testid="column"],
+div[data-testid="stHorizontalBlock"]:has(.tarjeta-categoria-principal) > [data-testid="column"] {
     width: auto !important;
     min-width: 0 !important;
     flex: none !important;
+    display: block !important;
 }
 
 .tarjeta-categoria-principal {
@@ -1075,6 +1261,7 @@ div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input {
     line-height: 1.15 !important;
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
 }
@@ -1117,19 +1304,54 @@ div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input {
     section[data-testid="stSidebar"] {
         left: auto !important;
         right: 0 !important;
+        inset-inline-start: auto !important;
+        inset-inline-end: 0 !important;
+        transform: none !important;
         transform-origin: top right !important;
         border-left: 1px solid rgba(212,175,55,0.35) !important;
         border-right: none !important;
+        box-shadow: -12px 0 34px rgba(0,0,0,0.62), -1px 0 0 rgba(212,175,55,0.45) !important;
     }
 
-    [data-testid="stHorizontalBlock"].grilla-productos {
+    section[data-testid="stSidebar"] > div,
+    section[data-testid="stSidebar"] [data-testid="stSidebarContent"] {
+        background:
+            radial-gradient(circle at top right, rgba(212,175,55,0.14), transparent 35%),
+            linear-gradient(180deg, rgba(9,11,20,0.98), rgba(4,5,10,0.98)) !important;
+        border-left: 1px solid rgba(212,175,55,0.45) !important;
+    }
+
+    div[data-testid="stSidebarCollapsedControl"],
+    div[data-testid="collapsedControl"] {
+        left: auto !important;
+        right: 12px !important;
+    }
+
+    [data-testid="stHorizontalBlock"].grilla-productos,
+    div[data-testid="stHorizontalBlock"]:has(.tarjeta-producto-individual) {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 10px !important;
     }
 
-    [data-testid="stHorizontalBlock"].grilla-categorias {
+    [data-testid="stHorizontalBlock"].grilla-categorias,
+    div[data-testid="stHorizontalBlock"]:has(.tarjeta-categoria-principal) {
         grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
         gap: 8px !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(.tarjeta-categoria-principal) div.stButton > button {
+        min-height: 34px !important;
+        height: 34px !important;
+        padding: 5px 4px !important;
+        font-size: 10px !important;
+        border-radius: 0 0 8px 8px !important;
+        box-shadow: 0 0 12px rgba(212,175,55,0.35) !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(.tarjeta-producto-individual) div.stButton > button {
+        min-height: 38px !important;
+        height: auto !important;
+        font-size: 11px !important;
     }
 
     .tarjeta-categoria-principal {
@@ -1155,8 +1377,11 @@ div[data-testid="stTextInput"]:not(:has(input[key*="search_bar_"])) input {
 
     .tarjeta-producto-individual img,
     .tarjeta-producto-individual video {
-        height: 132px !important;
+        height: 118px !important;
         border-radius: 8px 8px 0 0 !important;
+        background:
+            radial-gradient(circle at center, rgba(212,175,55,0.12), transparent 42%),
+            #111424 !important;
     }
 
     .product-price small {

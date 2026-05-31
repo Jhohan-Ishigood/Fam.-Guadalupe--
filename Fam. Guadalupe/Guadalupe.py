@@ -224,7 +224,42 @@ def registrar_cambio_cantidad(producto, key_qty):
     actualizar_carrito_desde_selecciones()
 
 
-def render_datos_pago(titulo="DATOS DE PAGO", compacto=False):
+def render_datos_pago(titulo="DATOS DE PAGO", compacto=False, desplegable=False):
+    if desplegable:
+        st.markdown(f'<div class="datos-pago-bloque compacto"><h2>{titulo}</h2></div>', unsafe_allow_html=True)
+        with st.expander("🏦 BANCO DE LA NACIÓN"):
+            st.markdown('''
+            <div class="pago-detalle-premium pago-banco-detalle">
+                <span>Cuenta bancaria</span>
+                <strong>04-762-855629</strong>
+                <small>Titular: Segundo Melquiades Guadalupe Sanchez</small>
+                <p>Realiza tu depósito y envía el comprobante por WhatsApp.</p>
+            </div>
+            ''', unsafe_allow_html=True)
+
+        with st.expander("🟣 YAPE — +51 950 239 350"):
+            qr_html = f'<img class="qr-yape-premium" src="{URL_QR}" alt="QR Yape">' if URL_QR else ""
+            st.markdown(f'''
+            <div class="pago-detalle-premium pago-yape-detalle">
+                <span>Pago rápido por Yape</span>
+                {qr_html}
+                <strong>+51 950 239 350</strong>
+                <small>Titular: Segundo Guadalupe</small>
+                <p>Escanea el QR o yapea directamente al número.</p>
+            </div>
+            ''', unsafe_allow_html=True)
+
+        with st.expander("🟢 CONTACTO DIRECTO — WHATSAPP"):
+            st.markdown('''
+            <div class="pago-detalle-premium pago-whatsapp-detalle">
+                <span>Coordinación del pedido</span>
+                <strong>+51 950 239 350</strong>
+                <small>Envía la captura de tu pedido o comprobante.</small>
+                <p>Te responderemos para confirmar stock, pago y entrega.</p>
+            </div>
+            ''', unsafe_allow_html=True)
+        return
+
     qr_html = ""
     if URL_QR:
         qr_html = f'<img class="qr-yape-premium" src="{URL_QR}" alt="QR Yape">'
@@ -397,9 +432,21 @@ URL_VIDEO_LOGO  = "/app/static/logovideo.mp4" if os.path.exists(os.path.join(BAS
 st.markdown(f'''
 <style>
 
+:root {{
+    color-scheme: dark !important;
+}}
+
+html,
+body,
+.stApp {{
+    background: #050509 !important;
+    color: #ffffff !important;
+}}
+
 /* ── FONDO PANORÁMICO (necesita URL_FONDO de Python) ── */
 [data-testid="stAppViewContainer"] {{
-    background: #050509 !important;
+    background: transparent !important;
+    color-scheme: dark !important;
 }}
 
 @keyframes fondoMaster {{
@@ -409,7 +456,7 @@ st.markdown(f'''
 
 @media (max-width: 768px) {{
     [data-testid="stAppViewContainer"] {{
-        background: #050509 !important;
+        background: transparent !important;
     }}
 }}
 
@@ -430,6 +477,13 @@ div[role="radiogroup"] {{
     background: transparent !important;
     background-color: transparent !important;
     box-shadow: none !important;
+}}
+
+[data-testid="stMain"],
+[data-testid="stMainBlockContainer"],
+.main .block-container {{
+    position: relative !important;
+    z-index: 5 !important;
 }}
 
 </style>
@@ -506,6 +560,41 @@ const observer = new MutationObserver((mutations) => {{
         const horizontalBlock = card.closest('[data-testid="stHorizontalBlock"]');
         if (horizontalBlock) {{
             horizontalBlock.classList.add('grilla-categorias');
+        }}
+    }});
+
+    // 5. Botones por intención visual
+    document.querySelectorAll('button').forEach(button => {{
+        const text = (button.textContent || '').trim().toUpperCase();
+        button.classList.remove(
+            'btn-guadalupe-inicio',
+            'btn-guadalupe-categoria',
+            'btn-guadalupe-subcategoria',
+            'btn-guadalupe-volver',
+            'btn-guadalupe-carrito',
+            'btn-guadalupe-confirmar',
+            'btn-guadalupe-whatsapp',
+            'btn-guadalupe-admin',
+            'btn-guadalupe-peligro'
+        );
+        if (text.includes('EMPEZAR A NAVEGAR')) {{
+            button.classList.add('btn-guadalupe-inicio');
+        }} else if (text === 'ENTRAR' || text.startsWith('ENTRAR ')) {{
+            button.classList.add('btn-guadalupe-categoria');
+        }} else if (text.includes('TODOS') || text.includes('PARLANTES') || text.includes('AUDÍFONOS') || text.includes('AUDIFONOS')) {{
+            button.classList.add('btn-guadalupe-subcategoria');
+        }} else if (text.includes('CATEGORÍAS') || text.includes('CATEGORIAS') || text.includes('VOLVER') || text.includes('INICIO')) {{
+            button.classList.add('btn-guadalupe-volver');
+        }} else if (text.includes('SIMULAR') || text.includes('CARRITO') || text.includes('NUEVA ORDEN')) {{
+            button.classList.add('btn-guadalupe-carrito');
+        }} else if (text.includes('CONFIRMAR')) {{
+            button.classList.add('btn-guadalupe-confirmar');
+        }} else if (text.includes('WHATSAPP') || text.includes('SOPORTE')) {{
+            button.classList.add('btn-guadalupe-whatsapp');
+        }} else if (text.includes('PANEL') || text.includes('INGRESAR') || text.includes('GUARDAR') || text.includes('AGREGAR')) {{
+            button.classList.add('btn-guadalupe-admin');
+        }} else if (text.includes('ELIMINAR') || text.includes('CERRAR SESIÓN') || text.includes('CERRAR SESION')) {{
+            button.classList.add('btn-guadalupe-peligro');
         }}
     }});
 }});
@@ -741,7 +830,7 @@ elif st.session_state.pantalla == "seleccion_categorias":
                 </div>
                 ''', unsafe_allow_html=True)
                 
-                if st.button(f"Entrar a {nombre}", use_container_width=True, key=f"cat_btn_{cat}"):
+                if st.button("Entrar", use_container_width=True, key=f"cat_btn_{cat}"):
                     st.session_state.categoria_principal_activa = cat
                     st.session_state.categoria_activa = "Todos"
                     st.session_state.pantalla = "catalogo"
@@ -939,7 +1028,7 @@ elif st.session_state.pantalla == "carrito":
         st.markdown("<br>", unsafe_allow_html=True)
         st.metric(label="💰 TOTAL A PAGAR", value=f"S/{st.session_state.total:.2f}")
 
-        render_datos_pago("DATOS DE PAGO PARA TU PEDIDO", compacto=True)
+        render_datos_pago("DATOS DE PAGO PARA TU PEDIDO", compacto=True, desplegable=True)
 
         # ── NOTA ESTRATÉGICA DORADA ──
         st.markdown('''
